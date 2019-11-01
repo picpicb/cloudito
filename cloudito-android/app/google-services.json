@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "547283845950",
+    "firebase_url": "https://cloudito-b4b0b.firebaseio.com",
+    "project_id": "cloudito-b4b0b",
+    "storage_bucket": "cloudito-b4b0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547283845950:android:deb8a3910e99860f95626f",
+        "android_client_info": {
+          "package_name": "com.ackincolor.cloudito"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547283845950-jmkgpck3iqtqd075r6emnraal7r61qof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn8VOmDX_LmueWCc7fv8BvUpGyHEbv1mo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547283845950-jmkgpck3iqtqd075r6emnraal7r61qof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

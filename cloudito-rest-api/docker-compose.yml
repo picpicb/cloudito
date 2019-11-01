@@ -1,0 +1,107 @@
+version: '3'
+
+services:
+  cloudito-notification:
+    image: cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-notification:latest
+    ports:
+      - 8082
+    environment:
+      - SERVICE_PORTS=8082
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 5
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    networks:
+      - web
+  cloudito-geomarketing:
+    image: cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-geomarketing:latest
+    ports:
+      - 8083
+    environment:
+      - SERVICE_PORTS=8083
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 5
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    networks:
+      - web2
+  cloudito-customer:
+    image: cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-customer:latest
+    ports:
+      - 8081
+    environment:
+      - SERVICE_PORTS=8081
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 5
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    networks:
+      - web3
+  proxy:
+    image: dockercloud/haproxy
+    depends_on:
+      - cloudito-main
+    environment:
+      - BALANCE=leastconn
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 82:80
+    networks:
+      - web
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  proxy2:
+    image: dockercloud/haproxy
+    depends_on:
+      - cloudito-geomarketing
+    environment:
+      - BALANCE=leastconn
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 83:80
+    networks:
+      - web2
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  proxy3:
+    image: dockercloud/haproxy
+    depends_on:
+      - cloudito-customer
+    environment:
+      - BALANCE=leastconn
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 81:80
+    networks:
+      - web3
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  web:
+    driver: overlay
+  web2:
+    driver: overlay
+  web3:
+    driver: overlay
