@@ -36,19 +36,19 @@ deploy_customer:
     #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geomarketing
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main ./main
-    - docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-geomarketing ./geomarketing
-    - docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-customer ./customer
-    - docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-notification ./notification
+    - docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-geomarketing ./geomarketing
+    - docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-customer ./customer
+    - docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-notification ./notification
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
     #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main
-    - docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-geomarketing
-    - docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-customer
-    - docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-notification
+    - docker push cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-geomarketing
+    - docker push cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-customer
+    - docker push cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-notification
     #- docker tag cloudito-rest-api-custo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-custo
     #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-maincusto
     #- docker tag cloudito-rest-api locl:5000/cloudito-rest-api
     #- docker -H cloudito.pre-prod.com:2375 run -p 80:80 -d cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-notification NewStack_cloudito-notification
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-geomarketing NewStack_cloudito-geomarketing
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-customer NewStack_cloudito-customer
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-geomarketing NewStack_cloudito-geomarketing
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/jm.frau/cloudito/cloudito-rest-api-customer NewStack_cloudito-customer
