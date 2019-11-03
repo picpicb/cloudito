@@ -17,7 +17,7 @@ variables:
 maven-build-customer:
   image: maven:3-jdk-8
   stage: build
-  script: "mvn package -f ./cloudito-rest-api/pom.xml"
+  script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
       - cloudito-rest-api/geomarketing/target/*.jar
