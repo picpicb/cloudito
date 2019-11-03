@@ -29,7 +29,7 @@ deploy_customer:
   stage: deploy
   services:
     - name: docker:18-dind
-      command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
+      command: ["--privileged --insecure-registry=http://cloudito.gitlab.com:4567"]
  # only:
  #   - master
   script:
