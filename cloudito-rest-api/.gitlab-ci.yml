@@ -14,7 +14,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
 
-maven-build-customer:
+maven-build:
   image: maven:3-jdk-8
   stage: build
   script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
@@ -30,8 +30,9 @@ deploy_customer:
   services:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
- # only:
- #   - master
+  only:
+    changes:
+      - cloudito-rest-api/*
   script:
     #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geomarketing
