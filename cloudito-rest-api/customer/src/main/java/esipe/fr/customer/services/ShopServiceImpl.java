@@ -2,6 +2,7 @@ package esipe.fr.customer.services;
 
 import esipe.fr.customer.entities.Shop;
 import esipe.fr.customer.repositories.ShopRepository;
+import esipe.fr.customer.repositories.ShopRepositoryInMemory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 @Service
 public class ShopServiceImpl implements ServiceImpl<Shop>{
     @Autowired
-    private ShopRepository shopRepository;
+    private ShopRepositoryInMemory shopRepository;
 
 
     @Override
@@ -31,6 +32,6 @@ public class ShopServiceImpl implements ServiceImpl<Shop>{
 
     @Override
     public List<Shop> findAll() {
-        return null;
+        return this.shopRepository.getAllShop();
     }
 }

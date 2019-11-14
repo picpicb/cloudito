@@ -12,11 +12,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfigurationCustomer {
+public class  SwaggerConfigurationCustomer {
     @Bean
     public Docket api2() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Customer")
+                .host("172.31.254.54:3081")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("esipe.fr.customer.controllers"))
                 .paths(PathSelectors.any())

@@ -39,8 +39,11 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
         FirebaseMessaging.getInstance().subscribeToTopic("all");
         Button logTokenButton = root.findViewById(R.id.logTokenButton);
+        //chargement de la liste
+        homeViewModel.reloadList();
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
