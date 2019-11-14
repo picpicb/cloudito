@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +19,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.ackincolor.cloudito.MainActivity;
 import com.ackincolor.cloudito.R;
+import com.ackincolor.cloudito.entities.Shop;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -33,6 +38,12 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
+
+        final ListView listView = root.findViewById(R.id.shoplistview);
+
+        final ArrayAdapter adapter = new ArrayAdapter(getActivity(),
+                R.layout.listshop, homeViewModel.getListShop().getValue());
+        listView.setAdapter(adapter);
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -43,6 +54,15 @@ public class HomeFragment extends Fragment {
         FirebaseMessaging.getInstance().subscribeToTopic("all");
         Button logTokenButton = root.findViewById(R.id.logTokenButton);
         //chargement de la liste
+        homeViewModel.getListShop().observe(this, new Observer<List<Shop>>() {
+            @Override
+            public void onChanged(List<Shop> shops) {
+                System.out.println("changed !!!");
+                final ArrayAdapter adapter = new ArrayAdapter(getActivity(),
+                        R.layout.listshop, homeViewModel.getListShop().getValue());
+                listView.setAdapter(adapter);
+            }
+        });
         homeViewModel.reloadList();
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override

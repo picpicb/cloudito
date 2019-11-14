@@ -29,15 +29,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
             <Button
                 android:id="@+id/logTokenButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Button" />
+
+            <ListView
+                android:id="@+id/shoplistview"
+                android:layout_width="match_parent"
+                android:layout_height="302dp" />
         </LinearLayout>
     </ScrollView>
 

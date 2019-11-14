@@ -21,11 +21,13 @@ import java.util.List;
 public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private List<Shop> listShop;
+    private MutableLiveData<List<Shop>> listShop;
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("Bienvenue chez Cloudito");
+        this.listShop = new MutableLiveData<>();
+        this.listShop.setValue(new ArrayList<Shop>());
 
     }
     public void reloadList(){
@@ -38,7 +40,10 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void onResponse(Call<List<Shop>> call, Response<List<Shop>> response) {
                 if(response.isSuccessful()){
-                    listShop = response.body();
+                    System.out.println("recuperation success");
+                    listShop.setValue( response.body());
+                }else {
+                    System.out.printf("erreur de recuperation");
                 }
             }
 
@@ -53,8 +58,8 @@ public class HomeViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
-    public ArrayList<Stores> getStores() {
-        return null;
-    }
 
+    public MutableLiveData<List<Shop>> getListShop() {
+        return listShop;
+    }
 }
