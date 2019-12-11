@@ -90,6 +90,7 @@ build:release:
   only:
     - master
   script:
+    - ls -lA
     - ./gradlew assembleRelease
 
 
