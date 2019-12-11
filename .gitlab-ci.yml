@@ -145,7 +145,6 @@ package:develop:
   only:
     - develop
   script:
-    - cd cloudito-android/
     - mv app/build/outputs/apk/debug/app-debug.apk ./exported/${APP_NAME}-v$VERSION_NAME-debug.apk
   dependencies:
     - build:develop
@@ -161,7 +160,6 @@ package:release:unsigned:
   only:
     - master
   script:
-    - cd cloudito-android/
     - mv app/build/outputs/apk/release/app-release-unsigned.apk ./exported/${APP_NAME}-v$VERSION_NAME-release-unsigned.apk
   dependencies:
     - build:release
