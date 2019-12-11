@@ -73,8 +73,8 @@ deploy_customer:
   - chmod +x ./gradlew
   - apt-get update -y && apt-get install wget -y
   cache:
-  key: ${CI_PROJECT_ID}
-  paths:
+    key: ${CI_PROJECT_ID}
+    paths:
     - .m2/
     - .gradle/
 
