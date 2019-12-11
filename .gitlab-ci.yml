@@ -67,7 +67,7 @@ deploy_customer:
   artifacts:
     expire_in: 4 hours
     paths:
-      - app/build/outputs/
+      - cloudito-android/app/build/outputs/
   script:
   
   cache:
