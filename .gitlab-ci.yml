@@ -55,11 +55,7 @@ deploy_customer:
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-customer NewStack_cloudito-customer
 
 
-cache:
-  key: ${CI_PROJECT_ID}
-  paths:
-    - .m2/
-    - .gradle/
+
 
 
 ########################################################################
@@ -76,6 +72,11 @@ cache:
   - export GRADLE_USER_HOME=$(pwd)/.gradle
   - chmod +x ./gradlew
   - apt-get update -y && apt-get install wget -y
+  cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .m2/
+    - .gradle/
 
 build:develop:
   <<: *build
