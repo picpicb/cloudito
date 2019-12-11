@@ -90,6 +90,7 @@ build:release:
   only:
     - master
   script:
+    - cd cloudito-android/
     - export GRADLE_USER_HOME=$(pwd)/.gradle
     - chmod +x ./gradlew
     - apt-get update -y && apt-get install wget -y
