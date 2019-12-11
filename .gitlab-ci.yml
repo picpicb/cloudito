@@ -1,0 +1,165 @@
+stages:
+  - build-back
+  - deploy-back
+
+variables:
+  USER_GITLAB: jm.frau
+  APP_NAME: cloudito-rest-api
+  REPO: cloudito-rest-api
+  DOCKER_TLS_CERTDIR: ""
+  DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
+  ANDROID_COMPILE_SDK: "28"
+  APP_NAME: "Cloudito"
+
+maven-build:
+  image: maven:3-jdk-8
+  stage: build-back
+  script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
+  artifacts:
+    paths:
+      - cloudito-rest-api/geomarketing/target/*.jar
+      - cloudito-rest-api/customer/target/*.jar
+      - cloudito-rest-api/notification/target/*.jar
+
+deploy_customer:
+  image: docker:18-dind
+  stage: deploy-back
+  services:
+    - name: docker:18-dind
+      command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
+  only:
+    changes:
+      - cloudito-rest-api/*
+  script:
+    #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
+    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geomarketing
+    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main ./main
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing ./cloudito-rest-api/geomarketing
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-customer ./cloudito-rest-api/customer
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification ./cloudito-rest-api/notification
+    - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
+    #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
+    #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-customer
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification
+    #- docker tag cloudito-rest-api-custo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-custo
+    #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-maincusto
+    #- docker tag cloudito-rest-api locl:5000/cloudito-rest-api
+    #- docker -H cloudito.pre-prod.com:2375 run -p 80:80 -d cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing NewStack_cloudito-geomarketing
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-customer NewStack_cloudito-customer
+
+
+cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .m2/
+    - .gradle/
+
+stages:
+  - build
+  - test
+  - package
+
+before_script:
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
+  - chmod +x ./gradlew
+  - apt-get update -y && apt-get install wget -y
+
+
+########################################################################
+# BUILD
+
+.build_template: &build
+  image: jangrewe/gitlab-ci-android
+  stage: build
+  artifacts:
+    expire_in: 4 hours
+    paths:
+      - app/build/outputs/
+
+build:develop:
+  <<: *build
+  only:
+    - develop
+  script:
+    - ./gradlew assembleDebug
+
+build:release:
+  <<: *build
+  only:
+    - master
+  script:
+    - ./gradlew assembleRelease
+
+
+########################################################################
+# TESTS
+
+.test_template: &test
+  image: jangrewe/gitlab-ci-android
+  stage: test
+  only:
+    - master
+    - develop
+
+test:unit:
+  <<: *test
+  script:
+    - ./gradlew test
+
+test:functional:
+  <<: *test
+  script:
+    - echo "functional test"
+#    - wget --quiet --output-document=android-wait-for-emulator https://raw.githubusercontent.com/travis-ci/travis-cookbooks/0f497eb71291b52a703143c5cd63a217c8766dc9/community-cookbooks/android-sdk/files/default/android-wait-for-emulator
+#    - chmod +x android-wait-for-emulator
+#    - echo y | ${ANDROID_HOME}/tools/bin/sdkmanager "system-images;android-${ANDROID_COMPILE_SDK};google_apis_playstore;x86" >> logfile_android
+#    - echo y | ${ANDROID_HOME}/tools/bin/sdkmanager --update >> logfile_android2
+#    - echo no | ${ANDROID_HOME}/tools/bin/avdmanager create avd -k "system-images;android-${ANDROID_COMPILE_SDK};google_apis_playstore;x86" -n test
+#    - ${ANDROID_HOME}/tools/emulator -avd test -no-window -no-audio
+#    - ./android-wait-for-emulator
+#    - adb shell input keyevent 82
+#    - ./gradlew cAT
+
+
+########################################################################
+# PACKAGE
+
+.package_template: &package
+  image: jangrewe/gitlab-ci-android
+  before_script:
+    - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
+    - mkdir -p exported
+
+package:develop:
+  <<: *package
+  stage: package
+  environment: Development
+  only:
+    - develop
+  script:
+    - mv app/build/outputs/apk/debug/app-debug.apk ./exported/${APP_NAME}-v$VERSION_NAME-debug.apk
+  dependencies:
+    - build:develop
+  artifacts:
+    expire_in: 7 days
+    paths:
+      - exported
+
+package:release:unsigned:
+  <<: *package
+  stage: package
+  environment: Release
+  only:
+    - master
+  script:
+    - mv app/build/outputs/apk/release/app-release-unsigned.apk ./exported/${APP_NAME}-v$VERSION_NAME-release-unsigned.apk
+  dependencies:
+    - build:release
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - exported
