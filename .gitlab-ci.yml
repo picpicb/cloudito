@@ -17,6 +17,9 @@ variables:
 maven-build:
   image: maven:3-jdk-8
   stage: build-back
+  only:
+    changes:
+      - cloudito-rest-api/*
   script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
@@ -64,6 +67,9 @@ deploy_customer:
 .build_template: &build
   image: jangrewe/gitlab-ci-android
   stage: build
+  only:
+    changes:
+      - cloudito-android/*
   artifacts:
     expire_in: 4 hours
     paths:
@@ -104,6 +110,9 @@ build:release:
   image: jangrewe/gitlab-ci-android
   stage: test
   only:
+    changes:
+      - cloudito-android/*
+  only:
     - master
     - develop
 
@@ -133,6 +142,9 @@ test:functional:
 
 .package_template: &package
   image: jangrewe/gitlab-ci-android
+  only:
+    changes:
+      - cloudito-android/*
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
