@@ -110,6 +110,7 @@ build:release:
 test:unit:
   <<: *test
   script:
+    - cd cloudito-android/
     - ./gradlew test
 
 test:functional:
@@ -133,6 +134,7 @@ test:functional:
 .package_template: &package
   image: jangrewe/gitlab-ci-android
   before_script:
+    - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
     - mkdir -p exported
 
