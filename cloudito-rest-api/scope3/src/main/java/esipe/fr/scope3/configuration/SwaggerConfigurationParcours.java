@@ -22,6 +22,6 @@ public class SwaggerConfigurationParcours {
                 .apis(RequestHandlerSelectors.basePackage("esipe.fr.scope3.controllers"))
                 .paths(PathSelectors.any())
                 .build()
-                .tags(new Tag("Notification","All for sending notifications to customers"));
+                .tags(new Tag("Parcours","All for sending notifications to customers"));
     }
 }
