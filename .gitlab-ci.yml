@@ -97,7 +97,7 @@ build:release:
   image: jangrewe/gitlab-ci-android
   only:
     - master
-    changes:
+    - changes:
       - cloudito-android/*
   script:
     - cd cloudito-android/
@@ -116,9 +116,6 @@ build:release:
   only:
     changes:
       - cloudito-android/*
-  only:
-    - master
-    - develop
 
 test:unit:
   <<: *test
@@ -160,7 +157,7 @@ package:develop:
   environment: Development
   only:
     - develop
-    changes:
+    - changes:
       - cloudito-android/*
   script:
     - mv app/build/outputs/apk/debug/app-debug.apk ./exported/${APP_NAME}-v$VERSION_NAME-debug.apk
@@ -177,7 +174,7 @@ package:release:unsigned:
   environment: Release
   only:
     - master
-    changes:
+    - changes:
       - cloudito-android/*
   script:
     - mv app/build/outputs/apk/release/app-release-unsigned.apk ./exported/${APP_NAME}-v$VERSION_NAME-release-unsigned.apk
