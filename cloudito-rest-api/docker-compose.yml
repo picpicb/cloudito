@@ -2,7 +2,7 @@ version: '3'
 
 services:
   cloudito-notification:
-    image: cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-notification:latest
+    image: cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:latest
     ports:
       - 8082
     environment:
@@ -19,7 +19,7 @@ services:
     networks:
       - web
   cloudito-geomarketing:
-    image: cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-geomarketing:latest
+    image: cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing:latest
     ports:
       - 8083
     environment:
@@ -35,8 +35,8 @@ services:
         window: 120s
     networks:
       - web2
-  cloudito-customer:
-    image: cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-customer:latest
+  cloudito-scope3:
+    image: cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-scope3:latest
     ports:
       - 8081
     environment:
@@ -85,7 +85,7 @@ services:
   proxy3:
     image: dockercloud/haproxy
     depends_on:
-      - cloudito-customer
+      - cloudito-scope3
     environment:
       - BALANCE=leastconn
     volumes:

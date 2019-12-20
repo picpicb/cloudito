@@ -16,4 +16,7 @@
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="menu_Plan">Plan</string>
     <string name="menu_plan">Plan</string>
+    <string name="instructions">
+Place your fingertip on the Home button to verify your identity
+</string>
 </resources>
