@@ -87,8 +87,6 @@ build:develop:
   image: jangrewe/gitlab-ci-android
   only:
     - develop
-    - changes:
-      - cloudito-android/*
   script:
     - ./gradlew assembleDebug
 
@@ -97,8 +95,6 @@ build:release:
   image: jangrewe/gitlab-ci-android
   only:
     - master
-    - changes:
-      - cloudito-android/*
   script:
     - cd cloudito-android/
     - export GRADLE_USER_HOME=$(pwd)/.gradle
@@ -116,6 +112,9 @@ build:release:
   only:
     changes:
       - cloudito-android/*
+  only:
+    - master
+    - develop
 
 test:unit:
   <<: *test
@@ -157,8 +156,6 @@ package:develop:
   environment: Development
   only:
     - develop
-    - changes:
-      - cloudito-android/*
   script:
     - mv app/build/outputs/apk/debug/app-debug.apk ./exported/${APP_NAME}-v$VERSION_NAME-debug.apk
   dependencies:
@@ -174,8 +171,6 @@ package:release:unsigned:
   environment: Release
   only:
     - master
-    - changes:
-      - cloudito-android/*
   script:
     - mv app/build/outputs/apk/release/app-release-unsigned.apk ./exported/${APP_NAME}-v$VERSION_NAME-release-unsigned.apk
   dependencies:
