@@ -19,7 +19,7 @@ maven-build:
   stage: build-back
   only:
     changes:
-      - cloudito-rest-api/*
+      - cloudito-rest-api/**/*
   script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
@@ -35,7 +35,7 @@ deploy_customer:
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   only:
     changes:
-      - cloudito-rest-api/*
+      - cloudito-rest-api/**/*
   script:
     #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geomarketing
@@ -69,7 +69,7 @@ deploy_customer:
   stage: build
   only:
     changes:
-      - cloudito-android/*
+      - cloudito-android/**/*
   artifacts:
     expire_in: 4 hours
     paths:
@@ -111,7 +111,7 @@ build:release:
   stage: test
   only:
     changes:
-      - cloudito-android/*
+      - cloudito-android/**/*
   only:
     - master
     - develop
@@ -144,7 +144,7 @@ test:functional:
   image: jangrewe/gitlab-ci-android
   only:
     changes:
-      - cloudito-android/*
+      - cloudito-android/**/*
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
