@@ -17,6 +17,9 @@ variables:
 maven-build:
   image: maven:3-jdk-8
   stage: build-back
+  only:
+    changes:
+      - cloudito-rest-api/**/*
   script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
@@ -27,6 +30,9 @@ maven-build:
 deploy_customer:
   image: docker:18-dind
   stage: deploy-back
+  only:
+    changes:
+      - cloudito-rest-api/**/*
   services:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
@@ -35,7 +41,7 @@ deploy_customer:
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geomarketing
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main ./main
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing ./cloudito-rest-api/geomarketing
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-scope3 ./cloudito-rest-api/customer
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-scope3 ./cloudito-rest-api/scope3
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification ./cloudito-rest-api/notification
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
