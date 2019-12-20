@@ -87,7 +87,7 @@ build:develop:
   image: jangrewe/gitlab-ci-android
   only:
     - develop
-    changes:
+    - changes:
       - cloudito-android/*
   script:
     - ./gradlew assembleDebug
