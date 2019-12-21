@@ -1,8 +1,6 @@
 package esipe.fr.scope3.controllers;
 
 
-import esipe.fr.notification.entities.Notification;
-import esipe.fr.notification.services.NotificationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
