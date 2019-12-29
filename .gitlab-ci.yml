@@ -20,6 +20,9 @@ maven-build:
   only:
     changes:
       - cloudito-rest-api/**/*
+  except:
+    - Scope3
+    - Scope1
   script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
@@ -33,6 +36,10 @@ deploy_customer:
   only:
     changes:
       - cloudito-rest-api/**/*
+  except:
+    - Scope3
+    - Scope1
+
   services:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
@@ -70,6 +77,9 @@ deploy_customer:
   only:
     changes:
       - cloudito-android/**/*
+  except:
+    - Scope3
+    - Scope1
   artifacts:
     expire_in: 4 hours
     paths:
@@ -112,9 +122,9 @@ build:release:
   only:
     changes:
       - cloudito-android/**/*
-  only:
-    - master
-    - develop
+  except:
+    - Scope3
+    - Scope1
 
 test:unit:
   <<: *test
@@ -145,6 +155,9 @@ test:functional:
   only:
     changes:
       - cloudito-android/**/*
+  except:
+    - Scope3
+    - Scope1
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`

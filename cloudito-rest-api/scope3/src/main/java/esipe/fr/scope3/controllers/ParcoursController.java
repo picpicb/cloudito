@@ -25,8 +25,13 @@ public class ParcoursController {
     @RequestMapping(value = "/parcours/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "renvois le parcours ayant pour identifiant ID")
     @ResponseBody
-    public ResponseEntity<Parcours> getParcours() {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<Parcours> getParcours(@RequestParam int id) {
+        try{
+            Parcours p = new Parcours();
+            return new ResponseEntity<Parcours>(p,HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        }
     }
 
 
