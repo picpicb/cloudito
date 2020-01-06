@@ -1,4 +1,4 @@
-package com.ackincolor.testbottomnav.entities;
+package com.ackincolor.cloudito.entities;
 
 class PoI {
     private String name;

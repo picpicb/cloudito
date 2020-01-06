@@ -1,4 +1,4 @@
-package com.ackincolor.testbottomnav.entities;
+package com.ackincolor.cloudito.entities;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -26,5 +26,13 @@ public class Parcours {
 
     public void setListe(ArrayList<Noeud> liste) {
         this.liste = liste;
+    }
+
+    public String toString(){
+        String str = "Parcours : ";
+        for(Noeud n : this.liste){
+            str+=" n:"+n.toString();
+        }
+        return str;
     }
 }
