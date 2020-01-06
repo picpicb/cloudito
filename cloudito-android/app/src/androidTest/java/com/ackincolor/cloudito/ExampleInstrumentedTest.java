@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.ackincolor.cloudito", appContext.getPackageName());
+        assertEquals("com.ackincolor.testbottomnav", appContext.getPackageName());
     }
 }
