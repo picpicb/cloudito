@@ -40,7 +40,7 @@ public class Noeud {
     }
 
     public PoI getPoi() {
-        return poi;
+        return this.poi;
     }
 
     public void setPoi(PoI poi) {
