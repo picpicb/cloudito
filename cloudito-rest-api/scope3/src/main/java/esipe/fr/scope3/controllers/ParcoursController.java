@@ -28,7 +28,7 @@ public class ParcoursController {
     @ResponseBody
     public ResponseEntity<Parcours> getParcours(@PathVariable String id) {
         try{
-            UUID uuid = UUID.fromString(id);
+            //UUID uuid = UUID.fromString(id);
             Parcours p = new Parcours();
             return new ResponseEntity<Parcours>(p,HttpStatus.OK);
         }catch(Exception e) {

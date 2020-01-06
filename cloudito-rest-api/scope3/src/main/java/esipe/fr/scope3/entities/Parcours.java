@@ -16,8 +16,20 @@ public class Parcours {
         this.liste.add(new Noeuds(UUID.randomUUID(),4,"Magasin",new Store("GoSport","encore Gosport"),null));
     }
 
-    public Parcours getParcours() {
-        return new Parcours();
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public ArrayList<Noeuds> getListe() {
+        return liste;
+    }
+
+    public void setListe(ArrayList<Noeuds> liste) {
+        this.liste = liste;
     }
 }
 
