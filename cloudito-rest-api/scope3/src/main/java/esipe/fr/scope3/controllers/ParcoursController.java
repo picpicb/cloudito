@@ -26,8 +26,9 @@ public class ParcoursController {
     @RequestMapping(value = "/parcours/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "renvois le parcours ayant pour identifiant ID")
     @ResponseBody
-    public ResponseEntity<Parcours> getParcours(@PathVariable UUID id) {
+    public ResponseEntity<Parcours> getParcours(@PathVariable String id) {
         try{
+            UUID uuid = UUID.fromString(id);
             Parcours p = new Parcours();
             return new ResponseEntity<Parcours>(p,HttpStatus.OK);
         }catch(Exception e) {
