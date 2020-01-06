@@ -1,6 +1,6 @@
 package com.ackincolor.cloudito.entities;
 
-class PoI {
+public class PoI {
     private String name;
     private String description;
     private Coordonee emplacement;
@@ -33,5 +33,10 @@ class PoI {
 
     public void setEmplacement(Coordonee emplacement) {
         this.emplacement = emplacement;
+    }
+
+    @Override
+    public String toString() {
+        return "["+this.name+","+this.description+","+this.emplacement+"]";
     }
 }

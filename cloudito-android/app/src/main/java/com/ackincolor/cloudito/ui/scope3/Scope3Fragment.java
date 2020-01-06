@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ackincolor.cloudito.R;
+import com.ackincolor.cloudito.controllers.ParcoursController;
+
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class Scope3Fragment extends Fragment {
 
     private Scope3ViewModel scope3ViewModel;
+    private ParcoursController parcoursController;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class Scope3Fragment extends Fragment {
                 textView.setText(s);
             }
         });
+        this.parcoursController = new ParcoursController(getActivity());
+        this.parcoursController.getParcours(UUID.randomUUID());
         return root;
     }
 }

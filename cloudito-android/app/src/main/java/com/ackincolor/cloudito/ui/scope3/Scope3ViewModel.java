@@ -11,14 +11,13 @@ import androidx.lifecycle.ViewModel;
 public class Scope3ViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private ParcoursController parcoursController;
+
 
     public Scope3ViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is scope 3 fragment");
         //debut recuperation
-        this.parcoursController = new ParcoursController();
-        this.parcoursController.getParcours(UUID.randomUUID());
+
     }
 
     public LiveData<String> getText() {
