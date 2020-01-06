@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Parcours {
-    private ArrayList<Noeuds> parcours;
+    private UUID id;
+    private ArrayList<Noeuds> liste;
     public Parcours(){
-        this.parcours = new ArrayList<>();
-        this.parcours.add(new Noeuds(UUID.randomUUID(),1,"Magasin",new Store("GoSport","madgasin de sport"),null));
-        this.parcours.add(new Noeuds(UUID.randomUUID(),2,"Magasin",new Store("Fnac","madgasin de tech"),null));
-        this.parcours.add(new Noeuds(UUID.randomUUID(),3,"Magasin",new Store("pylone","madgasin de tou&R"),null));
-        this.parcours.add(new Noeuds(UUID.randomUUID(),4,"Magasin",new Store("GoSport","encore Gosport"),null));
+        this.id = UUID.randomUUID();
+        this.liste = new ArrayList<>();
+        this.liste.add(new Noeuds(UUID.randomUUID(),1,"Magasin",new Store("GoSport","madgasin de sport"),null));
+        this.liste.add(new Noeuds(UUID.randomUUID(),2,"Magasin",new Store("Fnac","madgasin de tech"),null));
+        this.liste.add(new Noeuds(UUID.randomUUID(),3,"Magasin",new Store("pylone","madgasin de tou&R"),null));
+        this.liste.add(new Noeuds(UUID.randomUUID(),4,"Magasin",new Store("GoSport","encore Gosport"),null));
     }
 
-    public ArrayList<Noeuds> getParcours() {
-        return parcours;
+    public Parcours getParcours() {
+        return new Parcours();
     }
 }
 

@@ -7,28 +7,28 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.ackincolor.testbottomnav.ui.home.HomeFragment"
+        android:name="com.ackincolor.cloudito.ui.home.HomeFragment"
         android:label="@string/title_home"
         android:title="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.ackincolor.testbottomnav.ui.dashboard.DashboardFragment"
+        android:name="com.ackincolor.cloudito.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         android:title="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_scope_3"
-        android:name="com.ackincolor.testbottomnav.ui.scope3.Scope3Fragment"
+        android:name="com.ackincolor.cloudito.ui.scope3.Scope3Fragment"
         android:label="@string/title_scope_3"
         android:title="@string/title_scope_3"
         tools:layout="@layout/fragment_scope_3" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.ackincolor.testbottomnav.ui.notifications.NotificationsFragment"
+        android:name="com.ackincolor.cloudito.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         android:title="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />

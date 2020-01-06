@@ -1,4 +1,4 @@
-package com.ackincolor.testbottomnav;
+package com.ackincolor.cloudito;
 
 import android.os.Bundle;
 

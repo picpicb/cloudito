@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.InetAddress;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Api(tags = "Parcours")
@@ -25,7 +26,7 @@ public class ParcoursController {
     @RequestMapping(value = "/parcours/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "renvois le parcours ayant pour identifiant ID")
     @ResponseBody
-    public ResponseEntity<Parcours> getParcours(@RequestParam int id) {
+    public ResponseEntity<Parcours> getParcours(@PathVariable UUID id) {
         try{
             Parcours p = new Parcours();
             return new ResponseEntity<Parcours>(p,HttpStatus.OK);
