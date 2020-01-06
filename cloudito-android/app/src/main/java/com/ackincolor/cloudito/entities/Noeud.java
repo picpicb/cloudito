@@ -5,10 +5,10 @@ import java.util.UUID;
 public class Noeud {
     private UUID id;
     private int order;
-    private int type;
+    private String type;
     private PoI poi;
 
-    public Noeud(UUID id, int order, int type, PoI poi) {
+    public Noeud(UUID id, int order, String type, PoI poi) {
         this.id = id;
         this.order = order;
         this.type = type;
@@ -31,11 +31,11 @@ public class Noeud {
         this.order = order;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -45,5 +45,9 @@ public class Noeud {
 
     public void setPoi(PoI poi) {
         this.poi = poi;
+    }
+
+    public String toString(){
+        return "["+this.id.toString()+","+this.type+","+this.poi+"]";
     }
 }
