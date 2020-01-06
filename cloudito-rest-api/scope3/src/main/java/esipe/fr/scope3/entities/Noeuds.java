@@ -6,15 +6,13 @@ public class Noeuds {
     private UUID id;
     private Integer order;
     private String type;
-    private Store store;
-    private Borne borne;
+    private PoI poi;
 
-    public Noeuds(UUID id,Integer order, String type, Store store, Borne borne) {
+    public Noeuds(UUID id,Integer order, String type, PoI poi) {
         this.id = id;
         this.order = order;
         this.type = type;
-        this.store = store;
-        this.borne = borne;
+        this.poi = poi;
     }
 
     public UUID getId() {
@@ -25,12 +23,8 @@ public class Noeuds {
         return type;
     }
 
-    public Store getStore() {
-        return store;
-    }
-
-    public Borne getBorne() {
-        return borne;
+    public PoI getPoi(){
+        return this.poi;
     }
 
     public Integer getOrder() {
