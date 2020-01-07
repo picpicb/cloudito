@@ -1,14 +1,14 @@
-package com.ackincolor.cloudito.ui.home;
+package com.ackincolor.cloudito.ui.scope1;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class Scope1ViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public Scope1ViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

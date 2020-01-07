@@ -1,4 +1,4 @@
-package com.ackincolor.cloudito.ui.notifications;
+package com.ackincolor.cloudito.ui.scope4;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.ackincolor.cloudito.R;
 
-public class NotificationsFragment extends Fragment {
+public class Scope4Fragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private Scope4ViewModel scope4ViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        scope4ViewModel =
+                ViewModelProviders.of(this).get(Scope4ViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_scope_4, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(this, new Observer<String>() {
+        scope4ViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

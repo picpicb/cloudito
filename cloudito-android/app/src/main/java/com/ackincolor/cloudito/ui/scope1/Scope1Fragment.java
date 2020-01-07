@@ -1,4 +1,4 @@
-package com.ackincolor.cloudito.ui.home;
+package com.ackincolor.cloudito.ui.scope1;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.ackincolor.cloudito.R;
 
-public class HomeFragment extends Fragment {
+public class Scope1Fragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private Scope1ViewModel scope1ViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        scope1ViewModel =
+                ViewModelProviders.of(this).get(Scope1ViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_scope_1, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        scope1ViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
