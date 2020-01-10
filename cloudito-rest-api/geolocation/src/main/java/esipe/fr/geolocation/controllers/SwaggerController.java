@@ -1,4 +1,4 @@
-package esipe.fr.geomarketing.controllers;
+package esipe.fr.geolocation.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

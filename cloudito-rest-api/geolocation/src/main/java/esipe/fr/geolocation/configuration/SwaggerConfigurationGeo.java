@@ -1,4 +1,4 @@
-package esipe.fr.geomarketing.configuration;
+package esipe.fr.geolocation.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +16,11 @@ public class SwaggerConfigurationGeo {
     @Bean
     public Docket api2() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("GeoMarketing")
+                .groupName("GeoLocation")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("esipe.fr.geomarketing.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("esipe.fr.geolocation.controllers"))
                 .paths(PathSelectors.any())
                 .build()
-                .tags(new Tag("Geo","CRUD for geo"));
+                .tags(new Tag("Geo","Geolocation Resources"));
     }
 }

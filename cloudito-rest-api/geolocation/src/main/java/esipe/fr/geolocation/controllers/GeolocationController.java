@@ -1,8 +1,7 @@
-package esipe.fr.geomarketing.controllers;
+package esipe.fr.geolocation.controllers;
 
 
-import esipe.fr.geomarketing.entities.GeoInfo;
-import esipe.fr.geomarketing.services.GeoService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,11 @@ import java.util.List;
 
 @RestController
 @Api(tags = "Geo")
-public class GeoController {
-    private GeoService cityService;
+public class GeolocationController {
+   /* private GeoService cityService;
 
     @Autowired
-    public GeoController(final GeoService cityService){
+    public GeolocationController(final GeoService cityService){
         this.cityService = cityService;
     }
 
@@ -47,5 +46,5 @@ public class GeoController {
     @ResponseBody
     public void deleteCityById(@RequestBody Integer id) {
         this.cityService.deleteGeo(id);
-    }
+    }*/
 }

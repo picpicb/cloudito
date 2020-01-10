@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>geomarketing</artifactId>
+    <artifactId>geolocation</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.geomarketing.ClouditoGeomarketingService</mainClass>
+                    <mainClass>esipe.fr.geolocation.ClouditoGeolocationService</mainClass>
                 </configuration>
             </plugin>
         </plugins>
