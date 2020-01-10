@@ -1,5 +1,6 @@
 package esipe.fr.geolocation.entities;
 
+
 public class Location {
     private double x;
     private double y;
