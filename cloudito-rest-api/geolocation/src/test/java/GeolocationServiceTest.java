@@ -1,4 +1,4 @@
-package java;
+package esipe.fr.geolocation.test;;
 
 import esipe.fr.geolocation.controllers.GeolocationController;
 import org.junit.Test;
@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static junit.framework.TestCase.*;
 
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 public class GeolocationServiceTest {
 
