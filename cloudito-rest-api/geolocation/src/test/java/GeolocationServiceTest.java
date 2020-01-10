@@ -1,3 +1,5 @@
+package java;
+
 import esipe.fr.geolocation.controllers.GeolocationController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
