@@ -46,8 +46,8 @@ deploy_customer:
     #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geolocation
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main ./main
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation ./cloudito-rest-api/geomarketing
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course ./cloudito-rest-api/scope3
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation ./cloudito-rest-api/geolocation
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course ./cloudito-rest-api/course
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification ./cloudito-rest-api/notification
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
