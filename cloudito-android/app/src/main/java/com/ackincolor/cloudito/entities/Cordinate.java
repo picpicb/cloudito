@@ -1,10 +1,10 @@
 package com.ackincolor.cloudito.entities;
 
-class Coordonee {
+class Cordinate {
     private int x;
     private int y;
 
-    public Coordonee(int x, int y) {
+    public Cordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }

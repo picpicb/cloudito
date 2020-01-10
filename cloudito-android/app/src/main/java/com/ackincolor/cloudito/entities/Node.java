@@ -2,13 +2,13 @@ package com.ackincolor.cloudito.entities;
 
 import java.util.UUID;
 
-public class Noeud {
+public class Node {
     private UUID id;
     private int order;
     private String type;
     private PoI poi;
 
-    public Noeud(UUID id, int order, String type, PoI poi) {
+    public Node(UUID id, int order, String type, PoI poi) {
         this.id = id;
         this.order = order;
         this.type = type;

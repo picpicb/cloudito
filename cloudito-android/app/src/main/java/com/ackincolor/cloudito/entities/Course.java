@@ -3,11 +3,11 @@ package com.ackincolor.cloudito.entities;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Parcours {
+public class Course {
     private UUID id;
-    private ArrayList<Noeud> liste;
+    private ArrayList<Node> liste;
 
-    public Parcours(UUID id, ArrayList<Noeud> liste) {
+    public Course(UUID id, ArrayList<Node> liste) {
         this.id = id;
         this.liste = liste;
     }
@@ -20,17 +20,17 @@ public class Parcours {
         this.id = id;
     }
 
-    public ArrayList<Noeud> getListe() {
+    public ArrayList<Node> getListe() {
         return liste;
     }
 
-    public void setListe(ArrayList<Noeud> liste) {
+    public void setListe(ArrayList<Node> liste) {
         this.liste = liste;
     }
 
     public String toString(){
-        String str = "Parcours : ";
-        for(Noeud n : this.liste){
+        String str = "Course : ";
+        for(Node n : this.liste){
             str+=" n:"+n.toString();
         }
         return str;

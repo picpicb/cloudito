@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.ackincolor.cloudito.entities.Noeud;
-import com.ackincolor.cloudito.entities.Parcours;
+import com.ackincolor.cloudito.entities.Course;
+import com.ackincolor.cloudito.entities.Node;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,8 +36,8 @@ public class ParcoursManager {
         this.db = this.dbm.getWritableDatabase();
     }
 
-    public void saveParcours(Parcours p){
-        for(Noeud n : p.getListe()){
+    public void saveParcours(Course p){
+        for(Node n : p.getListe()){
             ContentValues values = new ContentValues();
             values.put(KEY_ID_NOEUD,n.getId().toString());
             values.put(KEY_ID_PARCOURS,p.getId().toString());
@@ -53,7 +53,7 @@ public class ParcoursManager {
         String query = "SELECT * FROM "+TABLE_NAME;
         Cursor c = this.db.rawQuery(query,null);
         Log.d("DEBUG","recuperation des parcours :"+c.getCount());
-        ArrayList<Parcours> liste = new ArrayList<>();
+        ArrayList<Course> liste = new ArrayList<>();
         c.moveToNext();
         String str = "";
         while(!c.isAfterLast()){

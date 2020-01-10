@@ -8,12 +8,12 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.ackincolor.cloudito.entities.Noeud;
+import com.ackincolor.cloudito.entities.Node;
 
 import java.util.ArrayList;
 
 public class Map extends View {
-    private ArrayList<Noeud> parcours;
+    private ArrayList<Node> parcours;
     private Paint p;
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
