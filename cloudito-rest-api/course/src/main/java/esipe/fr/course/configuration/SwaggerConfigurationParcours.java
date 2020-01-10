@@ -1,4 +1,4 @@
-package esipe.fr.scope3.configuration;
+package esipe.fr.course.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +9,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.net.InetAddress;
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfigurationParcours {
@@ -19,7 +17,7 @@ public class SwaggerConfigurationParcours {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Parcours")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("esipe.fr.scope3.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("esipe.fr.course.controllers"))
                 .paths(PathSelectors.any())
                 .build()
                 .tags(new Tag("Parcours","All for sending notifications to customers"));

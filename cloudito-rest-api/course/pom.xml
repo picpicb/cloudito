@@ -19,7 +19,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.scope3.ClouditoScope3Service</mainClass>
+                    <mainClass>esipe.fr.course.ClouditoCourceService</mainClass>
                 </configuration>
             </plugin>
         </plugins>

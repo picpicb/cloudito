@@ -1,4 +1,4 @@
-package esipe.fr.scope3.entities;
+package esipe.fr.course.entities;
 
 import java.util.UUID;
 

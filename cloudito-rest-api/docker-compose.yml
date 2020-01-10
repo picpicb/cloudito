@@ -36,7 +36,7 @@ services:
     networks:
       - web2
   cloudito-scope3:
-    image: cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-scope3:latest
+    image: cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course:latest
     ports:
       - 8081
     environment:

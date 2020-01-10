@@ -1,4 +1,4 @@
-package esipe.fr.scope3.controllers;
+package esipe.fr.course.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

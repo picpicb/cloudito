@@ -1,7 +1,6 @@
-package esipe.fr.scope3.entities;
+package esipe.fr.course.entities;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Graph {
     private ArrayList<Noeuds> noeuds;
