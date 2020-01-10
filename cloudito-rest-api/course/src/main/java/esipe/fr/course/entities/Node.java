@@ -2,13 +2,13 @@ package esipe.fr.course.entities;
 
 import java.util.UUID;
 
-public class Noeuds {
+public class Node {
     private UUID id;
     private Integer order;
     private String type;
     private PoI poi;
 
-    public Noeuds(UUID id,Integer order, String type, PoI poi) {
+    public Node(UUID id, Integer order, String type, PoI poi) {
         this.id = id;
         this.order = order;
         this.type = type;

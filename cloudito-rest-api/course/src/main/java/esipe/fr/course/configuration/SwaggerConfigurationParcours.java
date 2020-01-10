@@ -15,11 +15,11 @@ public class SwaggerConfigurationParcours {
     @Bean
     public Docket api3() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Parcours")
+                .groupName("Course")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("esipe.fr.course.controllers"))
                 .paths(PathSelectors.any())
                 .build()
-                .tags(new Tag("Parcours","All for sending notifications to customers"));
+                .tags(new Tag("Course","All for sending notifications to customers"));
     }
 }

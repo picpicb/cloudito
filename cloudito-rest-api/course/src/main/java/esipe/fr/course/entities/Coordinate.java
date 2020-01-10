@@ -1,10 +1,10 @@
 package esipe.fr.course.entities;
 
-public class Coordonee {
+public class Coordinate {
     private int x;
     private int y;
 
-    public Coordonee(int x, int y) {
+    public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }
