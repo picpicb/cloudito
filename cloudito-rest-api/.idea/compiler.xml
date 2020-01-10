@@ -7,18 +7,20 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="authentication" />
-        <module name="geomarketing" />
-        <module name="notification" />
         <module name="scope3" />
+        <module name="notification" />
+        <module name="geolocation" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="customer" target="1.8" />
+      <module name="geomarketing" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="authentication" options="-parameters" />
+      <module name="geolocation" options="-parameters" />
       <module name="geomarketing" options="-parameters" />
       <module name="notification" options="-parameters" />
       <module name="scope3" options="-parameters" />
