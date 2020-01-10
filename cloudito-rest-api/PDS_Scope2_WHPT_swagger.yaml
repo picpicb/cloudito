@@ -3,7 +3,7 @@ info:
   description: "API pour serveur de notifications"
   version: "1.0.0"
   title: "API notifs"
-host: "commerce.io"
+host: "http://172.31.254.54:8020/cloudito"
 basePath: "/v1"
 schemes:
 - "https"
