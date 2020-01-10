@@ -15,7 +15,7 @@ public class Scope3ViewModel extends ViewModel {
 
     public Scope3ViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is scope 3 fragment");
+        mText.setValue("Visite de la journée");
         //debut recuperation
 
     }
