@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb88179b-6649-4700-bccc-6c92049fca9e" name="Default Changelist" comment="start test scope3 with port 8081">
-      <change afterPath="$PROJECT_DIR$/geolocation/src/test/java/GeolocationServiceTest.java" afterDir="false" />
+    <list default="true" id="7caa453c-6637-4b6d-88f9-d047eab452c7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,20 +12,8 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
-      </map>
-    </option>
   </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
@@ -36,24 +22,14 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectId" id="1WCSqJj7I4tpYRcyvHQpw1iCYz2" />
+  <component name="ProjectId" id="1T0WGwduCTC6lM3Se5AQfLO0JKb" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576856824997" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/geolocation" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Esipe\PDS-ING3\cloudito-rest-api" />
-      <recent name="D:\Esipe\PDS-ING3\cloudito-rest-api\authentication\src\main\resources" />
-    </key>
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="show.run.dashboard.notification" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -67,7 +43,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ClouditoGeomarketingService">
+  <component name="RunManager" selected="Spring Boot.CustomerApplication">
     <configuration name="ClouditoGeomarketingService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="geomarketing" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="esipe.fr.geomarketing.ClouditoGeomarketingService" />
@@ -75,16 +51,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ClouditoNotificationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="notification" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="esipe.fr.notification.ClouditoNotificationService" />
+    <configuration name="ClouditoMainService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="esipe.fr.main.ClouditoMainService" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ClouditoScope3Service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="scope3" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="esipe.fr.scope3.ClouditoScope3Service" />
+    <configuration name="ClouditoNotificationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="notification" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="esipe.fr.notification.ClouditoNotificationService" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -102,74 +78,14 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="cb88179b-6649-4700-bccc-6c92049fca9e" name="Default Changelist" comment="" />
-      <created>1572789830593</created>
+      <changelist id="7caa453c-6637-4b6d-88f9-d047eab452c7" name="Default Changelist" comment="" />
+      <created>1572597400734</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1572789830593</updated>
-      <workItem from="1572789857609" duration="64000" />
-      <workItem from="1572962583187" duration="13000" />
-      <workItem from="1572962668586" duration="113000" />
-      <workItem from="1572974230503" duration="825000" />
-      <workItem from="1573637489127" duration="13000" />
-      <workItem from="1573735224306" duration="1678000" />
-      <workItem from="1574247174455" duration="4000" />
-      <workItem from="1574605308855" duration="101000" />
-      <workItem from="1576841466708" duration="1963000" />
-      <workItem from="1576851816191" duration="1337000" />
-      <workItem from="1576853232743" duration="3056000" />
-      <workItem from="1578652295270" duration="3894000" />
+      <updated>1572597400734</updated>
+      <workItem from="1572597403559" duration="371000" />
+      <workItem from="1578823213010" duration="514000" />
     </task>
-    <task id="LOCAL-00001" summary="start test authentication">
-      <created>1572975061194</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1572975061194</updated>
-    </task>
-    <task id="LOCAL-00002" summary="start test repo SHOPS">
-      <created>1573735812813</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1573735812814</updated>
-    </task>
-    <task id="LOCAL-00003" summary="start test scope3">
-      <created>1576848139165</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1576848139165</updated>
-    </task>
-    <task id="LOCAL-00004" summary="start test scope3">
-      <created>1576852640266</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1576852640267</updated>
-    </task>
-    <task id="LOCAL-00005" summary="start test scope3">
-      <created>1576853423613</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1576853423613</updated>
-    </task>
-    <task id="LOCAL-00006" summary="start test scope3">
-      <created>1576853541602</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1576853541602</updated>
-    </task>
-    <task id="LOCAL-00007" summary="start test scope3 with port 8081">
-      <created>1576853855960</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1576853855960</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -180,33 +96,15 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list />
-          </value>
-        </entry>
-        <entry key="User">
-          <value>
-            <list />
+            <State />
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="start test authentication" />
-    <MESSAGE value="start test repo SHOPS" />
-    <MESSAGE value="start test scope3" />
-    <MESSAGE value="start test scope3 with port 8081" />
-    <option name="LAST_COMMIT_MESSAGE" value="start test scope3 with port 8081" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
   </component>
 </project>
