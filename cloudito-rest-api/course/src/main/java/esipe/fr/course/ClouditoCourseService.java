@@ -8,10 +8,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@SpringBootApplication(scanBasePackages = {"esipe.fr"})
 @SpringBootApplication
 @EnableSwagger2
-public class ClouditoCourceService extends SpringBootServletInitializer {
+public class ClouditoCourseService extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(ClouditoCourceService.class, args);
+        SpringApplication.run(ClouditoCourseService.class, args);
     }
 
 }

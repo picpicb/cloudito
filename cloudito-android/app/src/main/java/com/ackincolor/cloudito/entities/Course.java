@@ -6,10 +6,12 @@ import java.util.UUID;
 public class Course {
     private UUID id;
     private ArrayList<Node> liste;
+    private String status;
 
     public Course(UUID id, ArrayList<Node> liste) {
         this.id = id;
         this.liste = liste;
+        this.status = "running";
     }
 
     public UUID getId() {
@@ -26,6 +28,14 @@ public class Course {
 
     public void setListe(ArrayList<Node> liste) {
         this.liste = liste;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String toString(){

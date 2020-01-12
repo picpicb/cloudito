@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfigurationParcours {
+public class SwaggerConfigurationCourse {
     @Bean
     public Docket api3() {
         return new Docket(DocumentationType.SWAGGER_2)
