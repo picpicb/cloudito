@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ResourceUtils;
 import springfox.documentation.spring.web.json.Json;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Map {
@@ -28,8 +27,7 @@ public class Map {
 
     private Resource ressourceMap;
 
-    @Autowired
-    ResourceLoader loader;
+
     public Map(ArrayList<ArrayList> liste) {
         this.liste = liste;
         this.debug = "";
@@ -49,8 +47,14 @@ public class Map {
         try{
 
             final Logger log = LoggerFactory.getLogger(this.getClass());
-            File file = new File(ressourceMap.getFilename());
-            JsonNode node = new ObjectMapper().readTree(file);
+            File somethingFile = File.createTempFile("test", ".txt");
+            InputStream inputStream = ressourceMap.getInputStream();
+            try {
+                FileUtils.copyInputStreamToFile(inputStream, somethingFile);
+            } finally {
+                IOUtils.closeQuietly(inputStream);
+            }
+            JsonNode node = new ObjectMapper().readTree(somethingFile);
             ArrayNode polygons = (ArrayNode) node.path("pois").path("polygons");
             for(JsonNode j : polygons){
                 //recuperation des polygons
