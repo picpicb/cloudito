@@ -7,6 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(tags = "Courses")
 public class CourseController {
+
+    @Autowired
+    ResourceLoader loader;
 
     @RequestMapping(value = "/courses/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "renvois le parcours ayant pour identifiant l'ID de l'utilisateur")
@@ -45,6 +50,7 @@ public class CourseController {
     @ApiOperation(value = "recuperation de la carte du magasin")
     @ResponseBody
     public ResponseEntity<Map> getMap(){
+
         Map map = new Map(null);
 
         return new ResponseEntity<Map>(map.build(),HttpStatus.OK);
