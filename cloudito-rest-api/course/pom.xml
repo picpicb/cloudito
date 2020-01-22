@@ -27,10 +27,10 @@
         </plugins>
         <resources>
             <resource>
-                <directory>/src/main/resources</directory>
+                <directory>src/main/resources</directory>
                 <includes>
+                    <include>map.json</include>
                     <include>application.properties</include>
-                    <include>**/map.json</include>
                 </includes>
             </resource>
         </resources>
