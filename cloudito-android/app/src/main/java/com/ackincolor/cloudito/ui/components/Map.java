@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class Map extends View {
     private ArrayList<Node> parcours;
+    private com.ackincolor.cloudito.entities.Map map;
     private Paint p;
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -23,5 +24,8 @@ public class Map extends View {
     protected void onDraw(Canvas canvas){
 
         canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p);
+    }
+    public void setMap(com.ackincolor.cloudito.entities.Map map){
+        this.map = map;
     }
 }
