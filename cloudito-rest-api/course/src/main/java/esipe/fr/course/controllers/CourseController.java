@@ -2,8 +2,11 @@ package esipe.fr.course.controllers;
 
 
 import esipe.fr.course.entities.Course;
+import esipe.fr.course.entities.Map;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,16 @@ public class CourseController {
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         }
+    }
+
+    @RequestMapping(value = "/map",method = RequestMethod.GET)
+    @ApiOperation(value = "recuperation de la carte du magasin")
+    @ResponseBody
+    public ResponseEntity<Map> getMap(){
+        Map map = new Map(null);
+
+        return new ResponseEntity<Map>(map.build(),HttpStatus.OK);
+
     }
 
 
