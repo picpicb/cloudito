@@ -20,8 +20,19 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>esipe.fr.course.ClouditoCourseService</mainClass>
+                    <addResources>false</addResources>
                 </configuration>
+
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>/src/main/resources</directory>
+                <includes>
+                    <include>application.properties</include>
+                    <include>**/map.json</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
