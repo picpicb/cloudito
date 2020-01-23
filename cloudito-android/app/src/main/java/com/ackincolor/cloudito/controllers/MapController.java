@@ -1,6 +1,7 @@
 package com.ackincolor.cloudito.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ackincolor.cloudito.entities.Map;
 import com.ackincolor.cloudito.services.MapService;
@@ -41,12 +42,13 @@ public class MapController {
         call.enqueue(new Callback<Map>() {
             @Override
             public void onResponse(Call<Map> call, Response<Map> response) {
+                Log.d("MAP",response.toString());
                 mapComponent.setMap(response.body());
             }
 
             @Override
             public void onFailure(Call<Map> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
