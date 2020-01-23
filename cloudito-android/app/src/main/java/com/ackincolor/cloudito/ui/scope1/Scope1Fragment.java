@@ -43,6 +43,12 @@ public class Scope1Fragment extends Fragment {
     // ACCESS POINTS RESULTS
     private List<ScanResult> mScanResults;
 
+    // PERMISSION CODE
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 0;
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 0;
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_WIFI_STATE = 0;
+    private static final int PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE = 0;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         scope1ViewModel =
                 ViewModelProviders.of(this).get(Scope1ViewModel.class);
@@ -55,22 +61,80 @@ public class Scope1Fragment extends Fragment {
             }
         });
 
-        // WIFI MANAGE SCAN
-        this.wifiManager = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
-        //wifiManager.startScan();
-        mScanResults = this.wifiManager.getScanResults();
+        if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+        }else{
+            if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION);
+            }else{
+                if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_WIFI_STATE},PERMISSIONS_REQUEST_CODE_ACCESS_WIFI_STATE);
+                }else{
+                    if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED){
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_WIFI_STATE},PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE);
+                    }else{
+                        start();
+                    }
+                }
 
-        // LOG
-        Log.d("DEBUG GEOLOCATION","SCANS IS EMPTY : " + mScanResults.isEmpty());
-
-        //start Scanning with RTT
-        scanAccessPointsRTT();
+            }
+        }
 
         return root;
     }
 
+    private void start(){
+
+        Log.d("DEBUG GEOLOCATION","STARTING.");
+        Log.d("DEBUG GEOLOCATION","STARTING..");
+        Log.d("DEBUG GEOLOCATION","STARTING...");
+
+        // WIFI MANAGE SCAN
+        this.wifiManager = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        Log.d("DEBUG GEOLOCATION","SCAN is available : "+wifiManager.isScanAlwaysAvailable());
+        BroadcastReceiver wifiScanReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context c, Intent intent) {
+                boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
+                if (success) {
+                    mScanResults = wifiManager.getScanResults();
+
+                    if(mScanResults.isEmpty()){
+                        // LOG
+                        Log.d("DEBUG GEOLOCATION","SCANS IS EMPTY : " + mScanResults.isEmpty());
+                    }else{
+                        // LOG
+                        Log.d("DEBUG GEOLOCATION","LEVEL :"+mScanResults.get(0).level);
+                        Log.d("DEBUG GEOLOCATION","BSSID :"+mScanResults.get(0).BSSID);
+                        Log.d("DEBUG GEOLOCATION","SSID :"+mScanResults.get(0).SSID);
+
+                        //start Scanning with RTT
+                        scanAccessPointsRTT();
+                    }
+
+
+
+                } else {
+                    Log.d("DEBUG GEOLOCATION","SCAN RECEIVED FAILURE");
+                }
+            }
+        };
+        getContext().registerReceiver(wifiScanReceiver, intentFilter);
+        boolean scanSuccess = wifiManager.startScan();
+        if(!scanSuccess){
+            Log.d("DEBUG GEOLOCATION","SCAN FAILURE");
+        }
+
+
+    }
+
     // CHECK IF RTT IS WORKING ON THIS DEVICE THEN -> rttManagerAvailable()
     private void scanAccessPointsRTT() {
+
+        Log.d("DEBUG GEOLOCATION","SCANS IS EMPTY RTT : " + mScanResults.isEmpty());
         boolean rttActive = getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI_RTT);
         if (rttActive) {
             Log.d("DEBUG GEOLOCATION", "RTT IS WORKING");
@@ -105,20 +169,19 @@ public class Scope1Fragment extends Fragment {
         // BUILD REQUEST TO GET RANGING OF ACCESS POINTS
 
         RangingRequest.Builder builder = new RangingRequest.Builder();
-        //builder.addAccessPoint(ap1ScanResult);
+        //builder.addWifiAwarePeer(macAddress);
         //builder.addAccessPoint(ap2ScanResult);
         //builder.addAccessPoint(ap3ScanResult);
 
         RangingRequest request = builder.build();
 
         if (ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
+            Log.d("DEBUG GEOLOCATION","REQUEST DENIED : ACCESS_FINE_LOCATION NOT GRANTED");
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("DEBUG GEOLOCATION","REQUEST DENIED : ACCESS_COARSE_LOCATION NOT GRANTED");
             return;
         }
 
@@ -148,5 +211,25 @@ public class Scope1Fragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION);
+            }
+        }else if(requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.ACCESS_WIFI_STATE},PERMISSIONS_REQUEST_CODE_ACCESS_WIFI_STATE);
+            }
+        }else if(requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_WIFI_STATE && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.CHANGE_WIFI_STATE},PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE);
+            }
+        }else if (requestCode == PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            start();
+        }
     }
 }
