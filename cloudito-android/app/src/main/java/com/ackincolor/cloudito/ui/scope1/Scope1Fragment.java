@@ -134,13 +134,14 @@ public class Scope1Fragment extends Fragment {
     // CHECK IF RTT IS WORKING ON THIS DEVICE THEN -> rttManagerAvailable()
     private void scanAccessPointsRTT() {
 
-        Log.d("DEBUG GEOLOCATION","SCANS IS EMPTY RTT : " + mScanResults.isEmpty());
+       // Log.d("DEBUG GEOLOCATION","SCANS IS EMPTY RTT : " + mScanResults.isEmpty());
         boolean rttActive = getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI_RTT);
         if (rttActive) {
             Log.d("DEBUG GEOLOCATION", "RTT IS WORKING");
             rttManagerAvailable();
         } else {
             Log.d("DEBUG GEOLOCATION", "RTT IS NOT WORKING");
+
         }
     }
 
