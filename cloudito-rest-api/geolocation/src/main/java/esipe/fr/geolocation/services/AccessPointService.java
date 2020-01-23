@@ -1,7 +1,6 @@
 package esipe.fr.geolocation.services;
 
 import esipe.fr.geolocation.entities.AccessPoint;
-import esipe.fr.geolocation.entities.UserLocation;
 import esipe.fr.geolocation.exceptions.ApiException;
 import esipe.fr.geolocation.repositories.AccessPointRepository;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +15,7 @@ import java.util.Optional;
 public class AccessPointService {
     @Autowired
     AccessPointRepository accessPointRepository;
-    Logger logger = LogManager.getLogger("AccessPointService");
+    private Logger logger = LogManager.getLogger("AccessPointService");
 
     public AccessPoint addAccessPoints(AccessPoint accessPoint) throws ApiException {
         if(accessPoint.getId() != null && accessPoint.getLocation() != null

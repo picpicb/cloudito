@@ -7,7 +7,7 @@ import java.util.Date;
 
 @ApiModel(description = "UserLocation")
 @Entity
-public class UserLocation {
+public class CustomerLocation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -15,6 +15,8 @@ public class UserLocation {
     @JoinColumn(name="LOCATION_ID")
     private Location location;
     private Date lastUpdate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Customer customer;
 
     public Long getId() {
         return id;
