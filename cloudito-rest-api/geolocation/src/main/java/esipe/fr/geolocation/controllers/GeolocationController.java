@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class GeolocationController {
     @RequestMapping(value = "/users/{userID}/location", method = RequestMethod.GET)
     @ApiOperation(value = "Get location by userID", nickname = "getUserLocation", notes = "", response = UserLocation.class, tags={ "Geo", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "user location", response = UserLocation.class) })
+            @ApiResponse(code = 200, message = "Ok - User Location", response = UserLocation.class) })
     @ResponseBody
     public ResponseEntity<UserLocation> getCityById(@PathVariable("userID") Long id) throws ApiException {
         UserLocation userLocation = this.geolocationServiceService.getUserLocation(id);
@@ -43,8 +44,11 @@ public class GeolocationController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "user location created", response = UserLocation.class)})
     @ResponseBody
-    public void addCity(@RequestBody UserLocation userLocation){
-        this.geolocationServiceService.addUserLocation(userLocation);
+    public ResponseEntity<UserLocation> addCity(@RequestBody UserLocation userLocation) throws ApiException {
+        UserLocation ul = this.geolocationServiceService.addUserLocation(userLocation);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ul);
     }
 
 

@@ -22,11 +22,11 @@ public class AccessPointController {
     @Autowired
     AccessPointService accessPointService;
 
-    @ApiOperation(value = "retourne tous les AP", nickname = "accessPointGet", notes = "", response = AccessPoint.class, tags={ "Geo", })
+    @ApiOperation(value = "retourne tous les AP", nickname = "accessPointGet", notes = "", response = AccessPoint.class, tags={ "AccessPoint", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "la liste des points d'accès", response = AccessPoint.class) })
+            @ApiResponse(code = 200, message = "Access Point list", response = AccessPoint.class) })
     @GetMapping(value = "/accesspoints",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AccessPoint> accessPointGet() {
-        return accessPointService.findAll();
+        return accessPointService.getAllAccessPoints();
     }
 }

@@ -32,7 +32,15 @@ public class GeolocationService {
     }
 
 
-    public void addUserLocation(UserLocation userLocation){
-        userLocationRepository.save(userLocation);
+    public UserLocation addUserLocation(UserLocation userLocation) throws ApiException {
+
+        if(userLocation.getId() != null && userLocation.getLastUpdate() != null && userLocation.getLocation() != null){
+            userLocationRepository.save(userLocation);
+            logger.info("User location saved : "+userLocation.getId());
+            return getUserLocation(userLocation.getId());
+        }else{
+            logger.warn("User location not saved : "+userLocation.getId());
+            throw new ApiException(400,"content error");
+        }
     }
 }
