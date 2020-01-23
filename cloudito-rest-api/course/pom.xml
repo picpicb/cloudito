@@ -11,7 +11,7 @@
 
     <groupId>esipe.fr</groupId>
     <artifactId>course</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -19,9 +19,20 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.course.ClouditoCourceService</mainClass>
+                    <mainClass>esipe.fr.course.ClouditoCourseService</mainClass>
+                    <addResources>false</addResources>
                 </configuration>
+
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>map.json</include>
+                    <include>application.properties</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
