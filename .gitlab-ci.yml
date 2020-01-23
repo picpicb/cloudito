@@ -12,7 +12,13 @@ variables:
   DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
   ANDROID_COMPILE_SDK: "28"
   APP_NAME: "Cloudito"
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
+cache:
+  paths:
+    - .m2/repository
+  
 maven-build:
   image: maven:3-jdk-8
   stage: build-back
@@ -21,8 +27,8 @@ maven-build:
       - cloudito-rest-api/**/*
   except:
     - Scope3
-    - Scope1
-  script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
+    - geolocation
+  script: "mvn package $MAVEN_CLI_OPTS ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
       - cloudito-rest-api/geolocation/target/*.jar
@@ -37,7 +43,7 @@ deploy_customer:
       - cloudito-rest-api/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
 
   services:
     - name: docker:18-dind
@@ -78,7 +84,7 @@ deploy_customer:
       - cloudito-android/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
   artifacts:
     expire_in: 4 hours
     paths:
@@ -123,7 +129,7 @@ build:release:
       - cloudito-android/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
 
 test:unit:
   <<: *test
@@ -156,7 +162,7 @@ test:functional:
       - cloudito-android/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
