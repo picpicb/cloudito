@@ -2,9 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ackincolor.cloudito">
 
+    <!--PERMISSION TO USE RTT WIFI LOCATION -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <!--FEATURE TO USE RTT WIFI LOCATION -->
+    <uses-feature android:name="android.hardware.wifi.rtt" />
 
     <application
         android:allowBackup="true"
