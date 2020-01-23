@@ -1,11 +1,13 @@
 package esipe.fr.geolocation.entities;
 
 
+import io.swagger.annotations.ApiModel;
 import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 
+@ApiModel(description = "Store")
 @Entity
 public class Store {
     @Id

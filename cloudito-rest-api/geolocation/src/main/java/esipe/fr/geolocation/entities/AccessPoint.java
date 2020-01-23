@@ -1,7 +1,10 @@
 package esipe.fr.geolocation.entities;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.*;
 
+@ApiModel(description = "Access Point")
 @Entity
 public class AccessPoint {
     @Id
