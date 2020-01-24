@@ -3,7 +3,7 @@ info:
   description: "API pour serveur de notifications"
   version: "1.0.0"
   title: "API notifs"
-host: "http://172.31.254.54:8020/cloudito"
+host: "http://172.31.254.54:8082/cloudito"
 basePath: "/v1"
 schemes:
 - "https"
@@ -32,11 +32,11 @@ parameters:
     description: le nombre de résultat dans la page, le nombre max est 50
   
 paths:
-  /notifications:
+  /notification:
     get:
       summary: liste toutes les notifications
       tags:
-        - notifications
+        - notification
       parameters:
         - name: order
           in: query
@@ -71,7 +71,7 @@ paths:
           schema:
             $ref: '#/definitions/error'
     
-  "/notifications/{idNotif}":
+  "/notification/{idNotif}":
     parameters:
     - $ref: '#/parameters/idNotif'
     get:
@@ -112,7 +112,7 @@ paths:
           schema:
             $ref: '#/definitions/error'  
             
-  "/user/notifications/{userId}":
+  "/user/notification/{userId}":
     parameters:
     - $ref: '#/parameters/userId'
     get:
