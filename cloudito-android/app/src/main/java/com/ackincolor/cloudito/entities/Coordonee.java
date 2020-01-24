@@ -1,6 +1,6 @@
 package com.ackincolor.cloudito.entities;
 
-class Coordonee {
+public class Coordonee {
     private int x;
     private int y;
 
@@ -23,5 +23,9 @@ class Coordonee {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean equals(Object c){
+        return((this.getX()==((Coordonee)c).getX())&&(this.getY()==((Coordonee)c).getY()));
     }
 }
