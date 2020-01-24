@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Node {
-    private UUID id;
-    private int order;
+    private int id;
     private String type;
     private PoI poi;
 
