@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class Scope1ViewModel extends ViewModel {
+public class GeolocationViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public Scope1ViewModel() {
+    public GeolocationViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

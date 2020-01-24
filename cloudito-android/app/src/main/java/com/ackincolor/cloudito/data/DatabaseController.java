@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseController extends SQLiteOpenHelper {
     private static DatabaseController sInstance;
     private static final String DATABASE_NAME = "db.sqlite";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public static synchronized DatabaseController getInstance(Context context) {
         if (sInstance == null) { sInstance = new DatabaseController(context); }
@@ -19,12 +19,18 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // PARCOURS
         db.execSQL(ParcoursManager.CREATE_TABLE_NOEUDS);
+
+        // ACCESS POINTS
+        db.execSQL(GeolocationManager.CREATE_TABLE_ACCESS_POINTS);
+        GeolocationManager.insertAccessPoints();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+ParcoursManager.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+GeolocationManager.TABLE_NAME);
         onCreate(db);
     }
 }
