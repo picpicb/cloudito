@@ -2,20 +2,15 @@ package esipe.fr.geolocation.controllers;
 
 
 
-import esipe.fr.geolocation.entities.AccessPoint;
-import esipe.fr.geolocation.entities.UserLocation;
+import esipe.fr.geolocation.entities.CustomerLocation;
 import esipe.fr.geolocation.exceptions.ApiException;
 import esipe.fr.geolocation.services.GeolocationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Api(tags = "Geo")
@@ -25,26 +20,29 @@ public class GeolocationController {
 
 
 
-    @RequestMapping(value = "/users/{userID}/location", method = RequestMethod.GET)
-    @ApiOperation(value = "Get location by userID", nickname = "getUserLocation", notes = "", response = UserLocation.class, tags={ "Geo", })
+    @RequestMapping(value = "/customers/{customerID}/location", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Get location the last location of the customer", nickname = "getCustomerLocation", response = CustomerLocation.class, tags={ "Geo", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "user location", response = UserLocation.class) })
+            @ApiResponse(code = 200, message = "OK - Customer Location", response = CustomerLocation.class) })
     @ResponseBody
-    public ResponseEntity<UserLocation> getCityById(@PathVariable("userID") Long id) throws ApiException {
-        UserLocation userLocation = this.geolocationServiceService.getUserLocation(id);
+    public ResponseEntity<CustomerLocation> getCustomerLocation(@ApiParam(value = "Customer id",required = true, example = "123") @PathVariable("customerID") Long id) throws ApiException {
+        CustomerLocation customerLocation = this.geolocationServiceService.getCustomerLocation(id);
         return ResponseEntity
                 .ok()
-                .body(userLocation);
+                .body(customerLocation);
     }
 
 
-    @RequestMapping(value = "/users/{userID}/location", method = RequestMethod.POST)
-    @ApiOperation(value = "Add a user location", nickname = "addUserLocation", notes = "", response = UserLocation.class, tags={ "Geo", })
+    @RequestMapping(value = "/customers/{customerID}/location", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Add a customer location", nickname = "addCustomerLocation", response = CustomerLocation.class, tags={ "Geo", })
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "user location created", response = UserLocation.class)})
+            @ApiResponse(code = 201, message = "CREATED - Customer location", response = CustomerLocation.class)})
     @ResponseBody
-    public void addCity(@RequestBody UserLocation userLocation){
-        this.geolocationServiceService.addUserLocation(userLocation);
+    public ResponseEntity<CustomerLocation> addCustomerLocation(@ApiParam(value = "Customer id",required = true, example = "123") @PathVariable("customerID") Long id, @ApiParam(value = "Customer location",required=true) @RequestBody CustomerLocation customerLocation) throws ApiException {
+        CustomerLocation loc = this.geolocationServiceService.addCustomerLocation(id, customerLocation);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(loc);
     }
 
 
