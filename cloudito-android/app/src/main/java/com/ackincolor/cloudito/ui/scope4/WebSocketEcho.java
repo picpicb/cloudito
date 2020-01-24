@@ -9,6 +9,9 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
+// We send messages to the server in the onOpen method. The messages received from the Echo WebSocket server are displayed inside the onMessage method.
+// Note that you can send text or hexadecimal messages. Lastly, we close the connection by using the close method of the WebSocket object.
+
 public class WebSocketEcho extends WebSocketListener {
     private void run() {
         OkHttpClient client = new OkHttpClient.Builder()
@@ -16,7 +19,7 @@ public class WebSocketEcho extends WebSocketListener {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://172.31.254.54:8082/cloudito/notification")
+                .url("172.31.254.54:8082/cloudito/notification")
                 .build();
         client.newWebSocket(request, this);
 
