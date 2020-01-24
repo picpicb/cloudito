@@ -5,7 +5,7 @@ var fs = require('fs');
 const { createCanvas, loadImage } = require('canvas')
 const canvas = createCanvas(2000, 2000)
 const ctx = canvas.getContext('2d')
-const decalageX = 00;
+const decalageX = 0;
 const decalageY = 0;
 const Graph =  require("@vila91/graph")
 
