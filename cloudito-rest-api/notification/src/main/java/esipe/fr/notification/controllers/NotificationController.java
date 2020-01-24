@@ -22,15 +22,17 @@ public class NotificationController {
 
     private NotificationService notificationService;
     private static List<Notification> notificationList = new ArrayList<>();
-    public List<Session> clients = Collections.synchronizedList(new ArrayList<Session>());
+    private List<Session> clients = Collections.synchronizedList(new ArrayList<Session>());
 
     @Autowired
     public NotificationController(final NotificationService notificationService){
         this.notificationService = notificationService;
     }
 
-    public NotificationController(){}
+    public NotificationController(){
+    }
 
+    @OnOpen
     @RequestMapping(value = "/notification", method = RequestMethod.GET)
     @ApiOperation(value = "Register user")
     @ApiResponse(code = 200, message="Request received")
@@ -101,4 +103,6 @@ public class NotificationController {
     public void onError(Throwable t) {
         System.out.println("Error::" + t.getMessage());
     }
+
+    public List<Session> getClients(){ return this.clients;}
 }

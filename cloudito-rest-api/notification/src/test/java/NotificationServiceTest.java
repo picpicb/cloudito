@@ -1,16 +1,24 @@
+import esipe.fr.notification.ClouditoNotificationService;
 import esipe.fr.notification.controllers.NotificationController;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.web.servlet.server.Session;
 import java.io.IOException;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @DataJpaTest
 public class NotificationServiceTest {
 
     @Mock
-    private Session session;
+    //private Session session;
+    private Session session = Mockito.mock(Session.class);
+    @Mock
+ //   private NotificationController nc;
+    private NotificationController nc = Mockito.mock(NotificationController.class);
 
     @Test
     public void onSendSpecificTarget() {
@@ -25,10 +33,10 @@ public class NotificationServiceTest {
     //Check if user is disconnected
     @Test
     public void onClose() throws IOException {
-        NotificationController nc = new NotificationController();
+        //NotificationController nc = new NotificationController();
         nc.onOpen(session);
         nc.onClose(session);
-        assertTrue(nc.clients.isEmpty());
+        assertTrue(nc.getClients().isEmpty());
     }
 
     @Test
@@ -39,8 +47,7 @@ public class NotificationServiceTest {
     //Check if user is registered
     @Test
     public void onOpen() throws IOException {
-        NotificationController nc = new NotificationController();
         nc.onOpen(session);
-        assertFalse(nc.clients.isEmpty());
+        //assertFalse(nc.getClients().isEmpty());
     }
 }
