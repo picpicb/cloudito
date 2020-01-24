@@ -28,6 +28,8 @@ maven-build:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
   script: "mvn package $MAVEN_CLI_OPTS ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
@@ -44,6 +46,8 @@ deploy_customer:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
 
   services:
     - name: docker:18-dind
@@ -85,6 +89,8 @@ deploy_customer:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
   artifacts:
     expire_in: 4 hours
     paths:
@@ -130,6 +136,8 @@ build:release:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
 
 test:unit:
   <<: *test
@@ -163,6 +171,8 @@ test:functional:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
