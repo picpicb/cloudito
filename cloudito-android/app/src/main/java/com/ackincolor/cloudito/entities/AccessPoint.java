@@ -3,11 +3,11 @@ package com.ackincolor.cloudito.entities;
 public class AccessPoint {
 
     private String macAdress;
-    private PoI node;
+    private Location location;
 
-    public AccessPoint(String macAdress, PoI node) {
+    public AccessPoint(String macAdress, Location location) {
         this.macAdress = macAdress;
-        this.node = node;
+        this.location = location;
     }
 
     public String getMacAdress() {
@@ -18,12 +18,12 @@ public class AccessPoint {
         this.macAdress = macAdress;
     }
 
-    public PoI getNode() {
-        return node;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setNode(PoI node) {
-        this.node = node;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
 }

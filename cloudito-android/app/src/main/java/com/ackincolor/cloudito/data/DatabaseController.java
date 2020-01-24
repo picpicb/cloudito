@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationManager;
+
 public class DatabaseController extends SQLiteOpenHelper {
     private static DatabaseController sInstance;
     private static final String DATABASE_NAME = "db.sqlite";
@@ -24,7 +26,7 @@ public class DatabaseController extends SQLiteOpenHelper {
 
         // ACCESS POINTS
         db.execSQL(GeolocationManager.CREATE_TABLE_ACCESS_POINTS);
-        GeolocationManager.insertAccessPoints();
+        //GeolocationManager.insertAccessPoints();
     }
 
     @Override

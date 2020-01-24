@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.ackincolor.cloudito.entities.Coordinate;
+import com.ackincolor.cloudito.entities.Location;
 import com.ackincolor.cloudito.entities.Node;
 
 import java.util.ArrayList;
@@ -31,8 +31,8 @@ public class Map extends View {
         Log.d("DEBUG","setting map into view");
         //recuperation du min Y /X et max Y/X
         double minX=1000,minY=1000,maxX=0,maxY=0,tx=0,ty=0;
-        for(ArrayList<Coordinate> l : map.liste){
-            for(Coordinate c : l){
+        for(ArrayList<Location> l : map.liste){
+            for(Location c : l){
                 tx = c.getX();
                 ty = c.getY();
                 if(tx>maxX)

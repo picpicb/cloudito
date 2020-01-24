@@ -28,6 +28,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.ackincolor.cloudito.R;
+import com.ackincolor.cloudito.GeolocationService.GeolocationInterface.GeolocationRetrofitController;
 import com.ackincolor.cloudito.entities.AccessPoint;
 
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class GeolocationFragment extends Fragment {
     // Managers
     private WifiRttManager wifiRttManager;
     private WifiManager wifiManager;
+
+    // Controller
+    private GeolocationRetrofitController geolocationRetrofitController;
 
     // ACCESS POINTS RESULTS
     private List<ScanResult> mScanResults;
@@ -62,6 +66,8 @@ public class GeolocationFragment extends Fragment {
             }
         });
 
+        //geolocationRetrofitController = new GeolocationRetrofitController(this.getActivity());
+
         // CHECKING FOR PERMISSIONS TO USE LOCATION AND WI FI SCANNING
         if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
@@ -75,91 +81,13 @@ public class GeolocationFragment extends Fragment {
                     if(ContextCompat.checkSelfPermission(this.getActivity(),Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED){
                         requestPermissions(new String[]{Manifest.permission.ACCESS_WIFI_STATE},PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE);
                     }else{
-                        start();
+                        //start();
                     }
                 }
             }
         }
 
         return root;
-    }
-
-    // START SCANNING AND GETTING CLOSEST ACCESSPOINTS
-    private void start(){
-
-        Log.d("DEBUG GEOLOCATION","STARTING.");
-        Log.d("DEBUG GEOLOCATION","STARTING..");
-        Log.d("DEBUG GEOLOCATION","STARTING...");
-
-        // WIFI MANAGE SCAN
-        this.wifiManager = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-
-        Log.d("DEBUG GEOLOCATION","SCAN is available : "+wifiManager.isScanAlwaysAvailable());
-
-        // SETTING A RECEIVER WORKING AFTER SCANNING
-        BroadcastReceiver wifiScanReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context c, Intent intent) {
-                boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
-                if (success) {
-                    mScanResults = wifiManager.getScanResults();
-
-                    if(mScanResults.isEmpty()){
-                        // LOG
-                        Log.d("DEBUG GEOLOCATION","SCANS IS EMPTY : " + mScanResults.isEmpty());
-                    }else{
-                        // LOG
-                        Log.d("DEBUG GEOLOCATION","LEVEL :"+mScanResults.get(0).level);
-                        Log.d("DEBUG GEOLOCATION","BSSID :"+mScanResults.get(0).BSSID);
-                        Log.d("DEBUG GEOLOCATION","SSID :"+mScanResults.get(0).SSID);
-                        Log.d("DEBUG GEOLOCATION","FREQUENCY : "+mScanResults.get(0).frequency);
-                        //start Scanning with RTT
-                        //scanAccessPointsRTT();
-
-                        // get distance of each
-                        for(ScanResult scan : mScanResults){
-                            //
-                            Log.d("DEBUG GEOLOCATION","SSID :"+mScanResults.get(0).SSID);
-                            Log.d("DEBUG GEOLOCATION","BSSID :"+mScanResults.get(0).BSSID);
-                            Log.d("DEBUG GEOLOCATION","DISTANCE : "+calculateDistance(scan.level,scan.frequency));
-                        }
-                    }
-                } else {
-                    Log.d("DEBUG GEOLOCATION","SCAN RECEIVED FAILURE");
-                }
-            }
-        };
-        getContext().registerReceiver(wifiScanReceiver, intentFilter);
-        // LAUNCH THE SCAN
-        boolean scanSuccess = wifiManager.startScan();
-        if(!scanSuccess){
-            Log.d("DEBUG GEOLOCATION","SCAN FAILURE");
-        }
-
-
-    }
-
-    // GET 3 POWERFUL SIGNAL KNOWN IN OUR DB
-    private List<ScanResult> getThreeMaxPowerSignal(List<ScanResult> mScanResults){
-        ArrayList<ScanResult> results = new ArrayList<ScanResult>();
-        ArrayList<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
-        // GET THE KNOWN ACCESS POINT FOM BD
-
-        for(ScanResult scan : mScanResults){
-
-        }
-        return results;
-
-    }
-
-    // CALCULATE DISTANCE WITH FREQUENCY AND SIGNAL IN DB
-    // USE FREE SPACE PATH LOSS (FSPL)
-    private double calculateDistance(double signalLevelInDb, double freqInMHz) {
-        double exp = (27.55 - (20 * Math.log10(freqInMHz)) + Math.abs(signalLevelInDb)) / 20.0;
-        return Math.pow(10.0, exp);
     }
 
     @Override
@@ -178,7 +106,7 @@ public class GeolocationFragment extends Fragment {
                 requestPermissions(new String[]{Manifest.permission.CHANGE_WIFI_STATE},PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE);
             }
         }else if (requestCode == PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            start();
+           // start();
         }
     }
 
