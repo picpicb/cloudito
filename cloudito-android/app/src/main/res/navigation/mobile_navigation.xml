@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_scope_1">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.ackincolor.cloudito.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        android:title="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_scope_1"
+        android:name="com.ackincolor.cloudito.ui.scope1.Scope1Fragment"
+        android:label="@string/title_scope_1"
+        android:title="@string/title_scope_1"
+        tools:layout="@layout/fragment_scope_1" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.ackincolor.cloudito.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        android:title="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_scope_2"
+        android:name="com.ackincolor.cloudito.ui.scope2.Scope2Fragment"
+        android:label="@string/title_scope_2"
+        android:title="@string/title_scope_2"
+        tools:layout="@layout/fragment_scope_2" />
 
     <fragment
         android:id="@+id/navigation_scope_3"
@@ -29,6 +29,7 @@
     <fragment
         android:id="@+id/navigation_scope_4"
         android:name="com.ackincolor.cloudito.ui.scope4.Scope4Fragment"
+<<<<<<< HEAD
         android:label="Scope 4"
         android:title="Scope 4"
         tools:layout="@layout/fragment_scope_4" />
@@ -39,4 +40,9 @@
         android:title="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 
+=======
+        android:label="@string/title_scope_4"
+        android:title="@string/title_scope_4"
+        tools:layout="@layout/fragment_scope_4" />
+>>>>>>> c536510e4867b3e31f5a909eef57e9dfa2ef1e97
 </navigation>

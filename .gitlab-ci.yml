@@ -7,13 +7,18 @@ stages:
 
 variables:
   USER_GITLAB: jm.frau
-  APP_NAME: cloudito-rest-api
   REPO: cloudito-rest-api
   DOCKER_TLS_CERTDIR: ""
   DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
   ANDROID_COMPILE_SDK: "28"
   APP_NAME: "Cloudito"
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
+cache:
+  paths:
+    - .m2/repository
+  
 maven-build:
   image: maven:3-jdk-8
   stage: build-back
@@ -22,12 +27,14 @@ maven-build:
       - cloudito-rest-api/**/*
   except:
     - Scope3
-    - Scope1
-  script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
+    - geolocation
+    - Scope2
+    - Scope4
+  script: "mvn package $MAVEN_CLI_OPTS ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
-      - cloudito-rest-api/geomarketing/target/*.jar
-      - cloudito-rest-api/scope3/target/*.jar
+      - cloudito-rest-api/geolocation/target/*.jar
+      - cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
 
 deploy_customer:
@@ -38,31 +45,33 @@ deploy_customer:
       - cloudito-rest-api/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
+    - Scope2
+    - Scope4
 
   services:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   script:
     #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
-    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geomarketing
+    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geolocation
     #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main ./main
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing ./cloudito-rest-api/geomarketing
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-scope3 ./cloudito-rest-api/scope3
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation ./cloudito-rest-api/geolocation
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course ./cloudito-rest-api/course
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification ./cloudito-rest-api/notification
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
     #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-scope3
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification
     #- docker tag cloudito-rest-api-custo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-custo
     #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-maincusto
     #- docker tag cloudito-rest-api locl:5000/cloudito-rest-api
     #- docker -H cloudito.pre-prod.com:2375 run -p 80:80 -d cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geomarketing NewStack_cloudito-geomarketing
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-scope3 NewStack_cloudito-scope3
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation NewStack_cloudito-geolocation
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course NewStack_cloudito-course
 
 
 
@@ -79,7 +88,9 @@ deploy_customer:
       - cloudito-android/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
+    - Scope2
+    - Scope4
   artifacts:
     expire_in: 4 hours
     paths:
@@ -124,7 +135,9 @@ build:release:
       - cloudito-android/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
+    - Scope2
+    - Scope4
 
 test:unit:
   <<: *test
@@ -157,7 +170,9 @@ test:functional:
       - cloudito-android/**/*
   except:
     - Scope3
-    - Scope1
+    - geolocation
+    - Scope2
+    - Scope4
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`

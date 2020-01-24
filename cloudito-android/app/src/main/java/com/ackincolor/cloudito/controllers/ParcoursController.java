@@ -3,9 +3,8 @@ package com.ackincolor.cloudito.controllers;
 import android.content.Context;
 import android.util.Log;
 
-import com.ackincolor.cloudito.data.DatabaseController;
 import com.ackincolor.cloudito.data.ParcoursManager;
-import com.ackincolor.cloudito.entities.Parcours;
+import com.ackincolor.cloudito.entities.Course;
 import com.ackincolor.cloudito.services.ParcoursService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,11 +41,11 @@ public class ParcoursController {
 
         ParcoursService service = retrofit.create(ParcoursService.class);
 
-        final Call<Parcours> call = service.getParcours(id.toString());
+        final Call<Course> call = service.getParcours(id.toString());
 
-        call.enqueue(new Callback<Parcours>() {
+        call.enqueue(new Callback<Course>() {
             @Override
-            public void onResponse(Call<Parcours> call, Response<Parcours> response) {
+            public void onResponse(Call<Course> call, Response<Course> response) {
                 if(response.isSuccessful()){
                     Log.d("DEBUG",response.body().toString());
                     //sauvegarde
@@ -64,7 +63,7 @@ public class ParcoursController {
             }
 
             @Override
-            public void onFailure(Call<Parcours> call, Throwable t) {
+            public void onFailure(Call<Course> call, Throwable t) {
                 t.printStackTrace();
                 ParcoursManager db = new ParcoursManager(context);
                 db.open();

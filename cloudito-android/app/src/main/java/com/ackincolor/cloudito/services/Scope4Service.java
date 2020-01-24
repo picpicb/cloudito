@@ -1,19 +1,19 @@
 package com.ackincolor.cloudito.services;
 
-import com.ackincolor.cloudito.entities.Coordonee;
+import com.ackincolor.cloudito.entities.Coordinate;
 
 public class Scope4Service {
-    Coordonee[][] map = new Coordonee[4][4];
-    Coordonee userPosition;
-    Coordonee destinationPosition;
+    Coordinate[][] map = new Coordinate[4][4];
+    Coordinate userPosition;
+    Coordinate destinationPosition;
 
 
-    public Scope4Service(Coordonee userPosition, Coordonee destinationPosition){
+    public Scope4Service(Coordinate userPosition, Coordinate destinationPosition){
         this.userPosition=userPosition;
         this.destinationPosition=destinationPosition;
         for(int i=0;i<map.length;i++){
             for(int j=0;j<map[i].length;j++){
-                map[i][j]= new Coordonee(i,j);
+                map[i][j]= new Coordinate(i,j);
             }
         }
 
