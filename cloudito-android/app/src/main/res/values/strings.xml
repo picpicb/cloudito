@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">testBottomNav</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_scope_4">Scope_4</string>
+    <string name="app_name">Cloudito</string>
+    <string name="title_scope_1">Scope 1</string>
+    <string name="title_scope_2">Scope 2</string>
+    <string name="title_scope_4">Scope 4</string>
     <string name="title_scope_3">Scope 3</string>
 </resources>
