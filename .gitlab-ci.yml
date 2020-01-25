@@ -82,8 +82,7 @@ deploy-node:
     - Scope2
     - Scope4
   before_script:
-    - apk --update add nodejs python python-dev py-pip
-    - pip install -U pip && pip install pipenv
+    - apk --update add nodejs
   script:
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping ./cloudito-rest-api/mappingService
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
