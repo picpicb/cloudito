@@ -3,20 +3,20 @@ package esipe.fr.geolocation.entities;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
+import java.util.Date;
 
-@ApiModel(description = "Access Point")
+@ApiModel(description = "UserLocation")
 @Entity
-public class AccessPoint {
+public class CustomerLocation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="LOCATION_ID")
     private Location location;
-
-    private String ssid;
-    private String mac;
+    private Date lastUpdate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Customer customer;
 
     public Long getId() {
         return id;
@@ -34,20 +34,11 @@ public class AccessPoint {
         this.location = location;
     }
 
-    public String getSsid() {
-        return ssid;
+    public Date getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
-
-    public String getMac() {
-        return mac;
-    }
-
-    public void setMac(String mac) {
-        this.mac = mac;
-    }
-
 }

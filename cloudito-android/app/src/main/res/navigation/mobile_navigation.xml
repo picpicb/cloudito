@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_scope_1"
-        android:name="com.ackincolor.cloudito.ui.scope1.Scope1Fragment"
+        android:name="com.ackincolor.cloudito.ui.scope1.GeolocationFragment"
         android:label="@string/title_scope_1"
         android:title="@string/title_scope_1"
         tools:layout="@layout/fragment_scope_1" />

@@ -3,9 +3,9 @@ package com.ackincolor.cloudito.entities;
 public class PoI {
     private String name;
     private String description;
-    private Coordinate emplacement;
+    private Location emplacement;
 
-    public PoI(String name, String description, Coordinate emplacement) {
+    public PoI(String name, String description, Location emplacement) {
         this.name = name;
         this.description = description;
         this.emplacement = emplacement;
@@ -27,11 +27,11 @@ public class PoI {
         this.description = description;
     }
 
-    public Coordinate getEmplacement() {
+    public Location getEmplacement() {
         return emplacement;
     }
 
-    public void setEmplacement(Coordinate emplacement) {
+    public void setEmplacement(Location emplacement) {
         this.emplacement = emplacement;
     }
 
