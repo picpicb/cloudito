@@ -26,7 +26,7 @@ public class CourseController {
     public ResponseEntity<Course> getCourse(@PathVariable String id) {
         try{
             //UUID uuid = UUID.fromString(id);
-            Course p = new Course();
+            Course p = Course.build();
             return new ResponseEntity<Course>(p,HttpStatus.OK);
         }catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -38,7 +38,7 @@ public class CourseController {
     @ResponseBody
     public ResponseEntity<Course> terminateCourse(@PathVariable String id){
         try{
-            Course p = new Course();
+            Course p = Course.build();
             p.setStatus("terminated");
             return new ResponseEntity<Course>(p,HttpStatus.OK);
         }catch (Exception e){
@@ -46,16 +46,7 @@ public class CourseController {
         }
     }
 
-    @RequestMapping(value = "/map",method = RequestMethod.GET)
-    @ApiOperation(value = "recuperation de la carte du magasin")
-    @ResponseBody
-    public ResponseEntity<Map> getMap(){
 
-        Map map = new Map(null);
-
-        return new ResponseEntity<Map>(map.build(),HttpStatus.OK);
-
-    }
 
 
 }

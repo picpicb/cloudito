@@ -1,6 +1,7 @@
 stages:
   - build-back
   - deploy-back
+  - deploy-node
   - build
   - test
   - package
@@ -12,12 +13,8 @@ variables:
   DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
   ANDROID_COMPILE_SDK: "28"
   APP_NAME: "Cloudito"
-  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
-
-cache:
-  paths:
-    - .m2/repository
+  #MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  #MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
   
 maven-build:
   image: maven:3-jdk-8
@@ -28,14 +25,16 @@ maven-build:
   except:
     - Scope3
     - geolocation
-  script: "mvn package $MAVEN_CLI_OPTS ./cloudito-rest-api/pom.xml"
+    - Scope2
+    - Scope4
+  script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
       - cloudito-rest-api/geolocation/target/*.jar
       - cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
 
-deploy_customer:
+deploy_back:
   image: docker:18-dind
   stage: deploy-back
   only:
@@ -44,6 +43,8 @@ deploy_customer:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
 
   services:
     - name: docker:18-dind
@@ -69,7 +70,24 @@ deploy_customer:
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation NewStack_cloudito-geolocation
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course NewStack_cloudito-course
 
-
+deploy-node:
+  image: docker:18-dind
+  stage: deploy-node
+  services:
+    - name: docker:18-dind
+      command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
+  except:
+    - Scope3
+    - geolocation
+    - Scope2
+    - Scope4
+  before_script:
+    - apk --update add nodejs
+  script:
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping ./cloudito-rest-api/mappingService
+    - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping NewStack_cloudito-mapping
 
 
 
@@ -85,6 +103,8 @@ deploy_customer:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
   artifacts:
     expire_in: 4 hours
     paths:
@@ -130,6 +150,8 @@ build:release:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
 
 test:unit:
   <<: *test
@@ -163,6 +185,8 @@ test:functional:
   except:
     - Scope3
     - geolocation
+    - Scope2
+    - Scope4
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`

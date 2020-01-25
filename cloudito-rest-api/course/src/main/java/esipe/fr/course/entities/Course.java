@@ -12,10 +12,14 @@ public class Course {
         this.id = UUID.randomUUID();
         this.liste = new ArrayList<>();
         this.status = "running";
-        this.liste.add(new Node(UUID.randomUUID(),1,"Magasin",new PoI("GoSport","madgasin de sport",null)));
-        this.liste.add(new Node(UUID.randomUUID(),2,"Magasin",new PoI("Fnac","madgasin de tech",null)));
-        this.liste.add(new Node(UUID.randomUUID(),3,"Magasin",new PoI("pylone","madgasin de tou&R",null)));
-        this.liste.add(new Node(UUID.randomUUID(),4,"Magasin",new PoI("GoSport","encore Gosport",null)));
+    }
+    public static Course build(){
+        Course c = new Course();
+        c.liste.add(new Node(UUID.randomUUID(),1,"Magasin",new PoI("GoSport","madgasin de sport",null)));
+        c.liste.add(new Node(UUID.randomUUID(),2,"Magasin",new PoI("Fnac","madgasin de tech",null)));
+        c.liste.add(new Node(UUID.randomUUID(),3,"Magasin",new PoI("pylone","madgasin de tou&R",null)));
+        c.liste.add(new Node(UUID.randomUUID(),4,"Magasin",new PoI("GoSport","encore Gosport",null)));
+        return c;
     }
 
     public UUID getId() {
