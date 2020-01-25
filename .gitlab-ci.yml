@@ -71,13 +71,18 @@ deploy_back:
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course NewStack_cloudito-course
 
 deploy-node:
-  image: hahoo/nodejs-dind
+  image: docker:18-dind
   stage: deploy-node
+  services:
+    - name: docker:18-dind
+      command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   except:
     - Scope3
     - geolocation
     - Scope2
     - Scope4
+    before_script:
+      - apk --update add nodejs
   script:
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping ./cloudito-rest-api/mappingService
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
