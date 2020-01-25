@@ -141,7 +141,7 @@ router.get('/map/stores',function(req,res,next) {
     var mapObj = Array();
     var A = req.param("A",0);
     var B = req.param("B",0);
-    var text = ctx.measureText('Awesome!')
+    //var text = ctx.measureText('Awesome!')
     //ctx.strokeStyle = 'rgba(0,0,0,5)';
     //ctx.beginPath();
     for(var j=0;j<map.pois.polygons.length;j++) {
