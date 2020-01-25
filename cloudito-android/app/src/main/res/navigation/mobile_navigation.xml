@@ -29,7 +29,20 @@
     <fragment
         android:id="@+id/navigation_scope_4"
         android:name="com.ackincolor.cloudito.ui.scope4.Scope4Fragment"
+<<<<<<< HEAD
+        android:label="Scope 4"
+        android:title="Scope 4"
+        tools:layout="@layout/fragment_scope_4" />
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.ackincolor.cloudito.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        android:title="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+=======
         android:label="@string/title_scope_4"
         android:title="@string/title_scope_4"
         tools:layout="@layout/fragment_scope_4" />
+>>>>>>> c536510e4867b3e31f5a909eef57e9dfa2ef1e97
 </navigation>
