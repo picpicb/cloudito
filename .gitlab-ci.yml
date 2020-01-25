@@ -1,6 +1,7 @@
 stages:
   - build-back
   - deploy-back
+  - deploy-node
   - build
   - test
   - package
@@ -33,7 +34,7 @@ maven-build:
       - cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
 
-deploy_customer:
+deploy_back:
   image: docker:18-dind
   stage: deploy-back
   only:
@@ -55,14 +56,12 @@ deploy_customer:
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation ./cloudito-rest-api/geolocation
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course ./cloudito-rest-api/course
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification ./cloudito-rest-api/notification
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping ./cloudito-rest-api/mappingService
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
     #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping
     #- docker tag cloudito-rest-api-custo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-custo
     #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-maincusto
     #- docker tag cloudito-rest-api locl:5000/cloudito-rest-api
@@ -70,9 +69,20 @@ deploy_customer:
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation NewStack_cloudito-geolocation
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course NewStack_cloudito-course
+
+deploy-node:
+  image: hahoo/nodejs-dind
+  stage: deploy-node
+  except:
+    - Scope3
+    - geolocation
+    - Scope2
+    - Scope4
+  script:
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping ./cloudito-rest-api/mappingService
+    - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping NewStack_cloudito-mapping
-
-
 
 
 
