@@ -1,18 +1,20 @@
 package esipe.fr.geolocation.services;
 
-import esipe.fr.geolocation.entities.CustomerLocation;
+
 import esipe.fr.geolocation.exceptions.ApiException;
-import esipe.fr.geolocation.repositories.CustomerLocationRepository;
+import esipe.fr.model.CustomerLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import esipe.fr.repositories.CustomerLocationRepository;
 
 import java.util.Optional;
 
 
 @Service
 public class GeolocationService {
+
    @Autowired
    CustomerLocationRepository customerLocationRepository;
 
