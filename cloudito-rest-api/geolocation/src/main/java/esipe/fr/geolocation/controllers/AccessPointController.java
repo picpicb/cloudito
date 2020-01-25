@@ -1,7 +1,8 @@
 package esipe.fr.geolocation.controllers;
 
-import esipe.fr.geolocation.entities.AccessPoint;
+
 import esipe.fr.geolocation.services.AccessPointService;
+import esipe.fr.model.AccessPoint;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

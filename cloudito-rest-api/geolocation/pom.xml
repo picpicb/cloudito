@@ -26,5 +26,21 @@
         </plugins>
     </build>
 
+    <dependencies>
+        <dependency>
+            <artifactId>model</artifactId>
+            <groupId>esipe.fr</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <artifactId>persistence</artifactId>
+            <groupId>esipe.fr</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <parentBasedir>../</parentBasedir>
+    </properties>
 
 </project>
