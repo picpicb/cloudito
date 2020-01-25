@@ -32,4 +32,5 @@ public class Scope4Fragment extends Fragment {
         });
         return root;
     }
+
 }
