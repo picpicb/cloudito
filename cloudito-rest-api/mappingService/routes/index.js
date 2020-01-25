@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 var map = require('../map.json');
 var fs = require('fs');
-const { createCanvas, loadImage } = require('canvas');
+//const { createCanvas, loadImage } = require('canvas');
 const canvas = createCanvas(2000, 2000);
-const ctx = canvas.getContext('2d');
+//const ctx = canvas.getContext('2d');
 const decalageX = 0;
 const decalageY = 0;
 const Graph =  require("@vila91/graph")
@@ -16,8 +16,8 @@ router.get('/', function(req, res, next) {
 })
 router.get('/map/nodes',function(req,res,next) {
   var mapObj = {};
-  var text = ctx.measureText('Awesome!')
-  ctx.strokeStyle = 'rgba(0,0,0,5)';
+  //var text = ctx.measureText('Awesome!')
+  //ctx.strokeStyle = 'rgba(0,0,0,5)';
   //ctx.beginPath();
   /*for(var j=0;j<map.pois.polygons.length;j++) {
     ctx.beginPath();
@@ -38,7 +38,7 @@ router.get('/map/nodes',function(req,res,next) {
   mapObj.nodes = Array();
   for(var j=0 ; j<map.routing.nodes.length;j++){
     if(map.routing.nodes[j].f!=0) {
-      ctx.fillRect(map.routing.nodes[j].x + decalageX, map.routing.nodes[j].y + decalageY, 2, 2);
+      //ctx.fillRect(map.routing.nodes[j].x + decalageX, map.routing.nodes[j].y + decalageY, 2, 2);
       mapObj.nodes.push({id: j, x: map.routing.nodes[j].x + decalageX, y: map.routing.nodes[j].y + decalageY})
     }
   }
@@ -90,7 +90,7 @@ router.get('/map/course/:A/:B',function(req,res,next) {
   var A = req.param("A",0);
   var B = req.param("B",0);
   var text = ctx.measureText('Awesome!')
-  ctx.strokeStyle = 'rgba(0,0,0,5)';
+  //ctx.strokeStyle = 'rgba(0,0,0,5)';
   //ctx.beginPath();
   /*for(var j=0;j<map.pois.polygons.length;j++) {
     ctx.beginPath();
@@ -116,16 +116,16 @@ for(var j=0 ; j<map.routing.nodes.length;j++){
 }
 //test de parcours entre le point 4 et le point 49
 var g = new Graph()
-ctx.strokeStyle = 'rgba(255,0,0,5)';
+//ctx.strokeStyle = 'rgba(255,0,0,5)';
 mapObj.chemins=Array();
 mapObj.map= Array();
 for(var j=0;j<map.routing.edges.length;j++){
-  ctx.beginPath();
+  //ctx.beginPath();
   if(map.routing.nodes[map.routing.edges[j].s].f !=0 && map.routing.nodes[map.routing.edges[j].e].f != 0) {
     //mapObj.chemins.push( {s: map.routing.edges[j].s, e: map.routing.edges[j].e, x1:map.routing.nodes[map.routing.edges[j].s].x+decalageX, y1:map.routing.nodes[map.routing.edges[j].s].y+decalageY, x2 : map.routing.nodes[map.routing.edges[j].e].x+decalageX, y2 : map.routing.nodes[map.routing.edges[j].e].y+decalageY} );
     g.connect(map.routing.edges[j].s,map.routing.edges[j].e);
   }
-  ctx.stroke();
+  //ctx.stroke();
 }
 //for each point
 
@@ -134,7 +134,7 @@ var cheminFinal = Array();
 //var liste  = g.route(3085,1710);
 var liste  = g.route(Number(A),Number(B));
 var cheminCalcul = liste.nodes;
-ctx.beginPath();
+//ctx.beginPath();
 res.send(cheminCalcul);
 })
 router.get('/map/stores',function(req,res,next) {
@@ -142,10 +142,10 @@ router.get('/map/stores',function(req,res,next) {
     var A = req.param("A",0);
     var B = req.param("B",0);
     var text = ctx.measureText('Awesome!')
-    ctx.strokeStyle = 'rgba(0,0,0,5)';
+    //ctx.strokeStyle = 'rgba(0,0,0,5)';
     //ctx.beginPath();
     for(var j=0;j<map.pois.polygons.length;j++) {
-      ctx.beginPath();
+      //ctx.beginPath();
       var array = map.pois.polygons[j].points.split(',');
       if(/^\d+$/.test(map.pois.polygons[j].poiID) ) {
           var array2 = Array();
@@ -153,12 +153,12 @@ router.get('/map/stores',function(req,res,next) {
               var first = array[i].split(' ')[0];
               var second = array[i].split(' ')[1];
               array2.push( [first,second]);
-              ctx.lineTo(first, second);
+              //ctx.lineTo(first, second);
               console.log("point :" + first + " ; " + second);
           }
           mapObj.push(array2);
       }
-      ctx.stroke();
+      //ctx.stroke();
   }
     res.send(mapObj);
 })
