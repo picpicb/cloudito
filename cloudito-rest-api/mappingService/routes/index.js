@@ -111,7 +111,7 @@ router.get('/map/course/:A/:B',function(req,res,next) {
 mapObj.nodes = Array();
 for(var j=0 ; j<map.routing.nodes.length;j++){
   if(map.routing.nodes[j].f!=0) {
-    mapObj.nodes.push({id: j, x: map.routing.nodes[j].x + decalageX, y: map.routing.nodes[j].y + decalageY})
+    mapObj.nodes.push({id: j,location:{ x: map.routing.nodes[j].x + decalageX, y: map.routing.nodes[j].y + decalageY}})
   }
 }
 //test de parcours entre le point 4 et le point 49
