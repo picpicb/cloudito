@@ -3,6 +3,7 @@ package com.ackincolor.cloudito.CourseService.CourseInterface;
 import android.util.Log;
 
 
+import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 import com.ackincolor.cloudito.entities.Map;
 import com.google.gson.Gson;
@@ -62,5 +63,34 @@ public class CourseRetrofitController {
                 t.printStackTrace();
             }
         });
+    }
+
+    public void getCoursesNodes() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(httpClient.build())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        CourseRetrofitService service = retrofit.create(CourseRetrofitService.class);
+
+        final Call<ArrayList<CourseNode>> call = service.getCourseNodes();
+        call.enqueue(new Callback<ArrayList<CourseNode>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
+                if(response.isSuccessful()){
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<CourseNode>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
     }
 }
