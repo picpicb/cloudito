@@ -15,15 +15,6 @@
         android:id="@+id/navigation_scope_3"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_scope_3" />
-    <item
-        android:id="@+id/navigation_scope_4"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_scope_4" />
-
-
-    <item
-        android:id="@+id/navigation_scope_4"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_scope_4" />
+    
 
 </menu>
