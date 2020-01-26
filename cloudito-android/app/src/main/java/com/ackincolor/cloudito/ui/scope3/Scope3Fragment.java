@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ackincolor.cloudito.CourseService.CourseInterface.CourseRetrofitController;
 import com.ackincolor.cloudito.R;
-import com.ackincolor.cloudito.controllers.MapController;
 import com.ackincolor.cloudito.controllers.ParcoursController;
 import com.ackincolor.cloudito.ui.components.Map;
 
@@ -23,7 +23,7 @@ public class Scope3Fragment extends Fragment {
 
     private Scope3ViewModel scope3ViewModel;
     private ParcoursController parcoursController;
-    private MapController mapController;
+    private CourseRetrofitController courseRetrofitController;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,10 +38,8 @@ public class Scope3Fragment extends Fragment {
                 textView.setText(s);
             }
         });
-        this.mapController = new MapController(getActivity());
-        this.mapController.getMap(mapComponent);
-        this.parcoursController = new ParcoursController(getActivity());
-        this.parcoursController.getParcours(UUID.randomUUID());
+        this.courseRetrofitController = new CourseRetrofitController();
+        this.courseRetrofitController.getStoresMap(mapComponent);
         return root;
     }
 }

@@ -37,14 +37,6 @@ public class ParcoursManager {
     }
 
     public void saveParcours(Course p){
-        for(Node n : p.getListe()){
-            ContentValues values = new ContentValues();
-            values.put(KEY_ID_NOEUD,n.getId().toString());
-            values.put(KEY_ID_PARCOURS,p.getId().toString());
-            values.put(KEY_ORDER,n.getOrder());
-            values.put(KEY_POI,n.getPoi().toString());
-            db.insert(TABLE_NAME,null,values);
-        }
     }
     public void close(){
         this.db.close();
