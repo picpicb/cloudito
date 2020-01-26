@@ -110,6 +110,7 @@ public class CourseRetrofitController {
             @Override
             public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
                 if(response.isSuccessful()){
+                    Log.d("DEBUG MAP","setting course");
                     mapComponent.setCourse(response.body());
                 }
             }
