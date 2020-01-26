@@ -14,10 +14,8 @@ import java.net.URL;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-
     @Override
     public String sendNotification(Notification notif) {
-        //Envoi d'une notification
         try {
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -27,17 +25,6 @@ public class NotificationServiceImpl implements NotificationService {
             con.setDoOutput(true);
             con.setDoInput(true);
 
-            /*example notification body
-            {
-"data": {
-"title": "test",
-"content" : "Check Out This Awesome Game!",
-"imageUrl": "http://h5.4j.com/thumb/Ninja-Run.jpg",
-"gameUrl": "https://h5.4j.com/Ninja-Run/index.php?pubid=noad"
-},
-"to": "/topics/all"
-}
-             */
             final GsonBuilder builder = new GsonBuilder();
             final Gson gson = builder.create();
             try(OutputStream os = con.getOutputStream()) {

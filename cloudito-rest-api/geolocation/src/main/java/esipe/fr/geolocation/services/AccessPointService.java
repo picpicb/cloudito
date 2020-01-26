@@ -1,18 +1,20 @@
 package esipe.fr.geolocation.services;
 
-import esipe.fr.geolocation.entities.AccessPoint;
+
+
 import esipe.fr.geolocation.exceptions.ApiException;
-import esipe.fr.geolocation.repositories.AccessPointRepository;
+import esipe.fr.model.AccessPoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import esipe.fr.repositories.AccessPointRepository;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AccessPointService {
+
     @Autowired
     AccessPointRepository accessPointRepository;
     private Logger logger = LogManager.getLogger("AccessPointService");
