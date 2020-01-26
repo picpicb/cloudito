@@ -4,50 +4,27 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Node {
-    private int id;
-    private String type;
-    private PoI poi;
+    private Long id;
+    private Location location;
 
-    public Node(UUID id, int order, String type, PoI poi) {
+    public Node(Long id, Location location) {
         this.id = id;
-        this.order = order;
-        this.type = type;
-        this.poi = poi;
+        this.location = location;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getOrder() {
-        return order;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public PoI getPoi() {
-        return this.poi;
-    }
-
-    public void setPoi(PoI poi) {
-        this.poi = poi;
-    }
-
-    public String toString(){
-        return "["+this.id.toString()+","+this.type+","+this.poi+"]";
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
