@@ -21,6 +21,10 @@ public class ParcoursManager {
     public static final String KEY_ORDER = "orderNoeud";
     public static final String KEY_TYPE = "type";
     public static final String KEY_POI = "Id_poi";
+    public  static final String TABLE_NAME1 = "coursenoeuds";
+    public static final String KEY_ID_COURSENOEUDS = "Id_parcours_noeuds";
+    public static final String COORDINATE_X = "x";
+    public static final String COORDINATE_Y = "y";
     public static final String CREATE_TABLE_NOEUDS = "CREATE TABLE "+TABLE_NAME+
             " (" +
             " "+KEY_ID_PARCOURS+" STRING," +
@@ -28,6 +32,12 @@ public class ParcoursManager {
             " "+KEY_ORDER+" INT," +
             " "+KEY_TYPE+" TEXT," +
             " "+KEY_POI+" TEXT" +
+            ");";
+    public static final String CREATE_TABLE_COURSENOEUDS = "CREATE TABLE "+TABLE_NAME1+
+            " (" +
+            " "+KEY_ID_COURSENOEUDS+" STRING," +
+            " "+COORDINATE_X+" INT," +
+            " "+COORDINATE_Y+" INT," +
             ");";
     public ParcoursManager(Context context){
         this.dbm = DatabaseController.getInstance(context);
