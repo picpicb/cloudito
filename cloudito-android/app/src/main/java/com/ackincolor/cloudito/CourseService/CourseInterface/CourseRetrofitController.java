@@ -65,7 +65,7 @@ public class CourseRetrofitController {
         });
     }
 
-    public void getCoursesNodes() {
+    public void getAllCoursesNodes(CourseService cs) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -82,7 +82,7 @@ public class CourseRetrofitController {
             @Override
             public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
                 if(response.isSuccessful()){
-
+                    cs.onResponse(response.body());
                 }
             }
 
@@ -91,6 +91,33 @@ public class CourseRetrofitController {
                 t.printStackTrace();
             }
         });
+    }
 
+    public void getCourseNodesBtwAandB(com.ackincolor.cloudito.ui.components.Map mapComponent, int A, int B) {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(httpClient.build())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        CourseRetrofitService service = retrofit.create(CourseRetrofitService.class);
+
+        final Call<ArrayList<CourseNode>> call = service.getCourseNodesBtwAandB(A, B);
+        call.enqueue(new Callback<ArrayList<CourseNode>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
+                if(response.isSuccessful()){
+                    mapComponent.setCourse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<CourseNode>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }

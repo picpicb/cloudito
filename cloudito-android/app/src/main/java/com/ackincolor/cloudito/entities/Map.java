@@ -3,7 +3,8 @@ package com.ackincolor.cloudito.entities;
 import java.util.ArrayList;
 
 public class Map {
-    public ArrayList<ArrayList<Location>> liste;
+    private ArrayList<ArrayList<Location>> liste;
+    private ArrayList<CourseNode> course;
     public Map(ArrayList<ArrayList<Location>> liste) {
         this.liste = liste;
     }
@@ -14,5 +15,13 @@ public class Map {
 
     public void setListe(ArrayList<ArrayList<Location>> liste) {
         this.liste = liste;
+    }
+
+    public void setCourse(ArrayList<CourseNode> course) {
+        this.course = course;
+    }
+
+    public ArrayList<CourseNode> getCourse() {
+        return course;
     }
 }
