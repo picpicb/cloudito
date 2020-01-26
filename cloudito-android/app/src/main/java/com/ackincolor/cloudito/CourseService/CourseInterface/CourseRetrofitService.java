@@ -15,7 +15,7 @@ public interface CourseRetrofitService {
     Call<Course> getParcours(@Path("id") String id);
 
     @GET("map/course/{A}/{B}")
-    Call<Course> getCourse(@Path("A") int start,@Path("B") int end);
+    Call<ArrayList<CourseNode>> getCourseNodesBtwAandB(@Path("A") int start,@Path("B") int end);
 
     @GET("map/nodes")
     Call<ArrayList<CourseNode>> getCourseNodes();

@@ -89,7 +89,7 @@ router.get('/map/course/:A/:B',function(req,res,next) {
   var mapObj = {};
   var A = req.param("A",0);
   var B = req.param("B",0);
-  var text = ctx.measureText('Awesome!')
+  //var text = ctx.measureText('Awesome!')
   //ctx.strokeStyle = 'rgba(0,0,0,5)';
   //ctx.beginPath();
   /*for(var j=0;j<map.pois.polygons.length;j++) {
@@ -133,10 +133,21 @@ for(var j=0;j<map.routing.edges.length;j++){
 var cheminFinal = Array();
 //var liste  = g.route(3085,1710);
 var liste  = g.route(Number(A),Number(B));
+console.log(liste);
 var cheminCalcul = liste.nodes;
-//ctx.beginPath();
-res.send(cheminCalcul);
+cheminCalcul.forEach(val => {
+  cheminFinal.push(findInMap(val,mapObj));
 })
+//ctx.beginPath();
+res.send(cheminFinal);
+})
+findInMap = function(val, mapObj){
+  for(var i = 0 ; i<mapObj.nodes.length;i++){
+    if(mapObj.nodes[i].id==val)
+      return mapObj.nodes[i];
+  }
+  return null;
+}
 router.get('/map/stores',function(req,res,next) {
     var mapObj = Array();
     var A = req.param("A",0);

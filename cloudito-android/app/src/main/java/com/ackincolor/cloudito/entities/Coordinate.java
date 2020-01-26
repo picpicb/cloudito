@@ -1,7 +1,7 @@
-
 package com.ackincolor.cloudito.entities;
 
 public class Coordinate {
+
     private double x;
     private double y;
 
@@ -25,9 +25,4 @@ public class Coordinate {
     public void setY(double y) {
         this.y = y;
     }
-
-    public boolean equals(Object c){
-        return((this.getX()==((Coordinate)c).getX())&&(this.getY()==((Coordinate)c).getY()));
-    }
-
 }

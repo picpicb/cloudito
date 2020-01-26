@@ -25,6 +25,9 @@ public class DatabaseController extends SQLiteOpenHelper {
         // PARCOURS
         db.execSQL(ParcoursManager.CREATE_TABLE_NOEUDS);
 
+        // NOEUDS PARCOURS
+        db.execSQL(ParcoursManager.CREATE_TABLE_COURSENOEUDS);
+
         // ACCESS POINTS
         db.execSQL(GeolocationManager.CREATE_TABLE_ACCESS_POINTS);
 
@@ -35,6 +38,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+ParcoursManager.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+ParcoursManager.TABLE_NAME1);
         db.execSQL("DROP TABLE IF EXISTS "+GeolocationManager.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS "+ GeolocationCustomerLocationManager.TABLE_NAME);
         onCreate(db);

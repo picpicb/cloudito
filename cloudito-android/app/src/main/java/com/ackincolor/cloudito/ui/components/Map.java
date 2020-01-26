@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import com.ackincolor.cloudito.entities.Course;
+import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 import com.ackincolor.cloudito.entities.Node;
 
@@ -20,8 +22,7 @@ import java.util.ArrayList;
 
 public class Map extends View {
     private com.ackincolor.cloudito.entities.Map map;
-    private Paint p;
-    private Paint p2;
+    private Paint p, p2, p3;
     private int offsetX,offsetY;
     private float zoomRatio;
     private ScaleGestureDetector mScaleDetector;
@@ -39,7 +40,10 @@ public class Map extends View {
         this.p2 = new Paint();
         this.p2.setColor(Color.BLACK);
         this.p2.setStyle(Paint.Style.STROKE);
-        this.p2.setStrokeWidth(3);
+        this.p2.setStrokeWidth(1);
+        this.p3 = new Paint();
+        this.p3.setColor(Color.GREEN);
+
         //demarage de la recuperation de la carte
         this.offsetX = -300;
         this.offsetY = -200;
@@ -55,7 +59,8 @@ public class Map extends View {
         mScaleDetector.onTouchEvent(ev);
         mGestureListener.onTouchEvent(ev);
         rotation(ev);
-        Log.d("DEBUG MAP","angle rotation : "+ this.realRotation);
+        //Log.d("DEBUG MAP","angle rotation : "+ this.realRotation);
+
         return true;
     }
     public void setCenter(Location l){
@@ -76,6 +81,7 @@ public class Map extends View {
                 this.realRotation = this.lastRotation -deg;
                 this.effectivRotation += this.realRotation;
                 this.lastRotation  = deg;
+                Log.d("Rotation ~~~~~~~~~~~~~~~~~", "angle : "+this.effectivRotation);
                 invalidate();
             }else {
                 this.realRotation = 0.0f;
@@ -83,6 +89,27 @@ public class Map extends View {
             return (float) Math.toDegrees(radians);
         }
         return 0;
+    }
+    private void calculNewCoord(){
+        //calcul des nouvelle coordonée
+        if(this.map!=null)
+        {
+            if(this.map.getListe()!=null){
+                for(ArrayList<Location> listeLocation : this.map.getListe()){
+                    for(Location location : listeLocation){
+                        Location ltemp = rotateLocation(location,this.center,this.realRotation);
+                        location.setX(ltemp.getX());
+                        location.setY(ltemp.getY());
+                    }
+                }
+            }
+            if(this.map.getCourse()!=null){
+                for(CourseNode cn : this.map.getCourse()){
+                    Location ltemp = rotateLocation(cn.getLocation(),this.center,this.realRotation);
+                    cn.setLocation(ltemp);
+                }
+            }
+        }
     }
 
     private Location rotateLocation(Location a,Location o,float angle){
@@ -95,40 +122,59 @@ public class Map extends View {
 
 
     protected void onDraw(Canvas canvas){
+        calculNewCoord();
         canvas.save();
         //canvas.scale(mScaleFactor, mScaleFactor);
-
-        canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p);
+        //canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p);
         if (map != null) {
             //Log.d("DEBUG MAP", "map is'nt nul");
-            if(map.liste!=null){
+            if(map.getListe()!=null){
                 //Log.d("DEBUG MAP", "liste is'nt nul");
-                for(ArrayList<Location> l : map.liste){
+                for(ArrayList<Location> l : map.getListe()){
                     Path path = new Path();
                     boolean first = true;
                     for(Location c : l){
-                        Location c2 = rotateLocation(c,this.center,this.effectivRotation);
+                        //Location c2 = rotateLocation(c,this.center,this.effectivRotation);
                         if(first){
-                            path.moveTo(((float)c2.getX()+offsetX)*zoomRatio,((float)c2.getY()+offsetY)*zoomRatio);
+                            path.moveTo(((float)c.getX()+offsetX)*zoomRatio,((float)c.getY()+offsetY)*zoomRatio);
                             first = false;
                         }else {
-                            path.lineTo(((float)c2.getX()+offsetX)*zoomRatio,((float)c2.getY()+offsetY)*zoomRatio);
+                            path.lineTo(((float)c.getX()+offsetX)*zoomRatio,((float)c.getY()+offsetY)*zoomRatio);
                             //Log.d("DEBUG MAP", "line to : "+(float)c.getX()/10+","+(float)c.getY()/10);
                         }
                     }
                     path.close();
                     canvas.drawPath(path, p2);
                 }
+            }if(map.getCourse()!=null){
+                boolean first = true;
+                Path path = new Path();
+                for(CourseNode c : map.getCourse()){
+                    if(first){
+                        first = false;
+                        path.moveTo(((float)c.getLocation().getX()+offsetX)*zoomRatio, ((float)c.getLocation().getY()+offsetY)*zoomRatio);
+                    }else{
+                        path.lineTo(((float)c.getLocation().getX()+offsetX)*zoomRatio, ((float)c.getLocation().getY()+offsetY)*zoomRatio);
+                    }
+                }
+                path.close();
+                canvas.drawPath(path, p3);
             }
         }
         canvas.restore();
 
     }
+
+    public void setCourse(ArrayList<CourseNode> liste){
+        this.map.setCourse(liste);
+        invalidate();
+    }
+
     public void setMap(com.ackincolor.cloudito.entities.Map map){
         Log.d("DEBUG","setting map into view");
         //recuperation du min Y /X et max Y/X
         double minX=1000,minY=1000,maxX=0,maxY=0,tx=0,ty=0;
-        for(ArrayList<Location> l : map.liste){
+        for(ArrayList<Location> l : map.getListe()){
             for(Location c : l){
                 tx = c.getX();
                 ty = c.getY();
@@ -146,6 +192,7 @@ public class Map extends View {
         this.map = map;
         this.invalidate();
     }
+
     private class ScaleListener
             extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
@@ -165,7 +212,7 @@ public class Map extends View {
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             offsetX-=distanceX/zoomRatio;
             offsetY-=distanceY/zoomRatio;
-            Log.d("Debug Map", "Scrool on map : x:"+distanceX+", y: "+distanceY);
+            //Log.d("Debug Map", "Scrool on map : x:"+distanceX+", y: "+distanceY);
             invalidate();
             return true;
         }

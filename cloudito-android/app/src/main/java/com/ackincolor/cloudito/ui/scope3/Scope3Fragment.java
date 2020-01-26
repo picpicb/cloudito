@@ -40,6 +40,7 @@ public class Scope3Fragment extends Fragment {
         });
         this.courseRetrofitController = new CourseRetrofitController();
         this.courseRetrofitController.getStoresMap(mapComponent);
+        this.courseRetrofitController.getCourseNodesBtwAandB(mapComponent,3085,1710);
         return root;
     }
 }
