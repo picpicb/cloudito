@@ -5,7 +5,9 @@ stages:
   - build
   - test
   - package
-
+cache:
+  paths:
+    - .m2/repository
 variables:
   USER_GITLAB: jm.frau
   REPO: cloudito-rest-api
@@ -13,8 +15,8 @@ variables:
   DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
   ANDROID_COMPILE_SDK: "28"
   APP_NAME: "Cloudito"
-  #MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-  #MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
   
 maven-build:
   image: maven:3-jdk-8
@@ -27,7 +29,7 @@ maven-build:
     - geolocation
     - Scope2
     - Scope4
-  script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
+  script: "mvn package $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml"
   artifacts:
     paths:
       - cloudito-rest-api/geolocation/target/*.jar
@@ -73,6 +75,7 @@ deploy_back:
 deploy-node:
   image: docker:18-dind
   stage: deploy-node
+  when: manual
   services:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
@@ -121,7 +124,13 @@ build:develop:
   <<: *build
   image: jangrewe/gitlab-ci-android
   only:
-    - develop
+    changes:
+      - cloudito-android/**/*
+  except:
+    - Scope3
+    - geolocation
+    - Scope2
+    - Scope4
   script:
     - ./gradlew assembleDebug
 
@@ -197,7 +206,10 @@ package:develop:
   stage: package
   environment: Development
   only:
-    - develop
+    changes:
+      - cloudito-android/**/*
+  except:
+    - master
   script:
     - mv app/build/outputs/apk/debug/app-debug.apk ./exported/${APP_NAME}-v$VERSION_NAME-debug.apk
   dependencies:
