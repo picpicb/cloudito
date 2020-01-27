@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ackincolor.cloudito.CourseService.CourseCache.CourseManager;
 import com.ackincolor.cloudito.CourseService.CourseInterface.CourseRetrofitController;
 import com.ackincolor.cloudito.R;
 import com.ackincolor.cloudito.controllers.ParcoursController;
+import com.ackincolor.cloudito.entities.Course;
 import com.ackincolor.cloudito.ui.components.Map;
 
 import java.util.UUID;
@@ -38,7 +40,7 @@ public class Scope3Fragment extends Fragment {
                 textView.setText(s);
             }
         });
-        this.courseRetrofitController = new CourseRetrofitController();
+        this.courseRetrofitController = new CourseRetrofitController(new CourseManager(getContext()));
         this.courseRetrofitController.getStoresMap(mapComponent);
         this.courseRetrofitController.getCourseNodesBtwAandB(mapComponent,3085,1710);
         return root;
