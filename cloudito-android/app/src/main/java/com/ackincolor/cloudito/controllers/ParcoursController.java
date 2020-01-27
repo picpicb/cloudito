@@ -3,7 +3,7 @@ package com.ackincolor.cloudito.controllers;
 import android.content.Context;
 import android.util.Log;
 
-import com.ackincolor.cloudito.data.ParcoursManager;
+import com.ackincolor.cloudito.CourseService.CourseCache.CourseManager;
 import com.ackincolor.cloudito.entities.Course;
 import com.ackincolor.cloudito.services.ParcoursService;
 import com.google.gson.Gson;
@@ -49,13 +49,13 @@ public class ParcoursController {
                 if(response.isSuccessful()){
                     Log.d("DEBUG",response.body().toString());
                     //sauvegarde
-                    ParcoursManager db = new ParcoursManager(context);
+                    CourseManager db = new CourseManager(context);
                     db.open();
                     db.saveParcours(response.body());
                     db.close();
                 }else {
                     Log.d("DEBUG",response.toString());
-                    ParcoursManager db = new ParcoursManager(context);
+                    CourseManager db = new CourseManager(context);
                     db.open();
                     Log.d("DEBUG",db.getParcours(UUID.randomUUID()));
                     db.close();
@@ -65,7 +65,7 @@ public class ParcoursController {
             @Override
             public void onFailure(Call<Course> call, Throwable t) {
                 t.printStackTrace();
-                ParcoursManager db = new ParcoursManager(context);
+                CourseManager db = new CourseManager(context);
                 db.open();
                 Log.d("DEBUG",db.getParcours(UUID.randomUUID()));
                 db.close();

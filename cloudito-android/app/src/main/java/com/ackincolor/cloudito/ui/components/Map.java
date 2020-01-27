@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class Map extends View {
     private com.ackincolor.cloudito.entities.Map map;
     private ArrayList<CourseNode> courseNode;
-    private Paint p, p2, p3;
+    private Paint p, p2, p3,p4;
     private float offsetX,offsetY;
     private float zoomRatio;
     private ScaleGestureDetector mScaleDetector;
@@ -39,11 +39,13 @@ public class Map extends View {
         this.p = new Paint();
         this.p.setColor(Color.CYAN);
         this.p2 = new Paint();
-        this.p2.setColor(Color.BLACK);
+        this.p2.setColor(Color.argb(255,140,140,140));
         this.p3 = new Paint();
         this.p3.setColor(Color.GREEN);
         this.p3.setStyle(Paint.Style.STROKE);
         this.p3.setStrokeWidth(3);
+        this.p4 = new Paint();
+        this.p4.setColor(Color.argb(255,237, 220, 197));
 
         //demarage de la recuperation de la carte
         this.offsetX = 0;
@@ -132,7 +134,7 @@ public class Map extends View {
     protected void onDraw(Canvas canvas){
         calculNewCoord();
         //canvas.scale(mScaleFactor, mScaleFactor);
-        //canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p);
+        canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
         if (map != null) {
             //Log.d("DEBUG MAP", "map is'nt nul");
             if(map.getListe()!=null){
@@ -173,6 +175,10 @@ public class Map extends View {
 
     public void setCourse(ArrayList<CourseNode> liste){
         this.courseNode = liste;
+        for(CourseNode cn : this.courseNode){
+            cn.setX(cn.getLocation().getX()-900);
+            cn.setY(cn.getLocation().getY()-700);
+        }
         invalidate();
     }
 

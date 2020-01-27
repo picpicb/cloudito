@@ -3,10 +3,12 @@ package com.ackincolor.cloudito.CourseService.CourseInterface;
 import android.util.Log;
 
 
+import com.ackincolor.cloudito.CourseService.CourseCache.CourseManager;
 import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 import com.ackincolor.cloudito.entities.Map;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -21,9 +23,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CourseRetrofitController {
     private String BASE_URL = "http://172.31.254.54:3084/";
     private Gson gson;
+    private CourseManager courseManager;
 
-    public CourseRetrofitController(){
+    public CourseRetrofitController(CourseManager cm){
         this.gson = new Gson();
+        this.courseManager = cm;
     }
     public void getStoresMap(com.ackincolor.cloudito.ui.components.Map mapComponent){
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -53,6 +57,10 @@ public class CourseRetrofitController {
                         }
                         liste.add(listeTemp);
                     }
+                    //test saving map
+                    courseManager.open();
+                    courseManager.saveMap(gson.toJson(response.body()).getBytes());
+                    courseManager.close();
                     Map m = new com.ackincolor.cloudito.entities.Map(liste);
                     mapComponent.setMap(m);
                 }
@@ -60,7 +68,23 @@ public class CourseRetrofitController {
 
             @Override
             public void onFailure(Call<ArrayList<ArrayList<ArrayList<Double>>>> call, Throwable t) {
-                t.printStackTrace();
+                //test recuperation derniere map
+                Log.d("DEBUG MAP","Connection error, trying offline loading...");
+                courseManager.open();
+                ArrayList<ArrayList<Location>> liste = new ArrayList<>();
+                ArrayList<ArrayList<ArrayList<Double>>> map = gson.fromJson(new String(courseManager.getMap()),new TypeToken<ArrayList<ArrayList<ArrayList<Double>>>>(){}.getType());
+                ArrayList<Location> listeTemp = new ArrayList<>();
+                for(int j = 0; j < map.size(); j++){
+                    listeTemp = new ArrayList<>();
+                    for(int i = 0 ; i < map.get(j).size();i++){
+                        listeTemp.add( new Location(0,0,map.get(j).get(i).get(0),map.get(j).get(i).get(1)));
+                    }
+                    liste.add(listeTemp);
+                }
+                courseManager.close();
+                Map m = new com.ackincolor.cloudito.entities.Map(liste);
+                mapComponent.setMap(m);
+                //t.printStackTrace();
             }
         });
     }
@@ -112,6 +136,7 @@ public class CourseRetrofitController {
                 if(response.isSuccessful()){
                     Log.d("DEBUG MAP","setting course");
                     mapComponent.setCourse(response.body());
+
                 }
             }
 
