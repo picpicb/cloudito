@@ -129,6 +129,10 @@ build:develop:
   except:
     - master
   script:
+    - cd cloudito-android/
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+    - apt-get update -y && apt-get install wget -y
     - ./gradlew assembleDebug
 
 build:release:
