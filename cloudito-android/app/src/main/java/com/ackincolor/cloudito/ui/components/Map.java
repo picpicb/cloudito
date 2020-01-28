@@ -222,7 +222,7 @@ public class Map extends View {
             mScaleFactor *= detector.getScaleFactor();
 
             // Don't let the object get too small or too large.
-            mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 3.0f));
+            mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 3.5f));
             zoomRatio = mScaleFactor;
             return false;
         }
