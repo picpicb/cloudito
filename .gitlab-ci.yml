@@ -127,10 +127,7 @@ build:develop:
     changes:
       - cloudito-android/**/*
   except:
-    - Scope3
-    - geolocation
-    - Scope2
-    - Scope4
+    - master
   script:
     - ./gradlew assembleDebug
 
