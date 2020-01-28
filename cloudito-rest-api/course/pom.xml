@@ -46,10 +46,10 @@
                 </property>
             </activation>
             <properties>
-                <server.port>8081</server.port>
-                <spring.datasource.url>jdbc:mysql://172.31.254.54:8006/cloudito?useSSL=false</spring.datasource.url>
-                <spring.datasource.username>cloudito</spring.datasource.username>
-                <spring.datasource.password>1234</spring.datasource.password>
+                <server.port>${env.SERVER_PORT_COURSE_SERVICE}</server.port>
+                <spring.datasource.url>${env.DATA_SOURCE_URL}</spring.datasource.url>
+                <spring.datasource.username>${env.DATA_SOURCE_USERNAME}</spring.datasource.username>
+                <spring.datasource.password>${env.DATA_SOURCE_PASSWORD}</spring.datasource.password>
                 <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
                 <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
             </properties>
