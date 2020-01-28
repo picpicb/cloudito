@@ -13,6 +13,50 @@
     <artifactId>course</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
+    <profiles>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <!-- this profile is active by default -->
+                <activeByDefault>true</activeByDefault>
+                <!-- activate if system properties 'env=dev' -->
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <server.port>8081</server.port>
+                <spring.datasource.url>jdbc:mysql://172.31.254.54:8006/cloudito?useSSL=false</spring.datasource.url>
+                <spring.datasource.username>cloudito</spring.datasource.username>
+                <spring.datasource.password>1234</spring.datasource.password>
+                <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
+                <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <activation>
+                <!-- activate if system properties 'env=prod' -->
+                <property>
+                    <name>env</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <server.port>8081</server.port>
+                <spring.datasource.url>jdbc:mysql://172.31.254.54:8006/cloudito?useSSL=false</spring.datasource.url>
+                <spring.datasource.username>cloudito</spring.datasource.username>
+                <spring.datasource.password>1234</spring.datasource.password>
+                <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
+                <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
+            </properties>
+        </profile>
+
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -20,7 +64,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>esipe.fr.course.ClouditoCourseService</mainClass>
-                    <addResources>false</addResources>
+                    <addResources>true</addResources>
                 </configuration>
 
             </plugin>
@@ -28,10 +72,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>map.json</include>
-                    <include>application.properties</include>
-                </includes>
+                <filtering>true</filtering>
             </resource>
         </resources>
     </build>
