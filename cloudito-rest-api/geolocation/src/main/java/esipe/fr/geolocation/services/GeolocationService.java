@@ -2,7 +2,9 @@ package esipe.fr.geolocation.services;
 
 
 import esipe.fr.geolocation.exceptions.ApiException;
+import esipe.fr.model.Customer;
 import esipe.fr.model.CustomerLocation;
+import esipe.fr.repositories.CustomerRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +17,26 @@ import java.util.Optional;
 @Service
 public class GeolocationService {
 
-   @Autowired
-   CustomerLocationRepository customerLocationRepository;
+    @Autowired
+    CustomerLocationRepository customerLocationRepository;
+    @Autowired
+    CustomerRepository customerRepository;
 
     private Logger logger = LogManager.getLogger("GeolocationService");
 
     public CustomerLocation getCustomerLocation(Long customerId) throws ApiException {
-        Optional<CustomerLocation> customerLocation = customerLocationRepository.findById(customerId);
-        if(customerLocation.isPresent()){
-            logger.info("READ customer location: " + customerLocation.get().getId());
-            return customerLocation.get();
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()){
+            CustomerLocation customerLocation = customerLocationRepository.findCustomerLocationByCustomerId(customerId);
+            if(customerLocation != null){
+                logger.info("READ customer location: " + customerLocation.getId());
+                return customerLocation;
+            }else{
+                throw new ApiException(404,"No Location found");
+            }
         }else{
             logger.warn("Customer not found");
-            throw new ApiException(404,"No location found");
+            throw new ApiException(404,"No Customer found");
         }
     }
 
