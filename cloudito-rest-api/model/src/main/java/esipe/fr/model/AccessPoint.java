@@ -1,5 +1,6 @@
 package esipe.fr.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -9,9 +10,10 @@ import javax.persistence.*;
 public class AccessPoint {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="LOCATION_ID")
     private Location location;
 

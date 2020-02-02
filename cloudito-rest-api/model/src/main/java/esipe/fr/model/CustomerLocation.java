@@ -1,5 +1,6 @@
 package esipe.fr.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Date;
 public class CustomerLocation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="LOCATION_ID")
