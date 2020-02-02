@@ -13,11 +13,13 @@ public class CustomerLocation {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="LOCATION_ID")
     private Location location;
     private Date lastUpdate;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customerId")
+    @JsonIgnore
     private Customer customer;
 
     public Long getId() {
@@ -42,5 +44,13 @@ public class CustomerLocation {
 
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

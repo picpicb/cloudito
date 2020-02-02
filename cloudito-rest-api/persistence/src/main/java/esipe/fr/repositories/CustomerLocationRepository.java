@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerLocationRepository extends JpaRepository<CustomerLocation, Long> {
-    CustomerLocation findCustomerLocationByCustomerId(Long id);
+    CustomerLocation findFirstByCustomerIdOrderByLastUpdateDesc(Long customerId);
 }
