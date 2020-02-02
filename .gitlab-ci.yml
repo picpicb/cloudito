@@ -33,7 +33,7 @@ maven-build:
   artifacts:
     paths:
       - cloudito-rest-api/geolocation/target/*.jar
-      - cloudito-rest-api/course/target/*.jar
+      #- cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
 
 deploy_back:
@@ -52,30 +52,17 @@ deploy_back:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   script:
-    #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
-    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geolocation
-    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main ./main
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation ./cloudito-rest-api/geolocation
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course ./cloudito-rest-api/course
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification ./cloudito-rest-api/notification
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
-    #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
-    #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification
-    #- docker tag cloudito-rest-api-custo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-custo
-    #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-maincusto
-    #- docker tag cloudito-rest-api locl:5000/cloudito-rest-api
-    #- docker -H cloudito.pre-prod.com:2375 run -p 80:80 -d cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation NewStack_cloudito-geolocation
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course NewStack_cloudito-course
 
 deploy-node:
   image: docker:18-dind
   stage: deploy-node
-  when: manual
   services:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]

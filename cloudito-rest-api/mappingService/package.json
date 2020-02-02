@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test" : "mocha"
   },
   "dependencies": {
     "@vila91/graph": "^1.0.4",
@@ -14,6 +15,15 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "node-dijkstra": "^2.5.0",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "swagger-ui-express": "^4.1.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "chai": "^4.2.0",
+    "mocha": "^7.0.1",
+    "request": "^2.88.0"
   }
 }
