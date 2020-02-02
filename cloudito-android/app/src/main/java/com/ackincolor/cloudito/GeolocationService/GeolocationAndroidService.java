@@ -170,10 +170,14 @@ public class GeolocationAndroidService {
 
     // CALCULATE DISTANCE WITH FREQUENCY AND SIGNAL IN DB
     // USE FREE SPACE PATH LOSS (FSPL)
-    private double calculateDistance(double signalLevelInDb, double freqInMHz) throws Exception {
+    public double calculateDistance(double signalLevelInDb, double freqInMHz) throws Exception {
         if(signalLevelInDb >= 0){
             Log.d("DEBUG GEOLOCATION ANDROID SERVICE","UNCORRECT SIGNAL");
             throw new Exception("Signal can't be > 0");
+        }
+        if(freqInMHz <= 0){
+            Log.d("DEBUG GEOLOCATION ANDROID SERVICE","UNCORRECT Frequency");
+            throw new Exception("Frequency can't be < 0");
         }
         double exp = (27.55 - (20 * Math.log10(freqInMHz)) + Math.abs(signalLevelInDb)) / 20.0;
         return Math.pow(10.0, exp);
