@@ -43,16 +43,18 @@ public class Map extends View {
         this.p3 = new Paint();
         this.p3.setColor(Color.GREEN);
         this.p3.setStyle(Paint.Style.STROKE);
-        this.p3.setStrokeWidth(3);
+        this.p3.setStrokeWidth(10);
         this.p4 = new Paint();
-        this.p4.setColor(Color.argb(255,237, 220, 197));
+        this.p4.setColor(Color.argb(255,255, 255, 255));
 
         //demarage de la recuperation de la carte
         this.offsetX = 0;
         this.offsetY = 0;
         this.zoomRatio = 1.0f;
-        mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
-        mGestureListener = new GestureDetector(context, new GestureListener());
+        if(attrs!=null){
+            mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+            mGestureListener = new GestureDetector(context, new GestureListener());
+        }
         this.center = new Location(0,0,200,300);
 
     }
@@ -94,7 +96,7 @@ public class Map extends View {
         }
         return 0;
     }
-    private void calculNewCoord(){
+    public void calculNewCoord(){
         //calcul des nouvelle coordonée
         this.center.setX((this.center.getX()-offsetX));
         this.center.setY((this.center.getY()-offsetY));
@@ -222,7 +224,7 @@ public class Map extends View {
             mScaleFactor *= detector.getScaleFactor();
 
             // Don't let the object get too small or too large.
-            mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 3.5f));
+            mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 3.7f));
             zoomRatio = mScaleFactor;
             return false;
         }
@@ -240,5 +242,14 @@ public class Map extends View {
             return true;
         }
     }
+    public void setOffsetX(float offsetX) {
+        this.offsetX = offsetX;
+    }
+    public void setOffsetY(float offsetY) {
+        this.offsetY = offsetY;
+    }
 
+    public com.ackincolor.cloudito.entities.Map getMap() {
+        return map;
+    }
 }
