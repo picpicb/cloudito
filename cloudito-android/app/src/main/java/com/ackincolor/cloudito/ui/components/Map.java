@@ -38,6 +38,7 @@ public class Map extends View {
     private float effectivRotation = 0.0f;
     private Location center;
     private boolean rendering = true;
+    private int zoom;
 
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -76,6 +77,16 @@ public class Map extends View {
         //Log.d("DEBUG MAP","angle rotation : "+ this.realRotation);
 
         return true;
+    }
+    public void zoom(boolean more){
+        if(more && zoom <15){
+            this.mScaleFactor=1.1f;
+            zoom+=1;
+        }
+        else if(zoom >0){
+            this.mScaleFactor=0.9f;
+            zoom-=1;
+        }
     }
     public void setCenter(Location l){
         this.center = l;
