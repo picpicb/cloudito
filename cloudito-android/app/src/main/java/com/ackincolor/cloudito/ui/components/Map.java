@@ -3,9 +3,11 @@ package com.ackincolor.cloudito.ui.components;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
 public class Map extends View {
     private com.ackincolor.cloudito.entities.Map map;
     private ArrayList<CourseNode> courseNode;
+    private ArrayList<Path> magasins;
+    private ArrayList<Path> courses;
     private Paint p, p2, p3,p4;
     private float offsetX,offsetY;
     private float zoomRatio;
@@ -33,6 +37,7 @@ public class Map extends View {
     private float realRotation = 0.0f;
     private float effectivRotation = 0.0f;
     private Location center;
+    private boolean rendering = true;
 
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -56,7 +61,9 @@ public class Map extends View {
             mGestureListener = new GestureDetector(context, new GestureListener());
         }
         this.center = new Location(0,0,200,300);
-
+        this.magasins = new ArrayList<>();
+        this.courses = new ArrayList<>();
+        //test thread
     }
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -64,6 +71,7 @@ public class Map extends View {
         mScaleDetector.onTouchEvent(ev);
         mGestureListener.onTouchEvent(ev);
         rotation(ev);
+        calculNewCoord2();
         invalidate();
         //Log.d("DEBUG MAP","angle rotation : "+ this.realRotation);
 
@@ -96,6 +104,47 @@ public class Map extends View {
         }
         return 0;
     }
+
+    public void calculNewCoord2(){
+        //calcul des nouvelle coordonée
+        this.center.setX((this.center.getX()-offsetX));
+        this.center.setY((this.center.getY()-offsetY));
+        if(this.magasins!=null)
+        {
+
+            for(Path listeLocation : this.magasins){
+                Matrix scaleMatrix = new Matrix();
+                Matrix rotateMatrix = new Matrix();
+                Matrix translateMatrix = new Matrix();
+                RectF rectF = new RectF();
+                listeLocation.computeBounds(rectF, true);
+                scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
+                translateMatrix.setTranslate(-offsetX,-offsetY);
+                rotateMatrix.setRotate(this.realRotation,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
+                listeLocation.transform(translateMatrix);
+                listeLocation.transform(rotateMatrix);
+            }
+            for(Path listeLocation : this.courses){
+                Matrix scaleMatrix = new Matrix();
+                Matrix rotateMatrix = new Matrix();
+                Matrix translateMatrix = new Matrix();
+                RectF rectF = new RectF();
+                listeLocation.computeBounds(rectF, true);
+                scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
+                translateMatrix.setTranslate(-offsetX,-offsetY);
+                rotateMatrix.setRotate(this.realRotation,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
+                listeLocation.transform(translateMatrix);
+                listeLocation.transform(rotateMatrix);
+            }
+
+        }
+        this.mScaleFactor = 1;
+        offsetX = 0;
+        offsetY = 0;
+    }
+
     public void calculNewCoord(){
         //calcul des nouvelle coordonée
         this.center.setX((this.center.getX()-offsetX));
@@ -134,45 +183,14 @@ public class Map extends View {
 
 
     protected void onDraw(Canvas canvas){
-        calculNewCoord();
         //canvas.scale(mScaleFactor, mScaleFactor);
+        //calculNewCoord2();
         canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
-        if (map != null) {
-            //Log.d("DEBUG MAP", "map is'nt nul");
-            if(map.getListe()!=null){
-                //Log.d("DEBUG MAP", "liste is'nt nul");
-                for(ArrayList<Location> l : map.getListe()){
-                    Path path = new Path();
-                    boolean first = true;
-                    for(Location c : l){
-                        //Location c2 = rotateLocation(c,this.center,this.effectivRotation);
-                        if(first){
-                            path.moveTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
-                            first = false;
-                        }else {
-                            path.lineTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
-                            //Log.d("DEBUG MAP", "line to : "+(float)c.getX()/10+","+(float)c.getY()/10);
-                        }
-                    }
-                    path.close();
-                    canvas.drawPath(path, p2);
-                }
-            }if(courseNode!=null){
-                boolean first = true;
-                Path path = new Path();
-                for(CourseNode c : courseNode){
-                    if(first){
-                        first = false;
-                        path.moveTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
-                    }else{
-                        path.lineTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
-                    }
-                }
-                //path.close();
-                canvas.drawPath(path, p3);
-            }
-        }
-        canvas.drawCircle((float)this.center.getX()*mScaleFactor,(float)this.center.getY()*mScaleFactor,10,p);
+        for(Path p : this.magasins)
+            canvas.drawPath(p,p2);
+        for(Path p : this.courses)
+            canvas.drawPath(p,p3);
+        canvas.drawCircle((float)this.center.getX(),(float)this.center.getY(),10,p);
     }
 
     public void setCourse(ArrayList<CourseNode> liste){
@@ -182,6 +200,7 @@ public class Map extends View {
             cn.setY(cn.getLocation().getY()-700);
         }
         invalidate();
+        settingPath();
     }
 
     public void setMap(com.ackincolor.cloudito.entities.Map map){
@@ -215,17 +234,16 @@ public class Map extends View {
         Log.d("DEBUG","setting map into view : minX :"+minX+",minY : "+ minY+", MaxX:"+maxX+", maxY"+maxY);
         // dessin de la carte
         this.invalidate();
+        settingPath();
     }
 
     private class ScaleListener
             extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            mScaleFactor *= detector.getScaleFactor();
-
+            mScaleFactor = detector.getScaleFactor();
             // Don't let the object get too small or too large.
-            mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 3.7f));
-            zoomRatio = mScaleFactor;
+            mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 1.2f));
             return false;
         }
     }
@@ -251,5 +269,47 @@ public class Map extends View {
 
     public com.ackincolor.cloudito.entities.Map getMap() {
         return map;
+    }
+
+    private void settingPath(){
+        this.magasins = new ArrayList<>();
+        this.courses = new ArrayList<>();
+        if (map != null) {
+            //Log.d("DEBUG MAP", "map is'nt nul");
+            if(map.getListe()!=null){
+                //Log.d("DEBUG MAP", "liste is'nt nul");
+                for(ArrayList<Location> l : map.getListe()){
+                    Path path = new Path();
+                    boolean first = true;
+                    for(Location c : l){
+                        //Location c2 = rotateLocation(c,this.center,this.effectivRotation);
+                        if(first){
+                            path.moveTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
+                            first = false;
+                        }else {
+                            path.lineTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
+                            //Log.d("DEBUG MAP", "line to : "+(float)c.getX()/10+","+(float)c.getY()/10);
+                        }
+                    }
+                    path.close();
+                    this.magasins.add(path);
+                    //canvas.drawPath(path, p2);
+                }
+            }if(courseNode!=null){
+                boolean first = true;
+                Path path = new Path();
+                for(CourseNode c : courseNode){
+                    if(first){
+                        first = false;
+                        path.moveTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
+                    }else{
+                        path.lineTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
+                    }
+                }
+                //path.close();
+                this.courses.add(path);
+                //canvas.drawPath(path, p3);
+            }
+        }
     }
 }
