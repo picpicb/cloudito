@@ -1,6 +1,9 @@
 package com.ackincolor.cloudito.ui.components;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -8,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -15,10 +19,9 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-import com.ackincolor.cloudito.entities.Course;
+import com.ackincolor.cloudito.R;
 import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
-import com.ackincolor.cloudito.entities.Node;
 
 import java.util.ArrayList;
 
@@ -33,12 +36,15 @@ public class Map extends View {
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureListener;
     private float mScaleFactor = 1.f;
+    private float lastFactor = 0.f;
     private float lastRotation = 0.0f;
     private float realRotation = 0.0f;
-    private float effectivRotation = 0.0f;
     private Location center;
-    private boolean rendering = true;
-    private int zoom;
+    private int zoom = 0;
+    private float northAngle = 0.0f;
+    private Bitmap boussole;
+    private double distance;
+    private boolean touched = false;
 
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -64,7 +70,12 @@ public class Map extends View {
         this.center = new Location(0,0,200,300);
         this.magasins = new ArrayList<>();
         this.courses = new ArrayList<>();
-        //test thread
+
+        this.boussole = getBitmap(R.drawable.boussolearrow);
+        if(this.boussole == null) {
+            //Log.d("DEBUG MAP","image non trouvé");
+        }
+
     }
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -73,11 +84,63 @@ public class Map extends View {
         mGestureListener.onTouchEvent(ev);
         rotation(ev);
         calculNewCoord2();
+        calculZoom();
         invalidate();
         //Log.d("DEBUG MAP","angle rotation : "+ this.realRotation);
 
         return true;
     }
+    //fonction qui permet de definire la position de l'utilisateur'
+    public void setCenter(Location l){
+        this.center = l;
+        invalidate();
+    }
+    //fonction qui permet de faire touerner la carte
+    public void setAngle(float deg){
+        this.realRotation = deg;
+        calculNewCoord2();
+        invalidate();
+    }
+    public float getAngle(){
+        return this.realRotation;
+    }
+    private float rotation(MotionEvent event) {
+        //Log.d("DEBUG MAP"," angle nord :"+this.northAngle);
+        if(event.getPointerCount() >= 2) {
+            double delta_x = (event.getX(0) - event.getX(1));
+            double delta_y = (event.getY(0) - event.getY(1));
+            double radians = Math.atan2(delta_y, delta_x);
+            //Log.d("Rotation ~~~~~~~~~~~~~~~~~", delta_x + " ## " + delta_y + " ## " + radians + " ## "
+            //        + Math.toDegrees(radians));
+            if(touched) {
+                this.mScaleFactor = (float) -((this.distance - (Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))))))/this.getWidth()) +1;
+
+                this.distance = Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))));
+            }else{
+                this.distance = Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))));
+                this.mScaleFactor = 1f;
+                touched = true;
+            }
+            float deg = (float) Math.toDegrees(radians);
+            if(deg!=0 && touched){
+                this.realRotation = this.lastRotation -deg;
+                this.northAngle += this.realRotation;
+                this.lastRotation  = deg;
+                //Log.d("Rotation ~~~~~~~~~~~~~~~~~", "angle : "+this.effectivRotation);
+            }else {
+                this.realRotation = 0.0f;
+                this.lastRotation  = deg;
+                touched = true;
+            }
+            invalidate();
+            return (float) Math.toDegrees(radians);
+        }
+        this.realRotation = 0.0f;
+        touched = false;
+        return 0;
+    }
+
+    //fonction qui permet de zommer Plus ou Moins
     public void zoom(boolean more){
         if(more && zoom <15){
             this.mScaleFactor=1.1f;
@@ -88,34 +151,8 @@ public class Map extends View {
             zoom-=1;
         }
     }
-    public void setCenter(Location l){
-        this.center = l;
-    }
-    public void setAngle(float deg){
-        this.effectivRotation = deg;
-    }
-    private float rotation(MotionEvent event) {
-        if(event.getPointerCount() >= 2) {
-            double delta_x = (event.getX(0) - event.getX(1));
-            double delta_y = (event.getY(0) - event.getY(1));
-            double radians = Math.atan2(delta_y, delta_x);
-            //Log.d("Rotation ~~~~~~~~~~~~~~~~~", delta_x + " ## " + delta_y + " ## " + radians + " ## "
-            //        + Math.toDegrees(radians));
-            float deg = (float) Math.toDegrees(radians);
-            if(deg!=0){
-                this.realRotation = this.lastRotation -deg;
-                this.effectivRotation += this.realRotation;
-                this.lastRotation  = deg;
-                //Log.d("Rotation ~~~~~~~~~~~~~~~~~", "angle : "+this.effectivRotation);
-                invalidate();
-            }else {
-                this.realRotation = 0.0f;
-            }
-            return (float) Math.toDegrees(radians);
-        }
-        return 0;
-    }
 
+    //fonction qui permet de calculer les nouvelles coordonées de la carte
     public void calculNewCoord2(){
         //calcul des nouvelle coordonée
         this.center.setX((this.center.getX()-offsetX));
@@ -124,66 +161,52 @@ public class Map extends View {
         {
 
             for(Path listeLocation : this.magasins){
-                Matrix scaleMatrix = new Matrix();
                 Matrix rotateMatrix = new Matrix();
                 Matrix translateMatrix = new Matrix();
                 RectF rectF = new RectF();
                 listeLocation.computeBounds(rectF, true);
-                scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
+                //scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
                 translateMatrix.setTranslate(-offsetX,-offsetY);
-                rotateMatrix.setRotate(this.realRotation,(float)this.center.getX(),(float)this.center.getY());
-                listeLocation.transform(scaleMatrix);
+                rotateMatrix.setRotate(-this.realRotation,(float)this.center.getX(),(float)this.center.getY());
+                //listeLocation.transform(scaleMatrix);
                 listeLocation.transform(translateMatrix);
                 listeLocation.transform(rotateMatrix);
             }
             for(Path listeLocation : this.courses){
-                Matrix scaleMatrix = new Matrix();
                 Matrix rotateMatrix = new Matrix();
                 Matrix translateMatrix = new Matrix();
                 RectF rectF = new RectF();
                 listeLocation.computeBounds(rectF, true);
-                scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
+                //scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
                 translateMatrix.setTranslate(-offsetX,-offsetY);
-                rotateMatrix.setRotate(this.realRotation,(float)this.center.getX(),(float)this.center.getY());
-                listeLocation.transform(scaleMatrix);
+                rotateMatrix.setRotate(-this.realRotation,(float)this.center.getX(),(float)this.center.getY());
+                //listeLocation.transform(scaleMatrix);
                 listeLocation.transform(translateMatrix);
                 listeLocation.transform(rotateMatrix);
             }
 
         }
-        this.mScaleFactor = 1;
+        //this.mScaleFactor = 1;
         offsetX = 0;
         offsetY = 0;
     }
-
-    public void calculNewCoord(){
-        //calcul des nouvelle coordonée
-        this.center.setX((this.center.getX()-offsetX));
-        this.center.setY((this.center.getY()-offsetY));
-        if(this.map!=null)
+    private void calculZoom() {
+        if(this.magasins!=null)
         {
-            if(this.map.getListe()!=null){
-                for(ArrayList<Location> listeLocation : this.map.getListe()){
-                    for(Location location : listeLocation){
-                        Location ltemp = rotateLocation(location,this.center,this.realRotation);
-                        location.setX((ltemp.getX()-offsetX));
-                        location.setY((ltemp.getY()-offsetY));
-                    }
-                }
+            for(Path listeLocation : this.magasins){
+                Matrix scaleMatrix = new Matrix();
+                scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
             }
-            if(this.courseNode!=null){
-                for(CourseNode cn : this.courseNode){
-                    Location ltemp = rotateLocation(cn.getLocation(),this.center,this.realRotation);
-                    ltemp.setX((ltemp.getX()-offsetX));
-                    ltemp.setY(ltemp.getY()-offsetY);
-                    cn.setLocation(ltemp);
-                }
+            for(Path listeLocation : this.courses){
+                Matrix scaleMatrix = new Matrix();
+                scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
             }
-        }
-        offsetX = 0;
-        offsetY = 0;
-    }
 
+        }
+    }
+    //permet de recalculer les coordonée en fonction d'un angle
     private Location rotateLocation(Location a,Location o,float angle){
         angle*=Math.PI/180;
         double tempX = a.getX()-o.getX();
@@ -192,18 +215,27 @@ public class Map extends View {
                 - tempX * Math.sin (angle) + tempY * Math.cos (angle) + o.getY());
     }
 
-
     protected void onDraw(Canvas canvas){
-        //canvas.scale(mScaleFactor, mScaleFactor);
-        //calculNewCoord2();
         canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
         for(Path p : this.magasins)
             canvas.drawPath(p,p2);
         for(Path p : this.courses)
             canvas.drawPath(p,p3);
         canvas.drawCircle((float)this.center.getX(),(float)this.center.getY(),10,p);
+        //dessin de la boussole
+        if(boussole!=null) {
+            /*canvas.save(); //Saving the canvas and later restoring it so only this image will be rotated.
+            canvas.rotate(-this.northAngle);
+            canvas.drawBitmap(boussole, 50, 50, null);
+            canvas.restore();*/
+
+            Matrix matrix = new Matrix();
+            matrix.setRotate(-this.northAngle, boussole.getHeight() / 2, boussole.getWidth() / 2);
+            canvas.drawBitmap(boussole, matrix, null);
+        }
     }
 
+    //permet de definir un parcours sur la map
     public void setCourse(ArrayList<CourseNode> liste){
         this.courseNode = liste;
         for(CourseNode cn : this.courseNode){
@@ -214,6 +246,7 @@ public class Map extends View {
         settingPath();
     }
 
+    //permet de definir les magasins à desiner
     public void setMap(com.ackincolor.cloudito.entities.Map map){
 
         //recuperation du min Y /X et max Y/X
@@ -242,7 +275,7 @@ public class Map extends View {
                 }
             }
         }
-        Log.d("DEBUG","setting map into view : minX :"+minX+",minY : "+ minY+", MaxX:"+maxX+", maxY"+maxY);
+        //Log.d("DEBUG","setting map into view : minX :"+minX+",minY : "+ minY+", MaxX:"+maxX+", maxY"+maxY);
         // dessin de la carte
         this.invalidate();
         settingPath();
@@ -252,9 +285,11 @@ public class Map extends View {
             extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            mScaleFactor = detector.getScaleFactor();
-            // Don't let the object get too small or too large.
-            mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 1.2f));
+            //Log.d("DEBUG MAP", )
+            //
+            //mScaleFactor *= detector.getScaleFactor();
+            //mScaleFactor = Math.max(0.9f, Math.min(mScaleFactor, 1.2f));
+
             return false;
         }
     }
@@ -281,7 +316,16 @@ public class Map extends View {
     public com.ackincolor.cloudito.entities.Map getMap() {
         return map;
     }
+    private Bitmap getBitmap(int drawableRes) {
+        Drawable drawable = getResources().getDrawable(drawableRes);
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
 
+        return bitmap;
+    }
     private void settingPath(){
         this.magasins = new ArrayList<>();
         this.courses = new ArrayList<>();
