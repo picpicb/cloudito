@@ -21,7 +21,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CourseRetrofitController {
-    private String BASE_URL = "http://172.31.254.54:3084/";
+    private String BASE_URL = "http://Ackincolor.ddns.net:3084/";
     private Gson gson;
     private CourseManager courseManager;
 
