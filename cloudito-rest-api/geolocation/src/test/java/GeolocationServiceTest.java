@@ -80,5 +80,11 @@ public class GeolocationServiceTest {
         assertThat(loc.getLocation().getY(),closeTo(33.3, 0.0));
     }
 
+    @Test(expected = ApiException.class)
+    public void whenUnexistingUser_ExceptionNotFound() throws ApiException {
+        Long idCustomer = 2L;
+        CustomerLocation loc = geolocationService.getCustomerLocation(idCustomer);
+    }
+
 
 }
