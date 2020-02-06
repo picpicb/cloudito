@@ -7,7 +7,9 @@ import esipe.fr.model.Location;
 import esipe.fr.repositories.CustomerLocationRepository;
 import esipe.fr.repositories.CustomerRepository;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -52,6 +54,8 @@ public class GeolocationServiceTest {
 
     @Before
     public void setUp() {
+        
+        // whenExistingUser_locationShouldBeFound setup
         Customer jm = new Customer();
         jm.setId(1L);
         jm.setName("jm");
@@ -70,6 +74,22 @@ public class GeolocationServiceTest {
 
         Mockito.when(customerLocationRepository.findFirstByCustomerIdOrderByLastUpdateDesc(jm.getId()))
                 .thenReturn(custoLoc);
+        
+        // No location found setup
+        Customer jm2 = new Customer();
+        jm2.setId(2L);
+        jm.setName("jm2");
+        CustomerLocation custoLoc2 = new CustomerLocation();
+        custoLoc2.setCustomer(jm2);
+        custoLoc2.setId(2L);
+        custoLoc2.setLastUpdate(new Date());
+        custoLoc2.setLocation(null);
+
+        Mockito.when(customerRepository.findById(jm2.getId())).thenReturn(java.util.Optional.of(jm2));
+
+
+
+
     }
 
     @Test
@@ -80,11 +100,23 @@ public class GeolocationServiceTest {
         assertThat(loc.getLocation().getY(),closeTo(33.3, 0.0));
     }
 
-    @Test(expected = ApiException.class)
-    public void whenUnexistingUser_ExceptionNotFound() throws ApiException {
-        Long idCustomer = 2L;
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Test
+    public void whenNoCustomer_ExceptionNotFound() throws ApiException {
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("No Customer found");
+        Long idCustomer = 3L;
         CustomerLocation loc = geolocationService.getCustomerLocation(idCustomer);
     }
 
 
+    @Test
+    public void whenNoLocation_ExceptionNotFound() throws ApiException {
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("No Location found");
+        Long idCustomer = 2L;
+        CustomerLocation loc = geolocationService.getCustomerLocation(idCustomer);
+    }
 }
