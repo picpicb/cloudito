@@ -20,7 +20,7 @@ public class AccessPointService {
     private Logger logger = LogManager.getLogger("AccessPointService");
 
     public AccessPoint addAccessPoints(AccessPoint accessPoint) throws ApiException {
-        if(accessPoint.getId() != null && accessPoint.getLocation() != null
+        if(accessPoint.getLocation() != null
                 && accessPoint.getMac() != null
                 && accessPoint.getSsid() != null){
             accessPointRepository.save(accessPoint);

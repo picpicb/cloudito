@@ -1,5 +1,6 @@
 package esipe.fr.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 public class Location {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     private double x;
     private double y;
@@ -21,7 +23,7 @@ public class Location {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -29,7 +31,7 @@ public class Location {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 

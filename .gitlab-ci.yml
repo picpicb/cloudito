@@ -5,7 +5,9 @@ stages:
   - build
   - test
   - package
-
+cache:
+  paths:
+    - .m2/repository
 variables:
   USER_GITLAB: jm.frau
   REPO: cloudito-rest-api
@@ -13,8 +15,8 @@ variables:
   DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
   ANDROID_COMPILE_SDK: "28"
   APP_NAME: "Cloudito"
-  #MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-  #MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
   
 maven-build:
   image: maven:3-jdk-8
@@ -27,11 +29,11 @@ maven-build:
     - geolocation
     - Scope2
     - Scope4
-  script: "mvn package -B -f ./cloudito-rest-api/pom.xml"
+  script: "mvn package $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
   artifacts:
     paths:
       - cloudito-rest-api/geolocation/target/*.jar
-      - cloudito-rest-api/course/target/*.jar
+      #- cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
 
 deploy_back:
@@ -50,25 +52,13 @@ deploy_back:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   script:
-    #- docker login --username=testuser --password=testpassword cloudito.pre-prod.com:5000
-    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api/geo ./geolocation
-    #- docker build -t cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main ./main
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation ./cloudito-rest-api/geolocation
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course ./cloudito-rest-api/course
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification ./cloudito-rest-api/notification
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
-    #- docker tag cloudito-rest-api-geo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-geo
-    #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-main
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification
-    #- docker tag cloudito-rest-api-custo cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api-custo
-    #- docker push cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api/cloudito-rest-api-maincusto
-    #- docker tag cloudito-rest-api locl:5000/cloudito-rest-api
-    #- docker -H cloudito.pre-prod.com:2375 run -p 80:80 -d cloudito.gitlab.com:4567/jm.frau/cloudito-rest-api
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation NewStack_cloudito-geolocation
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-course NewStack_cloudito-course
 
 deploy-node:
   image: docker:18-dind
@@ -121,8 +111,15 @@ build:develop:
   <<: *build
   image: jangrewe/gitlab-ci-android
   only:
-    - develop
+    changes:
+      - cloudito-android/**/*
+  except:
+    - master
   script:
+    - cd cloudito-android/
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+    - chmod +x ./gradlew
+    - apt-get update -y && apt-get install wget -y
     - ./gradlew assembleDebug
 
 build:release:
@@ -197,7 +194,10 @@ package:develop:
   stage: package
   environment: Development
   only:
-    - develop
+    changes:
+      - cloudito-android/**/*
+  except:
+    - master
   script:
     - mv app/build/outputs/apk/debug/app-debug.apk ./exported/${APP_NAME}-v$VERSION_NAME-debug.apk
   dependencies:

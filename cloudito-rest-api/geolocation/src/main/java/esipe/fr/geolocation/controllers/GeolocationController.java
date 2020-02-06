@@ -20,7 +20,7 @@ public class GeolocationController {
 
 
     @RequestMapping(value = "/customers/{customerID}/location", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "Get location the last location of the customer", nickname = "getCustomerLocation", response = CustomerLocation.class, tags={ "Geo", })
+    @ApiOperation(value = "Get the last location of the customer", nickname = "getCustomerLocation", response = CustomerLocation.class, tags={"Geo"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK - Customer Location", response = CustomerLocation.class) })
     @ResponseBody
@@ -33,7 +33,7 @@ public class GeolocationController {
 
 
     @RequestMapping(value = "/customers/{customerID}/location", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "Add a customer location", nickname = "addCustomerLocation", response = CustomerLocation.class, tags={ "Geo", })
+    @ApiOperation(value = "Add a customer location", nickname = "addCustomerLocation", response = CustomerLocation.class, tags={"Geo"})
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "CREATED - Customer location", response = CustomerLocation.class)})
     @ResponseBody

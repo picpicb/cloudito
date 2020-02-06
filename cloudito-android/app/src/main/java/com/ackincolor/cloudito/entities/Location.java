@@ -44,4 +44,13 @@ public class Location {
     public void setY(double y) {
         this.y = y;
     }
+
+    public boolean equals(Location l){
+        if(l.getX()==this.x && l.getY()==this.y && l.getFloor() == this.floor)
+            return true;
+        return false;
+    }
+    public String toString(){
+        return this.x +" , " + this.y + " , " + this.floor;
+    }
 }

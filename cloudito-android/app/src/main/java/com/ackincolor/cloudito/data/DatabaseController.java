@@ -4,13 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.ackincolor.cloudito.CourseService.CourseCache.CourseManager;
 import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationCustomerLocationManager;
 import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationManager;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static DatabaseController sInstance;
     private static final String DATABASE_NAME = "db.sqlite";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7;
 
     public static synchronized DatabaseController getInstance(Context context) {
         if (sInstance == null) { sInstance = new DatabaseController(context); }
@@ -23,7 +24,10 @@ public class DatabaseController extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // PARCOURS
-        db.execSQL(ParcoursManager.CREATE_TABLE_NOEUDS);
+        db.execSQL(CourseManager.CREATE_TABLE_MAP);
+
+        // NOEUDS PARCOURS
+        db.execSQL(CourseManager.CREATE_TABLE_COURSENOEUDS);
 
         // ACCESS POINTS
         db.execSQL(GeolocationManager.CREATE_TABLE_ACCESS_POINTS);
@@ -34,7 +38,8 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+ParcoursManager.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+ CourseManager.TABLE_NAME2);
+        db.execSQL("DROP TABLE IF EXISTS "+ CourseManager.TABLE_NAME1);
         db.execSQL("DROP TABLE IF EXISTS "+GeolocationManager.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS "+ GeolocationCustomerLocationManager.TABLE_NAME);
         onCreate(db);

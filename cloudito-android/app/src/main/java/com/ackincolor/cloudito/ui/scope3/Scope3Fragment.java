@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ackincolor.cloudito.CourseService.CourseCache.CourseManager;
 import com.ackincolor.cloudito.CourseService.CourseInterface.CourseRetrofitController;
 import com.ackincolor.cloudito.R;
 import com.ackincolor.cloudito.controllers.ParcoursController;
+import com.ackincolor.cloudito.entities.Course;
 import com.ackincolor.cloudito.ui.components.Map;
 
 import java.util.UUID;
@@ -30,16 +32,11 @@ public class Scope3Fragment extends Fragment {
         scope3ViewModel =
                 ViewModelProviders.of(this).get(Scope3ViewModel.class);
         View root = inflater.inflate(R.layout.fragment_scope_3, container, false);
-        final TextView textView = root.findViewById(R.id.text_scope_3);
         final Map mapComponent = root.findViewById(R.id.custView);
-        scope3ViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        this.courseRetrofitController = new CourseRetrofitController();
+        //example
+        this.courseRetrofitController = new CourseRetrofitController(new CourseManager(getContext()));
         this.courseRetrofitController.getStoresMap(mapComponent);
+        this.courseRetrofitController.getCourseNodesBtwAandB(mapComponent,3085,1710);
         return root;
     }
 }
