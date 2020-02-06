@@ -45,6 +45,7 @@ public class Map extends View {
     private Bitmap boussole;
     private double distance;
     private boolean touched = false;
+    private boolean touched2 = false;
 
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -122,21 +123,24 @@ public class Map extends View {
                 touched = true;
             }
             float deg = (float) Math.toDegrees(radians);
-            if(deg!=0 && touched){
+            if(deg!=0 && touched2){
                 this.realRotation = this.lastRotation -deg;
                 this.northAngle += this.realRotation;
                 this.lastRotation  = deg;
-                //Log.d("Rotation ~~~~~~~~~~~~~~~~~", "angle : "+this.effectivRotation);
+                //Log.d("Rotation ~~~~~~~true~~~~~~~", "angle : "+this.realRotation);
             }else {
                 this.realRotation = 0.0f;
                 this.lastRotation  = deg;
-                touched = true;
+                //Log.d("Rotation ~~~~~~~false~~~~~~~", "angle : "+this.lastRotation);
+                touched2 = true;
             }
             invalidate();
             return (float) Math.toDegrees(radians);
         }
         this.realRotation = 0.0f;
+        this.mScaleFactor = 1f;
         touched = false;
+        touched2 = false;
         return 0;
     }
 
