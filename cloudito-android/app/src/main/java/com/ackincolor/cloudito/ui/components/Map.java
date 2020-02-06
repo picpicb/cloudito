@@ -36,7 +36,6 @@ public class Map extends View {
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureListener;
     private float mScaleFactor = 1.f;
-    private float lastFactor = 0.f;
     private float lastRotation = 0.0f;
     private float realRotation = 0.0f;
     private Location center;
