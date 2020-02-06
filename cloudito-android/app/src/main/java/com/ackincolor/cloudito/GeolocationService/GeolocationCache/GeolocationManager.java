@@ -51,7 +51,7 @@ public class GeolocationManager {
     public void insertAccessPoints(ArrayList<AccessPoint> arrayAccessPoints){
         for(AccessPoint accessPoint : arrayAccessPoints){
             ContentValues values = new ContentValues();
-            values.put(KEY_MAC_ADDRESS,accessPoint.getMacAdress());
+            values.put(KEY_MAC_ADDRESS,accessPoint.getMac());
             values.put(KEY_ID_LOCATION,accessPoint.getLocation().getId());
             values.put(KEY_FLOOR,accessPoint.getLocation().getFloor());
             values.put(KEY_X,accessPoint.getLocation().getX());

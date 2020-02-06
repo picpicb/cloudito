@@ -9,13 +9,14 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface GeolocationRetrofitService {
 
-    @GET("geolocation/accessPoints")
+    @GET("accesspoints")
     Call<ArrayList<AccessPoint>> getAccessPoints();
 
-    @POST("geolocation/customerLocation")
-    Call<Location> sendCustomerLocation(@Body Location location);
+    @POST("/customer/{customerId}/location")
+    Call<Location> sendCustomerLocation(@Path("customerId") int customerId,@Body Location location);
 
 }

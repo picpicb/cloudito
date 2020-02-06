@@ -11,7 +11,7 @@ import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationMa
 public class DatabaseController extends SQLiteOpenHelper {
     private static DatabaseController sInstance;
     private static final String DATABASE_NAME = "db.sqlite";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     public static synchronized DatabaseController getInstance(Context context) {
         if (sInstance == null) { sInstance = new DatabaseController(context); }
