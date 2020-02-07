@@ -67,7 +67,7 @@ public class GeolocationAndroidService implements CourseService<ArrayList<Course
         db.insertAccessPoints(accessPointArrayList);
         db.close();
 
-        this.recordLocation();
+        //this.recordLocation();
     }
 
     // GET ACCESS POITS FROM SQLITE
@@ -265,7 +265,7 @@ public class GeolocationAndroidService implements CourseService<ArrayList<Course
     }
 
     // GET FROM SQLITE LOCATION
-    private Location getCustomerLocation(){
+    public Location getCustomerLocation(){
         GeolocationCustomerLocationManager db = new GeolocationCustomerLocationManager(context);
         db.open();
         Location location = db.getCustomerLocation();
