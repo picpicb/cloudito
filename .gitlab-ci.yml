@@ -62,7 +62,7 @@ deploy_back:
 
 
 test-node:
-  image: docker:18-dind
+  image: node: latest
   stage: deploy-node
   services:
     - name: docker:18-dind
