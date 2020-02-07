@@ -1,4 +1,5 @@
 stages:
+  - test
   - build-back
   - deploy-back
   - deploy-node
@@ -29,15 +30,20 @@ maven-build:
     - geolocation
     - Scope2
     - Scope4
-  script: "mvn verify $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
+  script: "mvn package $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
   artifacts:
     paths:
       - cloudito-rest-api/geolocation/target/*.jar
       #- cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
+
+java:
+  stage: test
+  script: "mvn verify $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
+  artifacts:
     reports:
       junit:
-        - cloudito-rest-api/geolocation/target/GeolocationServiceTest.xml
+        - cloudito-rest-api/geolocation/target/*.xml
 
 
 deploy_back:
