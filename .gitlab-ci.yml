@@ -72,8 +72,6 @@ test-node:
     - geolocation
     - Scope2
     - Scope4
-  before_script:
-    - apk --update add nodejs
   script:
     - cd ./cloudito-rest-api/mappingService
     - npm i
