@@ -11,7 +11,6 @@ import java.util.Date;
 public class CustomerLocation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="LOCATION_ID")
