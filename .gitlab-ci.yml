@@ -29,7 +29,7 @@ maven-build:
     - geolocation
     - Scope2
     - Scope4
-  script: "mvn package $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
+  script: "mvn verify $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
   artifacts:
     paths:
       - cloudito-rest-api/geolocation/target/*.jar
