@@ -138,27 +138,6 @@ public class GeolocationServiceTest {
         assertThat(location.getLocation().getY(),closeTo(33.3, 0.0));
     }
 
-    @Test
-    public void whenNoLocationUpdateDate_ExceptionContentError() throws ApiException {
-        exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("content error");
-        Long idCustomer = 1L;
-        Customer jm = new Customer();
-        jm.setId(1L);
-        jm.setName("jm");
-        Location loc = new Location();
-        loc.setFloor(0);
-        loc.setX(22.2);
-        loc.setY(33.3);
-
-        CustomerLocation custoLoc = new CustomerLocation();
-        custoLoc.setCustomer(jm);
-        custoLoc.setId(1L);
-        //DATE IS NULL
-        custoLoc.setLastUpdate(null);
-        custoLoc.setLocation(loc);
-        CustomerLocation location = geolocationService.addCustomerLocation(idCustomer,custoLoc);
-    }
 
     @Test
     public void whenNoLocationData_ExceptionContentError() throws ApiException {

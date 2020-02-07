@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import esipe.fr.repositories.CustomerLocationRepository;
 
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -43,8 +44,9 @@ public class GeolocationService {
 
     public CustomerLocation addCustomerLocation(Long customerId, CustomerLocation customerLocation) throws ApiException {
         Optional<Customer> customer = customerRepository.findById(customerId);
+        customerLocation.setLastUpdate(new Date());
         if(customer.isPresent()){
-            if(customerLocation.getLastUpdate() != null && customerLocation.getLocation() != null){
+            if(customerLocation.getLocation() != null){
                 customerLocation.setCustomer(customer.get());
                 customerLocationRepository.save(customerLocation);
                 logger.info("CREATE customer location saved : "+ customerLocation.getId());
