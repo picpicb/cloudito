@@ -5,7 +5,7 @@
 
     <groupId>esipe.fr</groupId>
     <artifactId>ClouditoService</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
     <packaging>pom</packaging>
     <name>ClouditoService</name>
     <description>API pour l'application Android Cloudito</description>
@@ -87,4 +87,6 @@
             <version>0.9.1</version>
         </dependency>
     </dependencies>
+
+
 </project>
