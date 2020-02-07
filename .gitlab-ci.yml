@@ -35,6 +35,10 @@ maven-build:
       - cloudito-rest-api/geolocation/target/*.jar
       #- cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
+    reports:
+      junit:
+        - cloudito-rest-api/geolocation/target/TEST-*.xml
+
 
 deploy_back:
   image: docker:18-dind
