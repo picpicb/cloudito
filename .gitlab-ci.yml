@@ -221,7 +221,7 @@ android-package:develop:
   script:
     - mv app/build/outputs/apk/debug/app-debug.apk ./exported/${APP_NAME}-v$VERSION_NAME-debug.apk
   dependencies:
-    - build:develop
+    - android-build:develop
   artifacts:
     expire_in: 7 days
     paths:
@@ -236,7 +236,7 @@ android-package:release:unsigned:
   script:
     - mv app/build/outputs/apk/release/app-release-unsigned.apk ./exported/${APP_NAME}-v$VERSION_NAME-release-unsigned.apk
   dependencies:
-    - build:release
+    - android-build:release
   artifacts:
     expire_in: 1 month
     paths:
