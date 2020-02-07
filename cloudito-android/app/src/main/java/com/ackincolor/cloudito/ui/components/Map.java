@@ -27,18 +27,18 @@ import java.util.ArrayList;
 
 public class Map extends View {
     private com.ackincolor.cloudito.entities.Map map;
-    private ArrayList<CourseNode> courseNode;
-    private ArrayList<Path> magasins;
-    private ArrayList<Path> courses;
+    public ArrayList<CourseNode> courseNode;
+    public ArrayList<Path> magasins;
+    public ArrayList<Path> courses;
     private Paint p, p2, p3,p4;
     private float offsetX,offsetY;
     private float zoomRatio;
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureListener;
-    private float mScaleFactor = 1.f;
+    public float mScaleFactor = 1.f;
     private float lastRotation = 0.0f;
     private float realRotation = 0.0f;
-    private Location center;
+    public Location center;
     private int zoom = 0;
     private float northAngle = 0.0f;
     private Bitmap boussole;
@@ -159,6 +159,7 @@ public class Map extends View {
         //calcul des nouvelle coordonée
         this.center.setX((this.center.getX()-offsetX));
         this.center.setY((this.center.getY()-offsetY));
+
         if(this.magasins!=null)
         {
 
@@ -205,6 +206,9 @@ public class Map extends View {
                 scaleMatrix.setScale(this.mScaleFactor, this.mScaleFactor,(float)this.center.getX(),(float)this.center.getY());
                 listeLocation.transform(scaleMatrix);
             }
+            System.out.println("mScaleFactor"+mScaleFactor);
+            System.out.println("this.center.getX()"+this.center.getX());
+            System.out.println("this.center.getY()"+this.center.getY());
 
         }
     }
@@ -244,8 +248,12 @@ public class Map extends View {
             cn.setX(cn.getLocation().getX()-900);
             cn.setY(cn.getLocation().getY()-700);
         }
-        invalidate();
-        settingPath();
+        this.center.setX(this.courseNode.get(0).getLocation().getX());
+        this.center.setY(this.courseNode.get(0).getLocation().getY());
+        System.out.println(this.courseNode);
+
+        //invalidate();
+        //settingPath();
     }
 
     //permet de definir les magasins à desiner
@@ -368,5 +376,23 @@ public class Map extends View {
                 //canvas.drawPath(path, p3);
             }
         }
+    }
+
+    public void simulateForward(ArrayList<CourseNode> liste) {
+            this.courseNode = liste;
+            for(CourseNode cn : this.courseNode){
+                cn.setX(cn.getLocation().getX()-900);
+                cn.setY(cn.getLocation().getY()-700);
+                this.center.setX(this.courseNode.get(0).getLocation().getX());
+                this.center.setY(this.courseNode.get(0).getLocation().getY());
+
+                invalidate();
+                settingPath();
+            }
+
+    }
+
+    public ArrayList<CourseNode> getCourseNode(){
+        return this.courseNode;
     }
 }
