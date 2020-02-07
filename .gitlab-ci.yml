@@ -37,7 +37,7 @@ maven-build:
       - cloudito-rest-api/notification/target/*.jar
 
 deploy_back:
-  image: docker:18-dind
+  image: node:latest
   stage: deploy-back
   only:
     changes:
