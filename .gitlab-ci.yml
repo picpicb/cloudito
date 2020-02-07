@@ -37,7 +37,7 @@ maven-build:
       - cloudito-rest-api/notification/target/*.jar
     reports:
       junit:
-        - cloudito-rest-api/geolocation/target/TEST-*.xml
+        - cloudito-rest-api/geolocation/target/GeolocationServiceTest.xml
 
 
 deploy_back:
