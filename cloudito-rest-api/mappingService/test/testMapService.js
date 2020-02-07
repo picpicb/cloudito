@@ -4,7 +4,7 @@ var request = require('request');
 var service = require('../service/mapService')
 
 it('map content', function(done) {
-    expect(service.getNodes());
+    expect(service.getNodes()).to.be.an("Array");
     done()
 });
 it('course content', function(done) {
