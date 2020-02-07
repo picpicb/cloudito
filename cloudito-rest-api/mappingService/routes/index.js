@@ -17,7 +17,7 @@ router.get('/map/course/:A/:B',function(req,res,next) {
   var A = req.param("A",0);
   var B = req.param("B",0);
   res.send(service.getCourse(A,B));
-}
+})
 
 router.get('/map/course/:customerid',function(req,res,next) {
   res.send({});
