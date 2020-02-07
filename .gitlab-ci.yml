@@ -104,7 +104,7 @@ deploy-node:
 ########################################################################
 # BUILD
 
-.build_template: &build
+.build_template: &android-build
   image: jangrewe/gitlab-ci-android
   stage: android-build
   only:
@@ -127,8 +127,8 @@ deploy-node:
     - .m2/
     - .gradle/
 
-build:develop:
-  <<: *build
+android-build:develop:
+  <<: *android-build
   image: jangrewe/gitlab-ci-android
   only:
     changes:
@@ -142,8 +142,8 @@ build:develop:
     - apt-get update -y && apt-get install wget -y
     - ./gradlew assembleDebug
 
-build:release:
-  <<: *build
+android-build:release:
+  <<: *android-build
   image: jangrewe/gitlab-ci-android
   only:
     - master
@@ -158,7 +158,7 @@ build:release:
 ########################################################################
 # TESTS
 
-.test_template: &test
+.test_template: &android-test
   image: jangrewe/gitlab-ci-android
   stage: android-test
   only:
@@ -170,14 +170,14 @@ build:release:
     - Scope2
     - Scope4
 
-test:unit:
-  <<: *test
+android-test:unit:
+  <<: *android-test
   script:
     - cd cloudito-android/
     - ./gradlew test
 
-test:functional:
-  <<: *test
+android-test:functional:
+  <<: *android-test
   script:
     - echo "functional test"
 #    - wget --quiet --output-document=android-wait-for-emulator https://raw.githubusercontent.com/travis-ci/travis-cookbooks/0f497eb71291b52a703143c5cd63a217c8766dc9/community-cookbooks/android-sdk/files/default/android-wait-for-emulator
@@ -194,7 +194,7 @@ test:functional:
 ########################################################################
 # PACKAGE
 
-.package_template: &package
+.package_template: &android-package
   image: jangrewe/gitlab-ci-android
   only:
     changes:
@@ -209,8 +209,8 @@ test:functional:
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
     - mkdir -p exported
 
-package:develop:
-  <<: *package
+android-package:develop:
+  <<: *android-package
   stage: android-package
   environment: Development
   only:
@@ -227,9 +227,9 @@ package:develop:
     paths:
       - exported
 
-package:release:unsigned:
-  <<: *package
-  stage: package
+android-package:release:unsigned:
+  <<: *android-package
+  stage: android-package
   environment: Release
   only:
     - master
