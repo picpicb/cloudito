@@ -18,6 +18,11 @@ router.get('/map/course/:A/:B',function(req,res,next) {
   var B = req.param("B",0);
   res.send(service.getCourse(A,B));
 })
+
+router.get('/map/course/:customerid',function(req,res,next) {
+  res.send({});
+})
+
 router.get('/map/stores',function(req,res,next) {
     res.send(service.getStores());
 })
