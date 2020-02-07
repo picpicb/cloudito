@@ -60,6 +60,26 @@ deploy_back:
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation NewStack_cloudito-geolocation
 
+
+test-node:
+  image: docker:18-dind
+  stage: deploy-node
+  services:
+    - name: docker:18-dind
+      command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
+  except:
+    - Scope3
+    - geolocation
+    - Scope2
+    - Scope4
+  before_script:
+    - apk --update add nodejs
+  script:
+    - cd ./cloudito-rest-api/mappingService
+    - npm i
+    - npm test
+
+
 deploy-node:
   image: docker:18-dind
   stage: deploy-node
