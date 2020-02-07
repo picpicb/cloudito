@@ -2,9 +2,9 @@ stages:
   - build-back
   - deploy-back
   - deploy-node
-  - build
-  - test
-  - package
+  - android-build
+  - android-test
+  - android-package
 cache:
   paths:
     - .m2/repository
@@ -62,7 +62,7 @@ deploy_back:
 
 
 test-node:
-  image: docker:18-dind
+  image: node:latest
   stage: deploy-node
   services:
     - name: docker:18-dind
@@ -106,7 +106,7 @@ deploy-node:
 
 .build_template: &build
   image: jangrewe/gitlab-ci-android
-  stage: build
+  stage: android-build
   only:
     changes:
       - cloudito-android/**/*
@@ -160,7 +160,7 @@ build:release:
 
 .test_template: &test
   image: jangrewe/gitlab-ci-android
-  stage: test
+  stage: android-test
   only:
     changes:
       - cloudito-android/**/*
@@ -211,7 +211,7 @@ test:functional:
 
 package:develop:
   <<: *package
-  stage: package
+  stage: android-package
   environment: Development
   only:
     changes:
