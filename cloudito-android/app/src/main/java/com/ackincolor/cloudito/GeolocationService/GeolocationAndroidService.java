@@ -231,29 +231,30 @@ public class GeolocationAndroidService implements CourseService<ArrayList<Course
     @Override
     public void onResponse(ArrayList<CourseNode> response) {
 
-        nearestPoint(response);
-        insertCustomerLocation(this.location);
+        insertCustomerLocation(nearestPoint(response));
     }
 
-    public void nearestPoint(ArrayList<CourseNode> arrayCourse){
+    public CourseNode nearestPoint(ArrayList<CourseNode> arrayCourse){
 
         double min = 4000; // X CANT BE SUPERIOR TO 4000
-        Location locationMin = null;
+
+        CourseNode finalCn = null;
+
         for(CourseNode cn : arrayCourse){
             double dist = (Math.pow(cn.getLocation().getX(),2)-Math.pow(this.location.getX(),2))
                     +(Math.pow(cn.getLocation().getY(),2)-Math.pow(this.location.getY(),2))  ;
             if(dist<min){
                 min = dist;
-                locationMin = cn.getLocation();
+                finalCn = cn;
             }
         }
 
-        Log.d("NEAREST POINT SVP", "nearestPoint: "+locationMin.getX()+"-"+locationMin.getY());
-        this.location = locationMin;
+       Log.d("NEAREST POINT SVP", "nearestPoint: "+finalCn.getLocation().getX()+"-"+finalCn.getLocation().getY());
+       return finalCn;
     }
 
     // INSERT INTO SQLITE
-    private void insertCustomerLocation(Location location){
+    private void insertCustomerLocation(CourseNode location){
         if(location == null){
             Log.d("DEBUG GEOLOCATION ANDROID SERVICE","CUSTOMER LOCATION IS NULL");
             return;
@@ -265,17 +266,17 @@ public class GeolocationAndroidService implements CourseService<ArrayList<Course
     }
 
     // GET FROM SQLITE LOCATION
-    public Location getCustomerLocation(){
+    public CourseNode getCustomerLocation(){
         GeolocationCustomerLocationManager db = new GeolocationCustomerLocationManager(context);
         db.open();
-        Location location = db.getCustomerLocation();
+        CourseNode cn = db.getCustomerLocation();
         db.close();
-        return location;
+        return cn;
     }
 
     // ENVOIE VERS LE BACKGROUND -> sendCustomerLocation
     public void sendCustomerLocation(){
-        Location location = this.getCustomerLocation();
+        CourseNode location = this.getCustomerLocation();
         GeolocationRetrofitController retrofitController = new GeolocationRetrofitController(context,this);
         retrofitController.sendCustomerLocation(location);
     }
