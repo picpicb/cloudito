@@ -6,6 +6,7 @@ import android.util.Log;
 import com.ackincolor.cloudito.GeolocationService.GeolocationAndroidService;
 import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationManager;
 import com.ackincolor.cloudito.entities.AccessPoint;
+import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 import com.google.gson.Gson;
 
@@ -65,7 +66,7 @@ public class GeolocationRetrofitController {
         });
     }
 
-    public void sendCustomerLocation(Location location){
+    public void sendCustomerLocation(CourseNode location){
         this.gson = new Gson();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -78,16 +79,15 @@ public class GeolocationRetrofitController {
 
         GeolocationRetrofitService service = retrofit.create(GeolocationRetrofitService.class);
 
-        service.sendCustomerLocation(1,location).enqueue(new Callback<Location>() {
+        service.sendCustomerLocation(1,location).enqueue(new Callback<CourseNode>() {
             @Override
-            public void onResponse(Call<Location> call, Response<Location> response) {
+            public void onResponse(Call<CourseNode> call, Response<CourseNode> response) {
                 androidService.callBackSendCustomerLocation();
             }
 
             @Override
-            public void onFailure(Call<Location> call, Throwable t) {
+            public void onFailure(Call<CourseNode> call, Throwable t) {
                 t.printStackTrace();
-                Log.d("DEBUG GEOLOCATION CONTROLLER", "FAIL SEND CUSTOMER LOCATION");
             }
         });
     }

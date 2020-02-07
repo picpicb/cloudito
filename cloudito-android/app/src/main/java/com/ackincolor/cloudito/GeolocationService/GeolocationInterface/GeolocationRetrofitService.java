@@ -1,6 +1,7 @@
 package com.ackincolor.cloudito.GeolocationService.GeolocationInterface;
 
 import com.ackincolor.cloudito.entities.AccessPoint;
+import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 
 import java.util.ArrayList;
@@ -17,6 +18,6 @@ public interface GeolocationRetrofitService {
     Call<ArrayList<AccessPoint>> getAccessPoints();
 
     @POST("/customer/{customerId}/location")
-    Call<Location> sendCustomerLocation(@Path("customerId") int customerId,@Body Location location);
+    Call<CourseNode> sendCustomerLocation(@Path("customerId") int customerId,@Body CourseNode location);
 
 }

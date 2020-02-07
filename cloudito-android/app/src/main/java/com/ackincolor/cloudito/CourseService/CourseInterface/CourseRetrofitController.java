@@ -106,6 +106,7 @@ public class CourseRetrofitController {
             @Override
             public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
                 if(response.isSuccessful()){
+                    Log.d("ARRAYLIST CN", "onResponse: "+response.body());
                     cs.onResponse(response.body());
                 }
             }
