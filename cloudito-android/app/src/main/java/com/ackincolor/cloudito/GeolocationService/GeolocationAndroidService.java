@@ -10,16 +10,25 @@ import android.net.wifi.WifiManager;
 import android.net.wifi.rtt.WifiRttManager;
 import android.util.Log;
 
+import com.ackincolor.cloudito.CourseService.CourseCache.CourseManager;
+import com.ackincolor.cloudito.CourseService.CourseInterface.CourseRetrofitController;
+import com.ackincolor.cloudito.CourseService.CourseInterface.CourseService;
 import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationCustomerLocationManager;
 import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationManager;
 import com.ackincolor.cloudito.GeolocationService.GeolocationInterface.GeolocationRetrofitController;
 import com.ackincolor.cloudito.entities.AccessPoint;
+import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
+import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
+import com.lemmingapex.trilateration.TrilaterationFunction;
+
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
+import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeolocationAndroidService {
+public class GeolocationAndroidService implements CourseService<ArrayList<CourseNode>> {
 
     // CONTEXT
     private Context context;
@@ -33,6 +42,9 @@ public class GeolocationAndroidService {
 
     // ACCESS POINTS RESULTS
     private List<ScanResult> mScanResults;
+
+    // LOCATION
+    private Location location;
 
     // CONSTRUCTOR
     public GeolocationAndroidService(Context context) {
@@ -54,6 +66,8 @@ public class GeolocationAndroidService {
         db.open();
         db.insertAccessPoints(accessPointArrayList);
         db.close();
+
+        this.recordLocation();
     }
 
     // GET ACCESS POITS FROM SQLITE
@@ -66,7 +80,7 @@ public class GeolocationAndroidService {
     }
 
     // START SCANNING AND GETTING CLOSEST ACCESSPOINTS
-    private void recordLocation(){
+    public void recordLocation(){
 
         Log.d("DEBUG GEOLOCATION","STARTING.");
         Log.d("DEBUG GEOLOCATION","STARTING..");
@@ -123,15 +137,22 @@ public class GeolocationAndroidService {
         // GET THE KNOWN ACCESS POINT FOM BD
         ArrayList<AccessPoint> accessPoints = this.getAccessPointsFromSQLite();
 
+        /*for(AccessPoint ap : accessPoints){
+            Log.d("COORDINATES", "getThreeMaxPowerSignal: "+ap.getLocation().getX()+"-"+ap.getLocation().getY()+"-"+ap.getMac());
+        }*/
+
         AccessPoint[] finalAccessPoint = {null,null,null};
         ScanResult[] finalScans = {null,null,null};
         int max = -100;
         ScanResult maxObject = null;
         AccessPoint maxAccessPoint = null;
+
+
         for(int i=0; i<finalAccessPoint.length; i++){
             for(ScanResult scan : mScanResults){
                 for(AccessPoint accessPoint : accessPoints){
-                    if(scan.BSSID.equalsIgnoreCase(accessPoint.getMacAdress())){
+                    //Log.d("SCANS", "getThreeMaxPowerSignal: "+scan.BSSID+"-"+accessPoint.getMac());
+                    if(scan.BSSID.equalsIgnoreCase(accessPoint.getMac())){
                         // get Max 3 times and delete the max each time.
                         if(scan.level >= max){
                             max = scan.level;
@@ -148,6 +169,8 @@ public class GeolocationAndroidService {
             max = -100;
             accessPoints.remove(maxAccessPoint);
         }
+
+        //Log.d("ARRAY", "getThreeMaxPowerSignal: "+finalAccessPoint[0]+"-"+finalAccessPoint[1]+"-"+finalAccessPoint[2]);
 
         double[] finalDistance = {0.0,0.0,0.0};
         for(int i=0;i<finalScans.length;i++){
@@ -187,7 +210,46 @@ public class GeolocationAndroidService {
     private void calculateLocation(AccessPoint[] arrayAccessPoint,double[] arrayDistance){
         Location location = null;
 
-        insertCustomerLocation(location);
+        // init
+        double[][] positions = new double[][] {{arrayAccessPoint[0].getLocation().getX(),arrayAccessPoint[0].getLocation().getY()},
+                {arrayAccessPoint[1].getLocation().getX(),arrayAccessPoint[1].getLocation().getY()},
+                {arrayAccessPoint[2].getLocation().getX(),arrayAccessPoint[2].getLocation().getY()}};
+
+        NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, arrayDistance), new LevenbergMarquardtOptimizer());
+        LeastSquaresOptimizer.Optimum optimum = solver.solve();
+
+        location = new Location(0,0,optimum.getPoint().toArray()[0],optimum.getPoint().toArray()[1]);
+
+        Log.d("DEBUG LOCATION USER","LOCATION : x:"+location.getX()+"-y:"+location.getY());
+        this.location = location;
+        //GET CLOSEST POINT
+        CourseRetrofitController controller = new CourseRetrofitController(new CourseManager(this.context));
+        controller.getAllCoursesNodes(this);
+
+    }
+
+    @Override
+    public void onResponse(ArrayList<CourseNode> response) {
+
+        nearestPoint(response);
+        insertCustomerLocation(this.location);
+    }
+
+    public void nearestPoint(ArrayList<CourseNode> arrayCourse){
+
+        double min = 4000; // X CANT BE SUPERIOR TO 4000
+        Location locationMin = null;
+        for(CourseNode cn : arrayCourse){
+            double dist = (Math.pow(cn.getLocation().getX(),2)-Math.pow(this.location.getX(),2))
+                    +(Math.pow(cn.getLocation().getY(),2)-Math.pow(this.location.getY(),2))  ;
+            if(dist<min){
+                min = dist;
+                locationMin = cn.getLocation();
+            }
+        }
+
+        Log.d("NEAREST POINT SVP", "nearestPoint: "+locationMin.getX()+"-"+locationMin.getY());
+        this.location = locationMin;
     }
 
     // INSERT INTO SQLITE
@@ -245,5 +307,6 @@ public class GeolocationAndroidService {
     public void cancelRecording(){
         recordIsCancel = true;
     }
+
 
 }

@@ -23,7 +23,7 @@ public class GeolocationRetrofitController {
 
     private Context context;
     private GeolocationAndroidService androidService;
-    static final String BASE_URL = "http://172.31.254.54:3081/"; // PORT A CHANGER
+    static final String BASE_URL = "http://ackincolor.ddns.net:3083/"; //port 3083
     private Gson gson;
     public GeolocationRetrofitController(Context context, GeolocationAndroidService androidService) {
         this.context = context;
@@ -31,13 +31,14 @@ public class GeolocationRetrofitController {
     }
 
     public void insertAccessPoints(){
+        this.gson = new Gson();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(this.gson))
                 .build();
 
         GeolocationRetrofitService service = retrofit.create(GeolocationRetrofitService.class);
@@ -64,23 +65,20 @@ public class GeolocationRetrofitController {
         });
     }
 
-    public void insertCourseNode(){
-
-    }
-
     public void sendCustomerLocation(Location location){
+        this.gson = new Gson();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(this.gson))
                 .build();
 
         GeolocationRetrofitService service = retrofit.create(GeolocationRetrofitService.class);
 
-        service.sendCustomerLocation(location).enqueue(new Callback<Location>() {
+        service.sendCustomerLocation(1,location).enqueue(new Callback<Location>() {
             @Override
             public void onResponse(Call<Location> call, Response<Location> response) {
                 androidService.callBackSendCustomerLocation();
