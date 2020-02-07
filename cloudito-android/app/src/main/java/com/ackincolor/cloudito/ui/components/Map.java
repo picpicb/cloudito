@@ -145,14 +145,13 @@ public class Map extends View {
 
     //fonction qui permet de zommer Plus ou Moins
     public void zoom(boolean more){
-        if(more && zoom <15){
+        if(more){
             this.mScaleFactor=1.1f;
-            zoom+=1;
         }
-        else if(zoom >0){
+        else{
             this.mScaleFactor=0.9f;
-            zoom-=1;
         }
+        calculNewCoord2();
     }
 
     //fonction qui permet de calculer les nouvelles coordonées de la carte

@@ -118,7 +118,7 @@ public class CourseRetrofitController {
         });
     }
 
-    public void getCourseNodesBtwAandB(com.ackincolor.cloudito.ui.components.Map mapComponent, int A, int B) {
+    public void getCourseNodesBtwAandB(com.ackincolor.cloudito.ui.components.Map mapComponent, int A, int B, CourseService<ArrayList<CourseNode>> cs) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -135,9 +135,10 @@ public class CourseRetrofitController {
             @Override
             public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
                 if(response.isSuccessful()){
-                    Log.d("DEBUG MAP","setting course");
+                    Log.d("DEBUG MAP","setting course"+response.body());
                     mapComponent.setCourse(response.body());
-
+                    if(cs!=null)
+                        cs.onResponse(response.body());
                 }
             }
 
