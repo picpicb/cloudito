@@ -36,8 +36,9 @@ maven-build:
       #- cloudito-rest-api/course/target/*.jar
       - cloudito-rest-api/notification/target/*.jar
 
+
 deploy_back:
-  image: node:latest
+  image: docker:18-dind
   stage: deploy-back
   only:
     changes:
@@ -72,8 +73,6 @@ test-node:
     - geolocation
     - Scope2
     - Scope4
-  before_script:
-    - apk --update add nodejs
   script:
     - cd ./cloudito-rest-api/mappingService
     - npm i
