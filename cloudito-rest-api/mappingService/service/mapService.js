@@ -11,7 +11,7 @@ module.exports = {
                 mapObj.nodes.push({id: j, x: map.routing.nodes[j].x, y: map.routing.nodes[j].y})
             }
         }
-        return mapObj;
+        return mapObj.nodes;
     },
     getCourse : function( A, B) {
         var mapObj = {};
