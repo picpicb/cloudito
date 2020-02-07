@@ -19,6 +19,6 @@ public class CourseNode extends Node {
     }
 
     public String toString(){
-        return "CourseNode : x:"+this.getLocation().getX()+", y: "+this.getLocation().getY();
+        return "CourseNode : id:"+this.getLocation();
     }
 }
