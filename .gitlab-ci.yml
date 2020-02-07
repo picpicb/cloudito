@@ -66,7 +66,7 @@ test-node:
   stage: deploy-node
   services:
     - name: docker:18-dind
-      commane: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
+      command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   except:
     - Scope3
     - geolocation
