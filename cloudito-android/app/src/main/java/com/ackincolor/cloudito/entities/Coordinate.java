@@ -25,4 +25,12 @@ public class Coordinate {
     public void setY(double y) {
         this.y = y;
     }
+
+    public String toString(){
+        return "X"+this.x+"Y:"+this.y+"";
+    }
+
+    public boolean equals(Coordinate c){
+        return (c.getX()==this.x&&c.getY()==this.y);
+    }
 }

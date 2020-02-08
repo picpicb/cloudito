@@ -57,6 +57,7 @@ public class GeolocationCustomerLocationManager {
 
     public CourseNode getCustomerLocation(){
         String request = "Select * from "+TABLE_NAME+" ; ";
+        open();
         Cursor c = this.db.rawQuery(request,null);
         Log.d("DEBUG GEOLOCATION CUSTOMER LOCATION MANAGER"," GETTING CUSTOMER LOCATION :"+c.getCount());
         CourseNode location = null;
