@@ -36,7 +36,7 @@ public class Scope3Fragment extends Fragment {
         //example
         this.courseRetrofitController = new CourseRetrofitController(new CourseManager(getContext()));
         this.courseRetrofitController.getStoresMap(mapComponent);
-        this.courseRetrofitController.getCourseNodesBtwAandB(mapComponent,3085,1710);
+        this.courseRetrofitController.getCourseNodesBtwAandB(mapComponent,3085,1710,null);
         return root;
     }
 }

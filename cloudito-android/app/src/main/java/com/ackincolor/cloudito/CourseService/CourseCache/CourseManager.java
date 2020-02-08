@@ -75,6 +75,7 @@ public class CourseManager {
     }
     public void saveMap(byte[] data){
         String query = "Select *  from "+TABLE_NAME2;
+        open();
         Cursor c = this.db.rawQuery(query,null);
         if(c.getCount()==0) {
             ContentValues values = new ContentValues();
@@ -83,6 +84,7 @@ public class CourseManager {
             // Inserting Row
             this.db.insert(TABLE_NAME2, null, values);
         }
+        close();
     }
     public byte[] getMap(){
         String query = "Select *  from "+TABLE_NAME2;

@@ -15,10 +15,10 @@ public class Scope4ViewModel extends ViewModel {
 
 
     public Scope4ViewModel() {
-        Scope4Service srvc4 = new Scope4Service(new Coordinate(1,2),new Coordinate(3,3));
+        //Scope4Service srvc4 = new Scope4Service(new Coordinate(1,2),new Coordinate(3,3));
 
 
-        Log.d("DEBUG",srvc4.printMap());
+        //Log.d("DEBUG",srvc4.printMap());
 
         mText = new MutableLiveData<>();
         //mText.setValue(srvc4.printMap());

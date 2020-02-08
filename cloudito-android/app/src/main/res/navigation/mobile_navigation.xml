@@ -32,4 +32,11 @@
         android:title="@string/title_scope_4"
         tools:layout="@layout/fragment_scope_4" />
 
+    <fragment
+        android:id="@+id/navigation_scope_4"
+        android:name="com.ackincolor.cloudito.ui.scope4.Scope4Fragment"
+        android:label="@string/title_scope_4"
+        android:title="@string/title_scope_4"
+        tools:layout="@layout/fragment_scope_4" />
+
 </navigation>

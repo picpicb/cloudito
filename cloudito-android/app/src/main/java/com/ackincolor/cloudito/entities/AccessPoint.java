@@ -2,20 +2,20 @@ package com.ackincolor.cloudito.entities;
 
 public class AccessPoint {
 
-    private String macAdress;
+    private String mac;
     private Location location;
 
     public AccessPoint(String macAdress, Location location) {
-        this.macAdress = macAdress;
+        this.mac = macAdress;
         this.location = location;
     }
 
-    public String getMacAdress() {
-        return macAdress;
+    public String getMac() {
+        return mac;
     }
 
-    public void setMacAdress(String macAdress) {
-        this.macAdress = macAdress;
+    public void setMac(String mac) {
+        this.mac = mac;
     }
 
     public Location getLocation() {
@@ -25,5 +25,4 @@ public class AccessPoint {
     public void setLocation(Location location) {
         this.location = location;
     }
-
 }

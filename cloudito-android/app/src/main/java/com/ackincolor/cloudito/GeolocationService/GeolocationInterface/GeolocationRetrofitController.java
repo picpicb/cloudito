@@ -6,6 +6,7 @@ import android.util.Log;
 import com.ackincolor.cloudito.GeolocationService.GeolocationAndroidService;
 import com.ackincolor.cloudito.GeolocationService.GeolocationCache.GeolocationManager;
 import com.ackincolor.cloudito.entities.AccessPoint;
+import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 import com.google.gson.Gson;
 
@@ -23,7 +24,7 @@ public class GeolocationRetrofitController {
 
     private Context context;
     private GeolocationAndroidService androidService;
-    static final String BASE_URL = "http://172.31.254.54:3081/"; // PORT A CHANGER
+    static final String BASE_URL = "http://ackincolor.ddns.net:3083/"; //port 3083
     private Gson gson;
     public GeolocationRetrofitController(Context context, GeolocationAndroidService androidService) {
         this.context = context;
@@ -31,13 +32,14 @@ public class GeolocationRetrofitController {
     }
 
     public void insertAccessPoints(){
+        this.gson = new Gson();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(this.gson))
                 .build();
 
         GeolocationRetrofitService service = retrofit.create(GeolocationRetrofitService.class);
@@ -64,32 +66,28 @@ public class GeolocationRetrofitController {
         });
     }
 
-    public void insertCourseNode(){
-
-    }
-
-    public void sendCustomerLocation(Location location){
+    public void sendCustomerLocation(CourseNode location){
+        this.gson = new Gson();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(this.gson))
                 .build();
 
         GeolocationRetrofitService service = retrofit.create(GeolocationRetrofitService.class);
 
-        service.sendCustomerLocation(location).enqueue(new Callback<Location>() {
+        service.sendCustomerLocation(1,location).enqueue(new Callback<CourseNode>() {
             @Override
-            public void onResponse(Call<Location> call, Response<Location> response) {
+            public void onResponse(Call<CourseNode> call, Response<CourseNode> response) {
                 androidService.callBackSendCustomerLocation();
             }
 
             @Override
-            public void onFailure(Call<Location> call, Throwable t) {
+            public void onFailure(Call<CourseNode> call, Throwable t) {
                 t.printStackTrace();
-                Log.d("DEBUG GEOLOCATION CONTROLLER", "FAIL SEND CUSTOMER LOCATION");
             }
         });
     }

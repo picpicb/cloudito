@@ -8,10 +8,10 @@ module.exports = {
         for(var j=0 ; j<map.routing.nodes.length;j++){
             if(map.routing.nodes[j].f!=0) {
                 //ctx.fillRect(map.routing.nodes[j].x + decalageX, map.routing.nodes[j].y + decalageY, 2, 2);
-                mapObj.nodes.push({id: j, x: map.routing.nodes[j].x, y: map.routing.nodes[j].y})
+                mapObj.nodes.push({id: j,location:{ x: map.routing.nodes[j].x, y: map.routing.nodes[j].y}})
             }
         }
-        return mapObj;
+        return mapObj.nodes;
     },
     getCourse : function( A, B) {
         var mapObj = {};

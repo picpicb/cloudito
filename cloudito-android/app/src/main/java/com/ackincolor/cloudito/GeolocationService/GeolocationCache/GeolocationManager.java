@@ -49,15 +49,17 @@ public class GeolocationManager {
 
     // INSERT ALL ACCESS POINTS AT START
     public void insertAccessPoints(ArrayList<AccessPoint> arrayAccessPoints){
+        open();
         for(AccessPoint accessPoint : arrayAccessPoints){
             ContentValues values = new ContentValues();
-            values.put(KEY_MAC_ADDRESS,accessPoint.getMacAdress());
+            values.put(KEY_MAC_ADDRESS,accessPoint.getMac());
             values.put(KEY_ID_LOCATION,accessPoint.getLocation().getId());
             values.put(KEY_FLOOR,accessPoint.getLocation().getFloor());
             values.put(KEY_X,accessPoint.getLocation().getX());
             values.put(KEY_Y,accessPoint.getLocation().getY());
             db.insert(TABLE_NAME,null,values);
         }
+        close();
     }
 
     // GET ALL ACCESS POINTS

@@ -21,7 +21,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CourseRetrofitController {
-    private String BASE_URL = "http://172.31.254.54:3084/";
+    private String BASE_URL = "http://ackincolor.ddns.net:3084/";
     private Gson gson;
     private CourseManager courseManager;
 
@@ -106,6 +106,7 @@ public class CourseRetrofitController {
             @Override
             public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
                 if(response.isSuccessful()){
+                    Log.d("ARRAYLIST CN", "onResponse: "+response.body());
                     cs.onResponse(response.body());
                 }
             }
@@ -117,7 +118,7 @@ public class CourseRetrofitController {
         });
     }
 
-    public void getCourseNodesBtwAandB(com.ackincolor.cloudito.ui.components.Map mapComponent, int A, int B) {
+    public void getCourseNodesBtwAandB(com.ackincolor.cloudito.ui.components.Map mapComponent, int A, int B, CourseService<ArrayList<CourseNode>> cs) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -134,9 +135,10 @@ public class CourseRetrofitController {
             @Override
             public void onResponse(Call<ArrayList<CourseNode>> call, Response<ArrayList<CourseNode>> response) {
                 if(response.isSuccessful()){
-                    Log.d("DEBUG MAP","setting course");
+                    //Log.d("DEBUG MAP","setting course"+response.body());
                     mapComponent.setCourse(response.body());
-
+                    if(cs!=null)
+                        cs.onResponse(response.body());
                 }
             }
 

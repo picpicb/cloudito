@@ -29,7 +29,7 @@ public class MapTest {
         Map map = new Map(appContext,null);
         map.setMap(new com.ackincolor.cloudito.entities.Map(liste));
         map.setOffsetX(1);
-        map.calculNewCoord();
+        map.calculNewCoord2();
         com.ackincolor.cloudito.entities.Map modifiedMap = map.getMap();
         for(ArrayList<Location> al : modifiedMap.getListe()){
             for(Location l : al){
@@ -38,7 +38,7 @@ public class MapTest {
             }
         }
         map.setOffsetY(1);
-        map.calculNewCoord();
+        map.calculNewCoord2();
         modifiedMap = map.getMap();
         for(ArrayList<Location> al : modifiedMap.getListe()){
             for(Location l : al){
