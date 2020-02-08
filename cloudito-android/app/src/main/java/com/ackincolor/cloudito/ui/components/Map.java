@@ -31,8 +31,8 @@ public class Map extends View {
     public ArrayList<Path> magasins;
     public ArrayList<Path> courses;
     private Paint p, p2, p3,p4;
-    private float offsetX,offsetY;
-    private float zoomRatio;
+    private float offsetX,offsetY,offsetXtotal,offsetYtotal;
+    private float zoomRatio = 1f;
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureListener;
     public float mScaleFactor = 1.f;
@@ -114,7 +114,7 @@ public class Map extends View {
             //        + Math.toDegrees(radians));
             if(touched) {
                 this.mScaleFactor = (float) -((this.distance - (Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))))))/this.getWidth()) +1;
-
+                this.zoomRatio*=this.mScaleFactor;
                 this.distance = Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))));
             }else{
                 this.distance = Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))));
@@ -190,6 +190,8 @@ public class Map extends View {
 
         }
         //this.mScaleFactor = 1;
+        offsetXtotal+=offsetX;
+        offsetYtotal+=offsetY;
         offsetX = 0;
         offsetY = 0;
     }
@@ -248,12 +250,11 @@ public class Map extends View {
             cn.setX(cn.getLocation().getX()-900);
             cn.setY(cn.getLocation().getY()-700);
         }
-        this.center.setX(this.courseNode.get(liste.size()-1).getLocation().getX());
-        this.center.setY(this.courseNode.get(liste.size()-1).getLocation().getY());
+        this.center.setX(this.courseNode.get(liste.size()-1).getLocation().getX()-offsetXtotal/zoomRatio);
+        this.center.setY(this.courseNode.get(liste.size()-1).getLocation().getY()-offsetYtotal/zoomRatio);
         //System.out.println(this.courseNode);
-
-        invalidate();
         settingPath();
+        invalidate();
     }
 
     //permet de definir les magasins à desiner
@@ -310,9 +311,6 @@ public class Map extends View {
             offsetX=distanceX/zoomRatio;
             offsetY=distanceY/zoomRatio;
 
-            //center.setX(center.getX()-(distanceX/zoomRatio));
-            //center.setY(center.getY()-(distanceY/zoomRatio));
-            //Log.d("Debug Map", "Scrool on map : x:"+distanceX+", y: "+distanceY);
             return true;
         }
     }
@@ -349,10 +347,10 @@ public class Map extends View {
                     for(Location c : l){
                         //Location c2 = rotateLocation(c,this.center,this.effectivRotation);
                         if(first){
-                            path.moveTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
+                            path.moveTo(((float)c.getX()),((float)c.getY()));
                             first = false;
                         }else {
-                            path.lineTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
+                            path.lineTo(((float)c.getX()),((float)c.getY()));
                             //Log.d("DEBUG MAP", "line to : "+(float)c.getX()/10+","+(float)c.getY()/10);
                         }
                     }
@@ -366,14 +364,40 @@ public class Map extends View {
                 for(CourseNode c : courseNode){
                     if(first){
                         first = false;
-                        path.moveTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
+                        path.moveTo(((float)c.getLocation().getX()), ((float)c.getLocation().getY()));
                     }else{
-                        path.lineTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
+                        path.lineTo(((float)c.getLocation().getX()), ((float)c.getLocation().getY()));
                     }
                 }
                 //path.close();
                 this.courses.add(path);
                 //canvas.drawPath(path, p3);
+            }
+            for(Path listeLocation : this.magasins){
+                Matrix rotateMatrix = new Matrix();
+                Matrix translateMatrix = new Matrix();
+                Matrix scaleMatrix = new Matrix();
+                RectF rectF = new RectF();
+                listeLocation.computeBounds(rectF, true);
+                scaleMatrix.setScale(this.zoomRatio, this.zoomRatio,(float)this.center.getX(),(float)this.center.getY());
+                translateMatrix.setTranslate(-offsetXtotal,-offsetYtotal);
+                rotateMatrix.setRotate(-this.northAngle,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
+                listeLocation.transform(translateMatrix);
+                listeLocation.transform(rotateMatrix);
+            }
+            for(Path listeLocation : this.courses){
+                Matrix rotateMatrix = new Matrix();
+                Matrix translateMatrix = new Matrix();
+                Matrix scaleMatrix = new Matrix();
+                RectF rectF = new RectF();
+                listeLocation.computeBounds(rectF, true);
+                scaleMatrix.setScale(this.zoomRatio, this.zoomRatio,(float)this.center.getX(),(float)this.center.getY());
+                translateMatrix.setTranslate(-offsetXtotal,-offsetYtotal);
+                rotateMatrix.setRotate(-this.northAngle,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
+                listeLocation.transform(translateMatrix);
+                listeLocation.transform(rotateMatrix);
             }
         }
     }
