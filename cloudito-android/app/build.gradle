@@ -12,7 +12,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file(System.getenv("keystoreName"))
+            storeFile file("gitlabKeystore.pkcs")
             storePassword System.getenv("keystorePass")
             keyAlias System.getenv("keyAlias")
             keyPassword System.getenv("keyPassword")
