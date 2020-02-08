@@ -27,7 +27,7 @@ module.exports = {
         }
         for(var j=0;j<map.routing.edges.length;j++){
             if(map.routing.nodes[map.routing.edges[j].s].f !=0 && map.routing.nodes[map.routing.edges[j].e].f != 0) {
-                graph.addLink(map.routing.edges[j].s,map.routing.edges[j].e,{weight: 1});
+                graph.addLink(map.routing.edges[j].s,map.routing.edges[j].e,{weight: map.routing.edges[j].l});
             }
         }
         var cheminFinal = Array();
@@ -49,26 +49,6 @@ module.exports = {
                     array2.push( [first,second]);
                 }
                 mapObj.push(array2);
-            }
-        }
-        return mapObj;
-    },
-    getCourse2 : function() {
-        var mapObj = {};
-
-        mapObj.nodes = Array();
-        for(var j=0 ; j<map.routing.nodes.length;j++){
-            if(map.routing.nodes[j].f!=0) {
-                mapObj.nodes.push({id: j,x: map.routing.nodes[j].x, y: map.routing.nodes[j].y})
-            }
-        }
-        var g = new Graph()
-        mapObj.chemins=Array();
-        mapObj.map= Array();
-        for(var j=0;j<map.routing.edges.length;j++){
-            if(map.routing.nodes[map.routing.edges[j].s].f !=0 && map.routing.nodes[map.routing.edges[j].e].f != 0) {
-                g.connect(map.routing.edges[j].s,map.routing.edges[j].e);
-                mapObj.chemins.push({s:map.routing.edges[j].s,e:map.routing.edges[j].e})
             }
         }
         return mapObj;

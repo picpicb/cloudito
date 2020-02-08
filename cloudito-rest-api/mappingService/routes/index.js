@@ -26,7 +26,7 @@ router.get('/map/stores',function(req,res,next) {
     res.send(service.getStores());
 })
 router.get('/mapRaw/',function(req,res,next) {
-  res.send(service.getCourse2());
+  res.send(map);
 })
 
 module.exports = router;
