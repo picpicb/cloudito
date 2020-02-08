@@ -1,5 +1,8 @@
 var map = require('../map.json');
-const Graph =  require("@vila91/graph")
+let createGraph = require("ngraph.graph");
+let graph = createGraph();
+let path = require('ngraph.path');
+let pathFinder = path.aStar(graph);
 
 module.exports = {
     getNodes : function() {
@@ -22,20 +25,15 @@ module.exports = {
                 mapObj.nodes.push({id: j,location:{ x: map.routing.nodes[j].x, y: map.routing.nodes[j].y}})
             }
         }
-        var g = new Graph()
-        mapObj.chemins=Array();
-        mapObj.map= Array();
         for(var j=0;j<map.routing.edges.length;j++){
             if(map.routing.nodes[map.routing.edges[j].s].f !=0 && map.routing.nodes[map.routing.edges[j].e].f != 0) {
-                g.connect(map.routing.edges[j].s,map.routing.edges[j].e);
+                graph.addLink(map.routing.edges[j].s,map.routing.edges[j].e,{weight: 1});
             }
         }
         var cheminFinal = Array();
-        var liste  = g.route(Number(A),Number(B));
-        console.log(liste);
-        var cheminCalcul = liste.nodes;
-        cheminCalcul.forEach(val => {
-            cheminFinal.push(this.findInMap(val,mapObj));
+        let foundPath = pathFinder.find(Number(A),Number(B));
+        foundPath.forEach(val => {
+            cheminFinal.push(this.findInMap(val.id,mapObj));
         })
         return cheminFinal;
     },
@@ -51,6 +49,26 @@ module.exports = {
                     array2.push( [first,second]);
                 }
                 mapObj.push(array2);
+            }
+        }
+        return mapObj;
+    },
+    getCourse2 : function() {
+        var mapObj = {};
+
+        mapObj.nodes = Array();
+        for(var j=0 ; j<map.routing.nodes.length;j++){
+            if(map.routing.nodes[j].f!=0) {
+                mapObj.nodes.push({id: j,x: map.routing.nodes[j].x, y: map.routing.nodes[j].y})
+            }
+        }
+        var g = new Graph()
+        mapObj.chemins=Array();
+        mapObj.map= Array();
+        for(var j=0;j<map.routing.edges.length;j++){
+            if(map.routing.nodes[map.routing.edges[j].s].f !=0 && map.routing.nodes[map.routing.edges[j].e].f != 0) {
+                g.connect(map.routing.edges[j].s,map.routing.edges[j].e);
+                mapObj.chemins.push({s:map.routing.edges[j].s,e:map.routing.edges[j].e})
             }
         }
         return mapObj;
