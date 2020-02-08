@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var map = require('../map.json');
 var fs = require('fs');
-const Graph =  require("@vila91/graph");
 var service = require("../service/mapService");
 
 /* GET home page. */
@@ -27,7 +26,7 @@ router.get('/map/stores',function(req,res,next) {
     res.send(service.getStores());
 })
 router.get('/mapRaw/',function(req,res,next) {
-  res.send(map);
+  res.send(service.getCourse2());
 })
 
 module.exports = router;
