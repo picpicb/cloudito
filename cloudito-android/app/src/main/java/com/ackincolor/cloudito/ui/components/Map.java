@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -45,6 +46,7 @@ public class Map extends View {
     private double distance;
     private boolean touched = false;
     private boolean touched2 = false;
+    private Camera camera;
 
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -57,7 +59,8 @@ public class Map extends View {
         this.p3.setStyle(Paint.Style.STROKE);
         this.p3.setStrokeWidth(10);
         this.p4 = new Paint();
-        this.p4.setColor(Color.argb(255,255, 255, 255));
+        //this.p4.setColor(Color.argb(255,255, 255, 255));
+        this.p4.setColor(Color.BLUE);
 
         //demarage de la recuperation de la carte
         this.offsetX = 0;
@@ -75,6 +78,8 @@ public class Map extends View {
         if(this.boussole == null) {
             //Log.d("DEBUG MAP","image non trouvé");
         }
+        this.camera = new Camera();
+        //this.camera.rotateY(-20);
 
     }
     @Override
@@ -224,13 +229,6 @@ public class Map extends View {
     }
 
     protected void onDraw(Canvas canvas){
-        canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
-        for(Path p : this.magasins)
-            canvas.drawPath(p,p2);
-        for(Path p : this.courses)
-            canvas.drawPath(p,p3);
-        canvas.drawCircle((float)this.center.getX(),(float)this.center.getY(),10,p);
-        //dessin de la boussole
         if(boussole!=null) {
             /*canvas.save(); //Saving the canvas and later restoring it so only this image will be rotated.
             canvas.rotate(-this.northAngle);
@@ -241,6 +239,17 @@ public class Map extends View {
             matrix.setRotate(-this.northAngle, boussole.getHeight() / 2, boussole.getWidth() / 2);
             canvas.drawBitmap(boussole, matrix, null);
         }
+        Matrix m = new Matrix();
+        this.camera.getMatrix(m);
+        canvas.concat(m);
+        canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
+        for(Path p : this.magasins)
+            canvas.drawPath(p,p2);
+        for(Path p : this.courses)
+            canvas.drawPath(p,p3);
+        canvas.drawCircle((float)this.center.getX(),(float)this.center.getY(),10,p);
+        //dessin de la boussole
+
     }
 
     //permet de definir un parcours sur la map
@@ -335,6 +344,11 @@ public class Map extends View {
         return bitmap;
     }
     private void settingPath(){
+        this.camera = new Camera();
+        this.camera.rotateX(20);
+        //this.camera.setLocation(100,100,-8);
+        Log.d("DEBUG CAMERA :", " Potition camera :"+ this.camera.getLocationX()+";"+
+                this.camera.getLocationY()+";"+this.camera.getLocationZ());
         this.magasins = new ArrayList<>();
         this.courses = new ArrayList<>();
         if (map != null) {
