@@ -7,6 +7,7 @@ import com.ackincolor.cloudito.CourseService.CourseCache.CourseManager;
 import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 import com.ackincolor.cloudito.entities.Map;
+import com.ackincolor.cloudito.ui.components.MapInterface;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,7 +30,7 @@ public class CourseRetrofitController {
         this.gson = new Gson();
         this.courseManager = cm;
     }
-    public void getStoresMap(com.ackincolor.cloudito.ui.components.Map mapComponent){
+    public void getStoresMap(MapInterface mapComponent){
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -118,7 +119,7 @@ public class CourseRetrofitController {
         });
     }
 
-    public void getCourseNodesBtwAandB(com.ackincolor.cloudito.ui.components.Map mapComponent, int A, int B, CourseService<ArrayList<CourseNode>> cs) {
+    public void getCourseNodesBtwAandB(MapInterface mapComponent, int A, int B, CourseService<ArrayList<CourseNode>> cs) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

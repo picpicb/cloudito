@@ -12,6 +12,7 @@ import com.ackincolor.cloudito.R;
 import com.ackincolor.cloudito.controllers.ParcoursController;
 import com.ackincolor.cloudito.entities.Course;
 import com.ackincolor.cloudito.ui.components.Map;
+import com.ackincolor.cloudito.ui.components.Map3D;
 
 import java.util.UUID;
 
@@ -32,11 +33,11 @@ public class Scope3Fragment extends Fragment {
         scope3ViewModel =
                 ViewModelProviders.of(this).get(Scope3ViewModel.class);
         View root = inflater.inflate(R.layout.fragment_scope_3, container, false);
-        final Map mapComponent = root.findViewById(R.id.custView);
+        final Map3D mapComponent2 = root.findViewById(R.id.custView2);
         //example
         this.courseRetrofitController = new CourseRetrofitController(new CourseManager(getContext()));
-        this.courseRetrofitController.getStoresMap(mapComponent);
-        this.courseRetrofitController.getCourseNodesBtwAandB(mapComponent,3085,1710,null);
+        this.courseRetrofitController.getStoresMap(mapComponent2);
+        this.courseRetrofitController.getCourseNodesBtwAandB(mapComponent2,3085,1710,null);
         return root;
     }
 }

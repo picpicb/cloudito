@@ -26,7 +26,7 @@ import com.ackincolor.cloudito.entities.Location;
 
 import java.util.ArrayList;
 
-public class Map extends View {
+public class Map extends View implements MapInterface{
     private com.ackincolor.cloudito.entities.Map map;
     public ArrayList<CourseNode> courseNode;
     public ArrayList<Path> magasins;
@@ -257,16 +257,7 @@ public class Map extends View {
     }
 
     protected void onDraw(Canvas canvas){
-        if(boussole!=null) {
-            /*canvas.save(); //Saving the canvas and later restoring it so only this image will be rotated.
-            canvas.rotate(-this.northAngle);
-            canvas.drawBitmap(boussole, 50, 50, null);
-            canvas.restore();*/
-
-            Matrix matrix = new Matrix();
-            matrix.setRotate(-this.northAngle, boussole.getHeight() / 2, boussole.getWidth() / 2);
-            canvas.drawBitmap(boussole, matrix, null);
-        }
+        canvas.save();
         Matrix m = new Matrix();
         this.camera.getMatrix(m);
         canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
@@ -278,7 +269,17 @@ public class Map extends View {
             canvas.drawPath(p,p3);
         canvas.drawCircle((float)this.center.getX(),(float)this.center.getY(),10,p);
         //dessin de la boussole
+        canvas.restore();
+        if(boussole!=null) {
+            /*canvas.save(); //Saving the canvas and later restoring it so only this image will be rotated.
+            canvas.rotate(-this.northAngle);
+            canvas.drawBitmap(boussole, 50, 50, null);
+            canvas.restore();*/
 
+            Matrix matrix = new Matrix();
+            matrix.setRotate(-this.northAngle, boussole.getHeight() / 2, boussole.getWidth() / 2);
+            canvas.drawBitmap(boussole, matrix, null);
+        }
     }
 
     //permet de definir un parcours sur la map
@@ -374,7 +375,7 @@ public class Map extends View {
     }
     private void settingPath(){
         this.camera = new Camera();
-        this.camera.rotateX(this.Xrotation);
+        //this.camera.rotateX(this.Xrotation);
         //this.camera.setLocation(100,100,-8);
         //Log.d("DEBUG CAMERA :", " Potition camera :"+ this.camera.getLocationX()+";"+
         //        this.camera.getLocationY()+";"+this.camera.getLocationZ());
