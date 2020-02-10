@@ -46,7 +46,10 @@ public class Map extends View {
     private double distance;
     private boolean touched = false;
     private boolean touched2 = false;
+    private boolean touched3 = false;
     private Camera camera;
+    private float last3y;
+    private float Xrotation;
 
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -59,8 +62,8 @@ public class Map extends View {
         this.p3.setStyle(Paint.Style.STROKE);
         this.p3.setStrokeWidth(10);
         this.p4 = new Paint();
-        //this.p4.setColor(Color.argb(255,255, 255, 255));
-        this.p4.setColor(Color.BLUE);
+        this.p4.setColor(Color.argb(255,255, 255, 255));
+        //this.p4.setColor(Color.BLUE);
 
         //demarage de la recuperation de la carte
         this.offsetX = 0;
@@ -79,6 +82,7 @@ public class Map extends View {
             //Log.d("DEBUG MAP","image non trouvé");
         }
         this.camera = new Camera();
+        this.Xrotation = 30;
         //this.camera.rotateY(-20);
 
     }
@@ -111,7 +115,7 @@ public class Map extends View {
     }
     private float rotation(MotionEvent event) {
         //Log.d("DEBUG MAP"," angle nord :"+this.northAngle);
-        if(event.getPointerCount() >= 2) {
+        if(event.getPointerCount() == 2) {
             double delta_x = (event.getX(0) - event.getX(1));
             double delta_y = (event.getY(0) - event.getY(1));
             double radians = Math.atan2(delta_y, delta_x);
@@ -140,11 +144,35 @@ public class Map extends View {
             }
             invalidate();
             return (float) Math.toDegrees(radians);
+        }else if(event.getPointerCount()>=3){
+            if(touched3){
+                this.realRotation = 0.0f;
+                this.mScaleFactor = 1f;
+                touched = false;
+                touched2 = false;
+                float y = event.getY(0);
+                //relative to height
+                float rel = y-this.last3y;
+                rel = (rel/this.getHeight())*-5;
+                Log.d("DEBUG MAP","point y : "+rel);
+                this.Xrotation+=rel;
+                if(this.Xrotation>=0 && this.Xrotation<=30)
+                    this.camera.rotateX(rel);
+                else
+                    this.Xrotation-=rel;
+                invalidate();
+                return 0;
+            }else{
+                this.touched3 = true;
+                this.last3y = event.getY(0);
+                return 0;
+            }
         }
         this.realRotation = 0.0f;
         this.mScaleFactor = 1f;
         touched = false;
         touched2 = false;
+        touched3 = false;
         return 0;
     }
 
@@ -241,8 +269,9 @@ public class Map extends View {
         }
         Matrix m = new Matrix();
         this.camera.getMatrix(m);
-        canvas.concat(m);
         canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
+        canvas.translate(this.getWidth()/2,this.getHeight()/2);
+        canvas.concat(m);
         for(Path p : this.magasins)
             canvas.drawPath(p,p2);
         for(Path p : this.courses)
@@ -317,8 +346,8 @@ public class Map extends View {
             extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            offsetX=distanceX/zoomRatio;
-            offsetY=distanceY/zoomRatio;
+            offsetX=distanceX;
+            offsetY=distanceY;
 
             return true;
         }
@@ -345,10 +374,10 @@ public class Map extends View {
     }
     private void settingPath(){
         this.camera = new Camera();
-        this.camera.rotateX(20);
+        this.camera.rotateX(this.Xrotation);
         //this.camera.setLocation(100,100,-8);
-        Log.d("DEBUG CAMERA :", " Potition camera :"+ this.camera.getLocationX()+";"+
-                this.camera.getLocationY()+";"+this.camera.getLocationZ());
+        //Log.d("DEBUG CAMERA :", " Potition camera :"+ this.camera.getLocationX()+";"+
+        //        this.camera.getLocationY()+";"+this.camera.getLocationZ());
         this.magasins = new ArrayList<>();
         this.courses = new ArrayList<>();
         if (map != null) {
