@@ -42,7 +42,7 @@ public class Map extends View implements MapInterface{
     public Location center;
     private int zoom = 0;
     private float northAngle = 0.0f;
-    private Bitmap boussole;
+    private Bitmap boussole,userLocation;
     private double distance;
     private boolean touched = false;
     private boolean touched2 = false;
@@ -78,6 +78,7 @@ public class Map extends View implements MapInterface{
         this.courses = new ArrayList<>();
 
         this.boussole = getBitmap(R.drawable.boussolearrow);
+
         if(this.boussole == null) {
             //Log.d("DEBUG MAP","image non trouvé");
         }
