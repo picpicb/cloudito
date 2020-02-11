@@ -53,13 +53,13 @@ deploy_back:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   script:
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_REF_NAME ./cloudito-rest-api/geolocation
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_REF_NAME ./cloudito-rest-api/notification
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_SHA ./cloudito-rest-api/geolocation
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_SHA ./cloudito-rest-api/notification
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_REF_NAME
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_REF_NAME
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification NewStack_cloudito-notification:$CI_COMMIT_REF_NAME
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation NewStack_cloudito-geolocation:$CI_COMMIT_REF_NAME
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_SHA
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_SHA
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_SHA NewStack_cloudito-notification
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_SHA NewStack_cloudito-geolocation
 
 
 test-node:
@@ -92,10 +92,10 @@ deploy-node:
   before_script:
     - apk --update add nodejs
   script:
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_REF_NAME ./cloudito-rest-api/mappingService
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHA ./cloudito-rest-api/mappingService
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_REF_NAME
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping NewStack_cloudito-mapping:$CI_COMMIT_REF_NAME
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHA
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHA NewStack_cloudito-mapping
 
 
 
