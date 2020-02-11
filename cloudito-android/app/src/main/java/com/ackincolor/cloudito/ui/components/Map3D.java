@@ -138,38 +138,28 @@ public class Map3D extends View implements MapInterface{
         }
         this.center.setX(this.courseNode.get(liste.size()-1).getLocation().getX());
         this.center.setY(this.courseNode.get(liste.size()-1).getLocation().getY());
-        //System.out.println(this.courseNode);
         settingPath();
         invalidate();
     }
     private void settingPath(){
         this.camera = new Camera();
-        //this.camera.rotateX(this.Xrotation);
-        //this.camera.setLocation(100,100,-8);
-        //Log.d("DEBUG CAMERA :", " Potition camera :"+ this.camera.getLocationX()+";"+
-        //        this.camera.getLocationY()+";"+this.camera.getLocationZ());
         this.magasins = new ArrayList<>();
         this.courses = new ArrayList<>();
         if (map != null) {
-            //Log.d("DEBUG MAP", "map is'nt nul");
             if(map.getListe()!=null){
-                //Log.d("DEBUG MAP", "liste is'nt nul");
                 for(ArrayList<Location> l : map.getListe()){
                     Path path = new Path();
                     boolean first = true;
                     for(Location c : l){
-                        //Location c2 = rotateLocation(c,this.center,this.effectivRotation);
                         if(first){
                             path.moveTo(((float)c.getX()),((float)c.getY()));
                             first = false;
                         }else {
                             path.lineTo(((float)c.getX()),((float)c.getY()));
-                            //Log.d("DEBUG MAP", "line to : "+(float)c.getX()/10+","+(float)c.getY()/10);
                         }
                     }
                     path.close();
                     this.magasins.add(path);
-                    //canvas.drawPath(path, p2);
                 }
             }if(courseNode!=null){
                 boolean first = true;
@@ -182,9 +172,7 @@ public class Map3D extends View implements MapInterface{
                         path.lineTo(((float)c.getLocation().getX()), ((float)c.getLocation().getY()));
                     }
                 }
-                //path.close();
                 this.courses.add(path);
-                //canvas.drawPath(path, p3);
             }
         }
     }
@@ -198,13 +186,10 @@ public class Map3D extends View implements MapInterface{
         return true;
     }
     private float analyseEvent(MotionEvent event) {
-        //Log.d("DEBUG MAP"," angle nord :"+this.northAngle);
         if(event.getPointerCount() == 2) {
             double delta_x = (event.getX(0) - event.getX(1));
             double delta_y = (event.getY(0) - event.getY(1));
             double radians = Math.atan2(delta_y, delta_x);
-            //Log.d("Rotation ~~~~~~~~~~~~~~~~~", delta_x + " ## " + delta_y + " ## " + radians + " ## "
-            //        + Math.toDegrees(radians));
             if(touched) {
                 this.mScaleFactor = (float) -((this.distance - (Math.sqrt((Math.pow(delta_x, 2)+Math.pow(delta_y, 2)))))/this.getWidth()) +1;
                 this.zoomRatio*=this.mScaleFactor;
@@ -212,7 +197,7 @@ public class Map3D extends View implements MapInterface{
                 this.distance = Math.sqrt((Math.pow(delta_x, 2)+Math.pow(delta_y, 2)));
             }else{
                 this.distance = Math.sqrt((Math.pow(delta_x, 2)+Math.pow(delta_y, 2)));
-                //this.mScaleFactor = 1f;
+                this.mScaleFactor=1f;
                 touched = true;
             }
             float deg = (float) Math.toDegrees(radians);
@@ -220,20 +205,16 @@ public class Map3D extends View implements MapInterface{
                 this.realRotation = this.lastRotation -deg;
                 this.northAngle += this.realRotation;
                 this.lastRotation  = deg;
-                //this.camera.rotateZ(this.realRotation);
-                //Log.d("Rotation ~~~~~~~true~~~~~~~", "angle : "+this.realRotation);
             }else {
                 this.realRotation = 0.0f;
                 this.lastRotation  = deg;
-                //Log.d("Rotation ~~~~~~~false~~~~~~~", "angle : "+this.lastRotation);
                 touched2 = true;
             }
-            //invalidate();
             return (float) Math.toDegrees(radians);
         }else if(event.getPointerCount()>=3){
             if(touched3){
                 this.realRotation = 0.0f;
-                //this.mScaleFactor = 1f;
+                this.mScaleFactor = 1f;
                 touched = false;
                 touched2 = false;
                 float y = event.getY(0);
@@ -245,7 +226,6 @@ public class Map3D extends View implements MapInterface{
                     this.Xrotation+=rel;
                 else
                     this.Xrotation-=rel;
-                //invalidate();
                 return 0;
             }else{
                 this.touched3 = true;
@@ -254,7 +234,7 @@ public class Map3D extends View implements MapInterface{
             }
         }
         this.realRotation = 0.0f;
-        //this.mScaleFactor = 1f;
+        this.mScaleFactor = 1f;
         touched = false;
         touched2 = false;
         touched3 = false;
