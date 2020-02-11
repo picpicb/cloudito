@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -25,14 +26,14 @@ import com.ackincolor.cloudito.entities.Location;
 
 import java.util.ArrayList;
 
-public class Map extends View {
+public class Map extends View implements MapInterface{
     private com.ackincolor.cloudito.entities.Map map;
     public ArrayList<CourseNode> courseNode;
     public ArrayList<Path> magasins;
     public ArrayList<Path> courses;
     private Paint p, p2, p3,p4;
-    private float offsetX,offsetY;
-    private float zoomRatio;
+    private float offsetX,offsetY,offsetXtotal,offsetYtotal;
+    private float zoomRatio = 1f;
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureListener;
     public float mScaleFactor = 1.f;
@@ -45,6 +46,10 @@ public class Map extends View {
     private double distance;
     private boolean touched = false;
     private boolean touched2 = false;
+    private boolean touched3 = false;
+    private Camera camera;
+    private float last3y;
+    private float Xrotation;
 
     public Map(Context context, AttributeSet attrs){
         super(context,attrs);
@@ -58,6 +63,7 @@ public class Map extends View {
         this.p3.setStrokeWidth(10);
         this.p4 = new Paint();
         this.p4.setColor(Color.argb(255,255, 255, 255));
+        //this.p4.setColor(Color.BLUE);
 
         //demarage de la recuperation de la carte
         this.offsetX = 0;
@@ -75,6 +81,9 @@ public class Map extends View {
         if(this.boussole == null) {
             //Log.d("DEBUG MAP","image non trouvé");
         }
+        this.camera = new Camera();
+        this.Xrotation = 30;
+        //this.camera.rotateY(-20);
 
     }
     @Override
@@ -106,7 +115,7 @@ public class Map extends View {
     }
     private float rotation(MotionEvent event) {
         //Log.d("DEBUG MAP"," angle nord :"+this.northAngle);
-        if(event.getPointerCount() >= 2) {
+        if(event.getPointerCount() == 2) {
             double delta_x = (event.getX(0) - event.getX(1));
             double delta_y = (event.getY(0) - event.getY(1));
             double radians = Math.atan2(delta_y, delta_x);
@@ -114,7 +123,7 @@ public class Map extends View {
             //        + Math.toDegrees(radians));
             if(touched) {
                 this.mScaleFactor = (float) -((this.distance - (Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))))))/this.getWidth()) +1;
-
+                this.zoomRatio*=this.mScaleFactor;
                 this.distance = Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))));
             }else{
                 this.distance = Math.sqrt(Math.abs((Math.pow(delta_x, 2) - Math.pow(delta_y, 2))));
@@ -135,11 +144,35 @@ public class Map extends View {
             }
             invalidate();
             return (float) Math.toDegrees(radians);
+        }else if(event.getPointerCount()>=3){
+            if(touched3){
+                this.realRotation = 0.0f;
+                this.mScaleFactor = 1f;
+                touched = false;
+                touched2 = false;
+                float y = event.getY(0);
+                //relative to height
+                float rel = y-this.last3y;
+                rel = (rel/this.getHeight())*-5;
+                Log.d("DEBUG MAP","point y : "+rel);
+                this.Xrotation+=rel;
+                if(this.Xrotation>=0 && this.Xrotation<=30)
+                    this.camera.rotateX(rel);
+                else
+                    this.Xrotation-=rel;
+                invalidate();
+                return 0;
+            }else{
+                this.touched3 = true;
+                this.last3y = event.getY(0);
+                return 0;
+            }
         }
         this.realRotation = 0.0f;
         this.mScaleFactor = 1f;
         touched = false;
         touched2 = false;
+        touched3 = false;
         return 0;
     }
 
@@ -190,6 +223,8 @@ public class Map extends View {
 
         }
         //this.mScaleFactor = 1;
+        offsetXtotal+=offsetX;
+        offsetYtotal+=offsetY;
         offsetX = 0;
         offsetY = 0;
     }
@@ -222,13 +257,19 @@ public class Map extends View {
     }
 
     protected void onDraw(Canvas canvas){
+        canvas.save();
+        Matrix m = new Matrix();
+        this.camera.getMatrix(m);
         canvas.drawRect(new Rect(0,0,this.getWidth(),this.getHeight()),this.p4);
+        canvas.translate(this.getWidth()/2,this.getHeight()/2);
+        canvas.concat(m);
         for(Path p : this.magasins)
             canvas.drawPath(p,p2);
         for(Path p : this.courses)
             canvas.drawPath(p,p3);
         canvas.drawCircle((float)this.center.getX(),(float)this.center.getY(),10,p);
         //dessin de la boussole
+        canvas.restore();
         if(boussole!=null) {
             /*canvas.save(); //Saving the canvas and later restoring it so only this image will be rotated.
             canvas.rotate(-this.northAngle);
@@ -248,12 +289,11 @@ public class Map extends View {
             cn.setX(cn.getLocation().getX()-900);
             cn.setY(cn.getLocation().getY()-700);
         }
-        this.center.setX(this.courseNode.get(liste.size()-1).getLocation().getX());
-        this.center.setY(this.courseNode.get(liste.size()-1).getLocation().getY());
+        this.center.setX(this.courseNode.get(liste.size()-1).getLocation().getX()-offsetXtotal/zoomRatio);
+        this.center.setY(this.courseNode.get(liste.size()-1).getLocation().getY()-offsetYtotal/zoomRatio);
         //System.out.println(this.courseNode);
-
-        invalidate();
         settingPath();
+        invalidate();
     }
 
     //permet de definir les magasins à desiner
@@ -307,12 +347,9 @@ public class Map extends View {
             extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            offsetX=distanceX/zoomRatio;
-            offsetY=distanceY/zoomRatio;
+            offsetX=distanceX;
+            offsetY=distanceY;
 
-            //center.setX(center.getX()-(distanceX/zoomRatio));
-            //center.setY(center.getY()-(distanceY/zoomRatio));
-            //Log.d("Debug Map", "Scrool on map : x:"+distanceX+", y: "+distanceY);
             return true;
         }
     }
@@ -337,6 +374,11 @@ public class Map extends View {
         return bitmap;
     }
     private void settingPath(){
+        this.camera = new Camera();
+        //this.camera.rotateX(this.Xrotation);
+        //this.camera.setLocation(100,100,-8);
+        //Log.d("DEBUG CAMERA :", " Potition camera :"+ this.camera.getLocationX()+";"+
+        //        this.camera.getLocationY()+";"+this.camera.getLocationZ());
         this.magasins = new ArrayList<>();
         this.courses = new ArrayList<>();
         if (map != null) {
@@ -349,10 +391,10 @@ public class Map extends View {
                     for(Location c : l){
                         //Location c2 = rotateLocation(c,this.center,this.effectivRotation);
                         if(first){
-                            path.moveTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
+                            path.moveTo(((float)c.getX()),((float)c.getY()));
                             first = false;
                         }else {
-                            path.lineTo(((float)c.getX()*mScaleFactor),((float)c.getY()*mScaleFactor));
+                            path.lineTo(((float)c.getX()),((float)c.getY()));
                             //Log.d("DEBUG MAP", "line to : "+(float)c.getX()/10+","+(float)c.getY()/10);
                         }
                     }
@@ -366,14 +408,40 @@ public class Map extends View {
                 for(CourseNode c : courseNode){
                     if(first){
                         first = false;
-                        path.moveTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
+                        path.moveTo(((float)c.getLocation().getX()), ((float)c.getLocation().getY()));
                     }else{
-                        path.lineTo(((float)c.getLocation().getX()*mScaleFactor), ((float)c.getLocation().getY()*mScaleFactor));
+                        path.lineTo(((float)c.getLocation().getX()), ((float)c.getLocation().getY()));
                     }
                 }
                 //path.close();
                 this.courses.add(path);
                 //canvas.drawPath(path, p3);
+            }
+            for(Path listeLocation : this.magasins){
+                Matrix rotateMatrix = new Matrix();
+                Matrix translateMatrix = new Matrix();
+                Matrix scaleMatrix = new Matrix();
+                RectF rectF = new RectF();
+                listeLocation.computeBounds(rectF, true);
+                scaleMatrix.setScale(this.zoomRatio, this.zoomRatio,(float)this.center.getX(),(float)this.center.getY());
+                translateMatrix.setTranslate(-offsetXtotal,-offsetYtotal);
+                rotateMatrix.setRotate(-this.northAngle,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
+                listeLocation.transform(translateMatrix);
+                listeLocation.transform(rotateMatrix);
+            }
+            for(Path listeLocation : this.courses){
+                Matrix rotateMatrix = new Matrix();
+                Matrix translateMatrix = new Matrix();
+                Matrix scaleMatrix = new Matrix();
+                RectF rectF = new RectF();
+                listeLocation.computeBounds(rectF, true);
+                scaleMatrix.setScale(this.zoomRatio, this.zoomRatio,(float)this.center.getX(),(float)this.center.getY());
+                translateMatrix.setTranslate(-offsetXtotal,-offsetYtotal);
+                rotateMatrix.setRotate(-this.northAngle,(float)this.center.getX(),(float)this.center.getY());
+                listeLocation.transform(scaleMatrix);
+                listeLocation.transform(translateMatrix);
+                listeLocation.transform(rotateMatrix);
             }
         }
     }
