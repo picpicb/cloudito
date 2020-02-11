@@ -232,7 +232,7 @@ android-package:release:unsigned:
   only:
     - master
   script:
-    - mv app/build/outputs/apk/release/app-release-unsigned.apk ./exported/${APP_NAME}-v$VERSION_NAME-release-unsigned.apk
+    - mv app/build/outputs/apk/release/app-release.apk ./exported/${APP_NAME}-v$VERSION_NAME-release.apk
   dependencies:
     - android-build:release
   artifacts:
