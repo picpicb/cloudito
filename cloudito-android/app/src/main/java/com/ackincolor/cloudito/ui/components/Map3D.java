@@ -55,7 +55,7 @@ public class Map3D extends View implements MapInterface{
         this.p2 = new Paint();
         this.p2.setColor(Color.argb(255,140,140,140));
         this.p3 = new Paint();
-        this.p3.setColor(Color.GREEN);
+        this.p3.setColor(Color.argb(200,90,100,200));
         this.p3.setStyle(Paint.Style.STROKE);
         this.p3.setStrokeWidth(3);
         this.p3.setStrokeCap(Paint.Cap.ROUND);
@@ -105,7 +105,7 @@ public class Map3D extends View implements MapInterface{
             Matrix matrix = new Matrix();
             matrix.setTranslate((float)this.center.getX()-(this.userLocation.getWidth()/2),(float)this.center.getY()-(this.userLocation.getHeight()/2));
             matrix.postScale(1/this.zoomRatio,1/this.zoomRatio,(float)this.center.getX(),(float)this.center.getY());
-            matrix.preRotate(this.userRotation);
+            matrix.preRotate(this.userRotation,(float)this.userLocation.getWidth()/2,(float)this.userLocation.getHeight()/2);
             canvas.drawBitmap(this.userLocation,matrix,p);
         }
         //canvas.restore();
@@ -269,16 +269,20 @@ public class Map3D extends View implements MapInterface{
     //methodes mise a disposition pour les autres scopes
     public void setUserRotation(float deg){
         this.userRotation = deg;
+        invalidate();
     }
     public void setNorthAngle(float deg){
         this.northAngle = deg;
+        invalidate();
     }
     public void setZoomRatio(float zoomRatio){
         if(zoomRatio >0.7 && zoomRatio < 15)
             this.zoomRatio = zoomRatio;
+        invalidate();
     }
     public void setCameraCenter(float x, float y){
         this.offsetX = -x+((float)this.getWidth()/2);
         this.offsetY = -y+((float)this.getHeight()/2);
+        invalidate();
     }
 }
