@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -16,6 +17,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.ackincolor.cloudito.R;
 import com.ackincolor.cloudito.entities.CourseNode;
@@ -54,9 +56,11 @@ public class Map3D extends View implements MapInterface{
         this.p2 = new Paint();
         this.p2.setColor(Color.argb(255,140,140,140));
         this.p3 = new Paint();
-        this.p3.setColor(Color.GREEN);
+        this.p3.setColor(Color.argb(200,90,100,200));
         this.p3.setStyle(Paint.Style.STROKE);
         this.p3.setStrokeWidth(3);
+        this.p3.setStrokeCap(Paint.Cap.ROUND);
+        this.p3.setPathEffect(new CornerPathEffect(3f));
         this.p4 = new Paint();
         this.p4.setColor(Color.argb(255,255, 255, 255));
 
@@ -80,16 +84,15 @@ public class Map3D extends View implements MapInterface{
         //this.camera.getMatrix(this.cameraMatrix);
         canvas.save();
         canvas.translate(this.getWidth()/2,this.getHeight()/2);
-        if (this.center != null) {
-            this.camera.save();
-            this.camera.rotateX(this.Xrotation);
-            this.camera.translate(-offsetX,offsetY,0);
-            this.camera.applyToCanvas(canvas);
-            this.camera.restore();
-            this.cameraMatrix = new Matrix();
-            this.cameraMatrix.setScale(this.zoomRatio,this.zoomRatio);
-            this.cameraMatrix.preRotate(-northAngle,(float)this.center.getX(),(float)this.center.getY());
-        }
+        this.camera.save();
+        this.camera.rotateX(this.Xrotation);
+        this.camera.translate(-offsetX,offsetY,0);
+        this.camera.applyToCanvas(canvas);
+        this.camera.restore();
+
+        this.cameraMatrix = new Matrix();
+        this.cameraMatrix.setRotate(-northAngle,(float)this.center.getX(),(float)this.center.getY());
+        this.cameraMatrix.preScale(this.zoomRatio,this.zoomRatio,(float)this.center.getX(),(float)this.center.getY());
         canvas.concat(this.cameraMatrix);
         if(this.magasins!=null) {
             for(Path p : this.magasins)
@@ -101,9 +104,9 @@ public class Map3D extends View implements MapInterface{
         }
         if(this.userLocation!=null){
             Matrix matrix = new Matrix();
-            matrix.setScale(1/this.zoomRatio,1/this.zoomRatio);
-            matrix.preRotate(this.userRotation);
-            matrix.postTranslate((float)this.center.getX(),(float)this.center.getY());
+            matrix.setTranslate((float)this.center.getX()-(this.userLocation.getWidth()/2),(float)this.center.getY()-(this.userLocation.getHeight()/2));
+            matrix.postScale(1/this.zoomRatio,1/this.zoomRatio,(float)this.center.getX(),(float)this.center.getY());
+            matrix.preRotate(this.userRotation,(float)this.userLocation.getWidth()/2,(float)this.userLocation.getHeight()/2);
             canvas.drawBitmap(this.userLocation,matrix,p);
         }
         //canvas.restore();
@@ -267,16 +270,20 @@ public class Map3D extends View implements MapInterface{
     //methodes mise a disposition pour les autres scopes
     public void setUserRotation(float deg){
         this.userRotation = deg;
+        invalidate();
     }
     public void setNorthAngle(float deg){
         this.northAngle = deg;
+        invalidate();
     }
     public void setZoomRatio(float zoomRatio){
         if(zoomRatio >0.7 && zoomRatio < 15)
             this.zoomRatio = zoomRatio;
+        invalidate();
     }
     public void setCameraCenter(float x, float y){
         this.offsetX = -x+((float)this.getWidth()/2);
         this.offsetY = -y+((float)this.getHeight()/2);
+        invalidate();
     }
 }

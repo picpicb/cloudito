@@ -3,6 +3,10 @@ package com.ackincolor.cloudito.ui.scope4;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,11 +31,14 @@ import com.ackincolor.cloudito.entities.CourseNode;
 import com.ackincolor.cloudito.entities.Location;
 import com.ackincolor.cloudito.services.AsyncTaskGetCustomerLocation;
 import com.ackincolor.cloudito.ui.components.Map;
+import com.ackincolor.cloudito.ui.components.Map3D;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Scope4Fragment extends Fragment implements CourseService<ArrayList<CourseNode>> {
+import static android.content.Context.SENSOR_SERVICE;
+
+public class Scope4Fragment extends Fragment implements CourseService<ArrayList<CourseNode>>, SensorEventListener {
 
     private Scope4ViewModel scope4ViewModel;
     private CourseRetrofitController courseRetrofitController;
@@ -43,13 +50,21 @@ public class Scope4Fragment extends Fragment implements CourseService<ArrayList<
     private static final int PERMISSIONS_REQUEST_CODE_ACCESS_WIFI_STATE = 0;
     private static final int PERMISSIONS_REQUEST_CODE_CHANGE_WIFI_STATE = 0;
 
-    private Map mapComponent;
+    private Map3D mapComponent;
+    private SensorManager mSensorManager;
+    private Sensor mMagnetometer;
+    private Sensor mAccelerometer;
+    float[] mGravity;
+    float[] mGeomagnetic;
+    private boolean followNorth = true;
 
 
-    public void start(Map mapComponent){
+    public void start(Map3D mapComponent){
         CourseService<ArrayList<CourseNode>> courseService = this;
         Thread t = new Thread(){
             public void run() {
+                //test boussole
+
                 GeolocationAndroidService gas = new GeolocationAndroidService(getContext());
                 gas.insertAccessPoint();
                 gas.recordLocation();
@@ -117,6 +132,11 @@ public class Scope4Fragment extends Fragment implements CourseService<ArrayList<
         //example
         this.courseRetrofitController = new CourseRetrofitController(new CourseManager(getContext()));
         this.courseRetrofitController.getStoresMap(mapComponent);
+        mSensorManager = (SensorManager)getContext().getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_UI);
 
 
 
@@ -169,9 +189,35 @@ public class Scope4Fragment extends Fragment implements CourseService<ArrayList<
 
     @Override
     public void onResponse(ArrayList<CourseNode> response) {
-
         //System.out.println(response.get(0));
+    }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {  }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+            mGravity = event.values;
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+            mGeomagnetic = event.values;
+        if (mGravity != null && mGeomagnetic != null) {
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                float azimut = orientation[0]; // orientation contains: azimut, pitch and roll
+                float azimuthInDegress = (float)(Math.toDegrees(azimut)+360)%360;
+                Log.d("DEBUG Orientation","Orientation = "+azimuthInDegress);
+                if(mapComponent!=null && (azimuthInDegress%5)!=0){
+                    if(followNorth)
+                        mapComponent.setNorthAngle(azimuthInDegress);
+                    else
+                        mapComponent.setUserRotation(azimuthInDegress);
+                }
+            }
+        }
     }
 }
