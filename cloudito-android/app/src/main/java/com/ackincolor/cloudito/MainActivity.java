@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private void geolocation(){
         GeolocationAndroidService geolocationAndroidService = new GeolocationAndroidService(this);
         //geolocationAndroidService.insertAccessPoint();
-       // geolocationAndroidService.recordLocation();
+        geolocationAndroidService.recordLocation();
     }
 
     @Override

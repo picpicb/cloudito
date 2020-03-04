@@ -17,7 +17,7 @@ public interface GeolocationRetrofitService {
     @GET("accesspoints")
     Call<ArrayList<AccessPoint>> getAccessPoints();
 
-    @POST("/customer/{customerId}/location")
+    @POST("/customers/{customerId}/location")
     Call<CourseNode> sendCustomerLocation(@Path("customerId") int customerId,@Body CourseNode location);
 
 }

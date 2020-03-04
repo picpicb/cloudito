@@ -232,6 +232,7 @@ public class GeolocationAndroidService implements CourseService<ArrayList<Course
     public void onResponse(ArrayList<CourseNode> response) {
 
         insertCustomerLocation(nearestPoint(response));
+        sendCustomerLocation();
     }
 
     public CourseNode nearestPoint(ArrayList<CourseNode> arrayCourse){
