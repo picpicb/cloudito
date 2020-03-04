@@ -17,6 +17,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.ackincolor.cloudito.R;
 import com.ackincolor.cloudito.entities.CourseNode;
