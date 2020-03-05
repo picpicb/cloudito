@@ -151,6 +151,10 @@ android-build:release:
     - chmod +x ./gradlew
     - apt-get update -y && apt-get install wget -y
     - ./gradlew assembleRelease
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - cloudito-android/app/build/outputs/
 
 
 ########################################################################
@@ -230,7 +234,8 @@ android-package:release:unsigned:
   stage: android-package
   environment: Release
   only:
-    - master
+    changes:
+      - cloudito-android/**/*
   script:
     - mv app/build/outputs/apk/release/app-release.apk ./exported/${APP_NAME}-v$VERSION_NAME-release.apk
   dependencies:
