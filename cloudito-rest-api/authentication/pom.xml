@@ -57,4 +57,31 @@
 
     </profiles>
 
+    <dependencies>
+        <dependency>
+            <artifactId>model</artifactId>
+            <groupId>esipe.fr</groupId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <artifactId>persistence</artifactId>
+            <groupId>esipe.fr</groupId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <parentBasedir>../</parentBasedir>
+    </properties>
+
 </project>
