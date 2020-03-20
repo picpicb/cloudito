@@ -11,7 +11,7 @@
 
     <groupId>esipe.fr</groupId>
     <artifactId>authentication</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <profiles>
 
@@ -59,14 +59,9 @@
 
     <dependencies>
         <dependency>
-            <artifactId>model</artifactId>
-            <groupId>esipe.fr</groupId>
-            <version>1.0.0-RELEASE</version>
-        </dependency>
-        <dependency>
-            <artifactId>persistence</artifactId>
-            <groupId>esipe.fr</groupId>
-            <version>1.0.0-RELEASE</version>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
