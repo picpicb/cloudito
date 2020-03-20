@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>esipe.fr</groupId>
-    <artifactId>course</artifactId>
+    <artifactId>encryption</artifactId>
     <version>1.0.0-RELEASE</version>
 
     <profiles>
@@ -67,7 +67,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.course.ClouditoCourseService</mainClass>
+                    <mainClass>esipe.fr.encryption.ClouditoCourseService</mainClass>
                     <addResources>true</addResources>
                 </configuration>
 

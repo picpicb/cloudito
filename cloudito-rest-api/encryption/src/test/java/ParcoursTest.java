@@ -1,8 +1,6 @@
-package esipe.fr.course.test;
+package esipe.fr.encryption.test;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ParcoursTest {
     @Test

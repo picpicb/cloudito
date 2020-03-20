@@ -1,4 +1,4 @@
-package esipe.fr.course.configuration;
+package esipe.fr.encryption.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
