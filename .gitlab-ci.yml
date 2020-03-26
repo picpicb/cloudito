@@ -29,6 +29,7 @@ maven-build:
     - geolocation
     - Scope2
     - Scope4
+    - recognition
   script: "mvn package $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
   artifacts:
     paths:
@@ -48,6 +49,7 @@ deploy_back:
     - geolocation
     - Scope2
     - Scope4
+    - recognition
 
   services:
     - name: docker:18-dind
@@ -72,6 +74,7 @@ test-node:
     - geolocation
     - Scope2
     - Scope4
+    - recognition
   script:
     - cd ./cloudito-rest-api/mappingService
     - npm i
@@ -89,6 +92,7 @@ deploy-node:
     - geolocation
     - Scope2
     - Scope4
+    - recognition
   before_script:
     - apk --update add nodejs
   script:
@@ -113,6 +117,7 @@ deploy-node:
     - geolocation
     - Scope2
     - Scope4
+    - recognition
   artifacts:
     expire_in: 4 hours
     paths:
@@ -171,6 +176,7 @@ android-build:release:
     - geolocation
     - Scope2
     - Scope4
+    - recognition
 
 android-test:unit:
   <<: *android-test
@@ -206,6 +212,7 @@ android-test:functional:
     - geolocation
     - Scope2
     - Scope4
+    - recognition
   before_script:
     - cd cloudito-android/
     - export VERSION_NAME=`egrep '^[[:blank:]]+versionName[[:blank:]]'  app/build.gradle | awk '{print $2}' | sed s/\"//g`
