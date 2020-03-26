@@ -17,6 +17,7 @@
         <module>authentication</module>
         <module>persistence</module>
         <module>model</module>
+        <module>recognition</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
