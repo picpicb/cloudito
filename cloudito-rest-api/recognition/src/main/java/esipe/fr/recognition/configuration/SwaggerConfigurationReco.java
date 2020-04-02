@@ -18,7 +18,7 @@ public class SwaggerConfigurationReco {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Recognition")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("esipe.fr.recognition.esipe.fr.recognition.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("esipe.fr.recognition.controllers"))
                 .paths(PathSelectors.any())
                 .build()
                 .tags(new Tag("Reco","Recognition Resources"));
