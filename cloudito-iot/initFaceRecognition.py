@@ -30,7 +30,7 @@ while len(faces_detected) == 0:
         neightborsSensibility = neightborsSensibility - 1
 
 if len(faces_detected) == 0:
-    print("Nothing detected...")
+    print("Nothing detected.")
 
 i = 0
 outputList = []
