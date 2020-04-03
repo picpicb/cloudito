@@ -8,6 +8,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.AttributeConverter;
 import java.security.InvalidKeyException;
+import java.lang.IllegalStateException;
 import java.security.Key;
 import java.util.Base64;
 
