@@ -1,9 +1,13 @@
 package com.ackincolor.cloudito.entities;
 
-public class Credentials {
+import java.util.UUID;
 
-    private String usrId,login,pwd,key;
+public class Credentials {
+    private Long usrId;
+    private String login,pwd;
     private boolean authenticated;
+    private String code;
+    private UUID uuid;
     public String getLogin() {
         return login;
     }
@@ -20,19 +24,35 @@ public class Credentials {
         this.pwd = pwd;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getUsrId() {
+    public Long getUsrId() {
         return usrId;
     }
 
-    public void setUsrId(String usrId) {
+    public void setUsrId(Long usrId) {
         this.usrId = usrId;
+    }
+
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }
