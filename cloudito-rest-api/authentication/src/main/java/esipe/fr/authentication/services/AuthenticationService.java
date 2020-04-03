@@ -1,11 +1,17 @@
 package esipe.fr.authentication.services;
 
 //import esipe.fr.repositories.CustomerRepository;
+import esipe.fr.authentication.entities.TOTP;
+import esipe.fr.authentication.exceptions.AuthenticationException;
+import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import esipe.fr.model.Customer;
+import esipe.fr.repositories.CustomerRepository;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
 
@@ -13,7 +19,53 @@ import java.util.Optional;
 @Service
 public class AuthenticationService {
 
-    //@Autowired
-    //CustomerRepository customerRepository;
+    @Autowired
+    CustomerRepository customerRepository;
     private Logger logger = LogManager.getLogger("AuthenticationService");
+
+    public Customer getCustomer(Long customerId) throws AuthenticationException {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()){
+            return customer.get();
+        }else{
+            logger.warn("Customer not found");
+            throw new AuthenticationException(404,"No Customer found");
+        }
+    }
+
+    public boolean verifyCode(String code,Long customerId) throws AuthenticationException {
+        Customer customer = this.getCustomer(customerId);
+        if(customer.getKey() == null || customer.getKey().trim()==""){
+            throw new AuthenticationException(400,"Error, please regenerate a key");
+        }
+        if(code.trim().length() != 6){
+            return false;
+        }
+        if(code.equalsIgnoreCase(getTOTPCode(customer.getKey()))){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private String getRandomSecretKey() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[20];
+        random.nextBytes(bytes);
+        Base32 base32 = new Base32();
+        String secretKey = base32.encodeToString(bytes);
+        // make the secret key more human-readable by lower-casing and
+        // inserting spaces between each group of 4 characters
+        return secretKey.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
+    }
+
+    public String getTOTPCode(String secretKey) {
+        String normalizedBase32Key = secretKey.replace(" ", "").toUpperCase();
+        Base32 base32 = new Base32();
+        byte[] bytes = base32.decode(normalizedBase32Key);
+        String hexKey = Hex.encodeHexString(bytes);
+        long time = (System.currentTimeMillis() / 1000) / 30;
+        String hexTime = Long.toHexString(time);
+        return TOTP.generateTOTP(hexKey, hexTime, "6");
+    }
 }

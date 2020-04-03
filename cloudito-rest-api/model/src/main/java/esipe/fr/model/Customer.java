@@ -13,6 +13,9 @@ public class Customer {
     private Long id;
 
     private String name;
+    private String pwd;
+    private String login;
+    private String key;
 
     @OneToMany(
             mappedBy = "customer",
@@ -43,5 +46,29 @@ public class Customer {
 
     public void setLocations(List<CustomerLocation> locations) {
         this.locations = locations;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

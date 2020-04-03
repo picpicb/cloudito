@@ -77,8 +77,14 @@
             <groupId>esipe.fr</groupId>
             <artifactId>persistence</artifactId>
             <version>1.0.0-RELEASE</version>
-            <scope>test</scope>
+
         </dependency>
+        <dependency>
+        <groupId>esipe.fr</groupId>
+        <artifactId>model</artifactId>
+        <version>1.0.0-RELEASE</version>
+
+    </dependency>
     </dependencies>
 
     <properties>
