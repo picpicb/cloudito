@@ -34,6 +34,29 @@ public class AuthenticationService {
         }
     }
 
+    public Customer getCustomer(String login) throws AuthenticationException{
+        Optional<Customer> customer = customerRepository.findCustomerByLogin(login);
+        if(customer.isPresent()){
+            return customer.get();
+        }else{
+            logger.warn("Customer not found");
+            throw new AuthenticationException(404,"No Customer found");
+        }
+    }
+
+    public boolean verifyLoginPassword(String login, String pwd,Long customerId) throws AuthenticationException{
+        Customer customer = this.getCustomer(customerId);
+        if(customer.getLogin().equalsIgnoreCase(login) && customer.getPwd().equalsIgnoreCase(pwd)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public void save(Customer customer){
+        customerRepository.save(customer);
+    }
+
     public boolean verifyCode(String code,Long customerId) throws AuthenticationException {
         Customer customer = this.getCustomer(customerId);
         if(customer.getsKey() == null || customer.getsKey().trim()==""){

@@ -10,7 +10,7 @@ import java.util.UUID;
 @ApiModel(description = "esipe.fr.model.AuthStatus")
 public class AuthStatus {
     private int stateAuthent;
-    private Date time;
+    private Long usrId;
     private UUID uuid;
 
     public int getStateAuthent() {
@@ -21,14 +21,6 @@ public class AuthStatus {
         this.stateAuthent = stateAuthent;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
     public UUID getUuid() {
         return uuid;
     }
@@ -37,9 +29,9 @@ public class AuthStatus {
         this.uuid = uuid;
     }
 
-    public AuthStatus(int stateAuthent, Date time, UUID uuid) {
+    public AuthStatus(int stateAuthent, Long usrId, UUID uuid) {
         this.stateAuthent = stateAuthent;
-        this.time = time;
+        this.usrId = usrId;
         this.uuid = uuid;
     }
 }

@@ -89,6 +89,14 @@ public class AuthenticationServiceTest {
     }
 
     @Test
+    public void whenCustomerLoginAndPasswordNotExist_ThrowException()  throws AuthenticationException{
+        exceptionRule.expect(AuthenticationException.class);
+        exceptionRule.expectMessage("No Customer found");
+        Long idCustomer = 2L;
+        Customer loc = authenticationService.getCustomer("login");
+    }
+
+    @Test
     public void whenCustomerExistAndKeyDont_ThrowException()  throws AuthenticationException{
         exceptionRule.expect(AuthenticationException.class);
         exceptionRule.expectMessage("Error, please regenerate a key");

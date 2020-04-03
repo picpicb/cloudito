@@ -4,6 +4,7 @@ import esipe.fr.model.AuthStatus;
 import esipe.fr.authentication.exceptions.AuthenticationException;
 import esipe.fr.authentication.services.AuthenticationService;
 import esipe.fr.model.Credentials;
+import esipe.fr.model.Customer;
 import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,14 +51,31 @@ public class AuthenticationController {
     @RequestMapping(value = "/authenticate/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "LOG IN", nickname = "LOG IN", response =String.class, tags={"Auth"})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK - String ", response = String.class),
+            @ApiResponse(code = 200, message = "OK - AuthStatus ", response = AuthStatus.class),
             @ApiResponse(code = 503, message = "Forbidden Access", response = String.class) })
     @ResponseBody
-    public ResponseEntity<String> firstAuthent(@RequestBody Credentials credential)  {
-        String response = "OK";
-        return ResponseEntity
-                .ok()
-                .body(response);
+    public ResponseEntity<Object> firstAuthent(@RequestBody Credentials credential)  {
+        try {
+            Customer customer = authenticationService.getCustomer(credential.getLogin());
+            if (authenticationService.verifyLoginPassword(credential.getLogin(), credential.getPwd(),customer.getId())){
+                UUID uuid = UUID.randomUUID();
+                customer.setUuid(uuid);
+                customer.setTime(Calendar.getInstance().getTime());
+                authenticationService.save(customer);
+                return ResponseEntity
+                        .ok()
+                        .body(new AuthStatus(1, customer.getId(), uuid));
+            }else{
+                return ResponseEntity
+                        .status(503)
+                        .body("Forbidden Access");
+            }
+        }catch(AuthenticationException e){
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(503)
+                    .body("Forbidden Access");
+        }
     }
 
     @RequestMapping(value = "/authenticate/code", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,18 +87,24 @@ public class AuthenticationController {
     public ResponseEntity<Object> secondAuthent(@RequestBody Credentials credential)  {
         boolean authCorrect = false;
         try {
-            authCorrect = authenticationService.verifyCode(credential.getCode(),credential.getUsrId());
+            authCorrect = (authenticationService.verifyCode(credential.getCode(),credential.getUsrId()) &&
+                    authenticationService.verifyUUID(credential.getUuid(),credential.getUsrId()) &&
+                    authenticationService.verifyTime(Calendar.getInstance().getTime(),credential.getUsrId()));
+
+            if(authCorrect){
+                Customer customer = authenticationService.getCustomer(credential.getUsrId());
+                UUID uuid = UUID.randomUUID();
+                customer.setUuid(uuid);
+                return ResponseEntity
+                        .ok()
+                        .body(new AuthStatus(2,customer.getId(),uuid));
+            }else{
+                return ResponseEntity
+                        .status(503)
+                        .body("Forbidden Access");
+            }
         } catch (AuthenticationException e) {
             e.printStackTrace();
-            return ResponseEntity
-                    .status(503)
-                    .body("Forbidden Access");
-        }
-        if(authCorrect){
-            return ResponseEntity
-                    .ok()
-                    .body(new AuthStatus(2,Calendar.getInstance().getTime(),UUID.randomUUID()));
-        }else{
             return ResponseEntity
                     .status(503)
                     .body("Forbidden Access");

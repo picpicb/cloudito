@@ -2,12 +2,16 @@ package esipe.fr.model;
 
 import io.swagger.annotations.ApiModel;
 
+import java.util.Date;
+import java.util.UUID;
+
 @ApiModel(description = "esipe.fr.model.Credentials")
 public class Credentials {
     private Long usrId;
     private String login,pwd;
     private boolean authenticated;
     private String code;
+    private UUID uuid;
     public String getLogin() {
         return login;
     }
@@ -46,5 +50,13 @@ public class Credentials {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }
