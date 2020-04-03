@@ -17,7 +17,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Calendar;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.closeTo;
@@ -39,13 +41,17 @@ public class AuthenticationServiceTest {
     @MockBean
     private CustomerRepository customerRepository;
 
+    private UUID uuid = UUID.randomUUID();
+
     @Before
     public void setUp() {
         //whenExistingCustomer_KeyMustBeFound
         Customer jm = new Customer();
         jm.setId(1L);
         jm.setName("jm");
-        jm.setKey("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
+        jm.setsKey("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
+        jm.setTime(Calendar.getInstance().getTime());
+        jm.setUuid(this.uuid);
         Mockito.when(customerRepository.findById(jm.getId())).thenReturn(java.util.Optional.of(jm));
 
         Customer customerWithoutKey = new Customer();
@@ -62,16 +68,16 @@ public class AuthenticationServiceTest {
         Long idCustomer = 1L;
         Optional<Customer> jm = customerRepository.findById(idCustomer);
         assertTrue(jm.isPresent());
-        assertNotNull(jm.get().getKey());
-        assertEquals(jm.get().getKey(),"ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
+        assertNotNull(jm.get().getsKey());
+        assertEquals(jm.get().getsKey(),"ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
     }
 
     @Test
     public void whenSameKeys_SameCodeShouldBeGenerated() {
         Long idCustomer = 1L;
         Optional<Customer> jm = customerRepository.findById(idCustomer);
-        assertEquals(jm.get().getKey(),"ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
-        assertEquals(authenticationService.getTOTPCode(jm.get().getKey()),authenticationService.getTOTPCode("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww"));
+        assertEquals(jm.get().getsKey(),"ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
+        assertEquals(authenticationService.getTOTPCode(jm.get().getsKey()),authenticationService.getTOTPCode("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww"));
     }
 
     @Test
@@ -102,4 +108,49 @@ public class AuthenticationServiceTest {
         assertTrue(!authenticationService.verifyCode(authenticationService.getTOTPCode("ajsqzpvwwy4x4d76l2aec5cdf6edt5ww"),idCustomer));
     }
 
+    @Test
+    public void whenTokenIsFalse_ReturnFalse() throws AuthenticationException {
+        Long idCustomer = 1L;
+        assertTrue(!authenticationService.verifyUUID(UUID.randomUUID(),idCustomer));
+    }
+
+    @Test
+    public void whenSecondAuthentIsToLate_ReturnFalse() throws AuthenticationException {
+        Long idCustomer = 1L;
+        long time = Calendar.getInstance().getTime().getTime()+350000;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        assertTrue(!authenticationService.verifyTime(calendar.getTime(),idCustomer));
+    }
+
+    @Test
+    public void whenTokenIsNull_ThrowException()throws AuthenticationException{
+        exceptionRule.expect(AuthenticationException.class);
+        exceptionRule.expectMessage("Error, WRONG TOKEN");
+        Long idCustomer = 3L;
+        boolean auth  = authenticationService.verifyUUID(UUID.randomUUID(),idCustomer);
+    }
+
+    @Test
+    public void whenDateIsNull_ThrowException()throws AuthenticationException{
+        exceptionRule.expect(AuthenticationException.class);
+        exceptionRule.expectMessage("Error, WRONG DATE");
+        Long idCustomer = 3L;
+        boolean auth  = authenticationService.verifyTime(Calendar.getInstance().getTime(),idCustomer);
+    }
+
+    @Test
+    public void whenTokenIsCorrect_ReturnTrue() throws AuthenticationException {
+        Long idCustomer = 1L;
+        assertTrue(authenticationService.verifyUUID(uuid,idCustomer));
+    }
+
+    @Test
+    public void whenDateIsCorrect_ReturnTrue() throws AuthenticationException {
+        Long idCustomer = 1L;
+        long time = Calendar.getInstance().getTime().getTime()+3000;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        assertTrue(authenticationService.verifyTime(calendar.getTime(),idCustomer));
+    }
 }

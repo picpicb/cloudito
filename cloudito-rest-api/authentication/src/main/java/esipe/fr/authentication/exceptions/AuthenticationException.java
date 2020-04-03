@@ -1,5 +1,8 @@
 package esipe.fr.authentication.exceptions;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "esipe.fr.authentication.exceptions.AuthenticationException")
 public class AuthenticationException extends Exception{
     private int code;
     public AuthenticationException (int code, String msg) {

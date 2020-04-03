@@ -14,6 +14,7 @@ import esipe.fr.repositories.CustomerRepository;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -35,20 +36,44 @@ public class AuthenticationService {
 
     public boolean verifyCode(String code,Long customerId) throws AuthenticationException {
         Customer customer = this.getCustomer(customerId);
-        if(customer.getKey() == null || customer.getKey().trim()==""){
+        if(customer.getsKey() == null || customer.getsKey().trim()==""){
             throw new AuthenticationException(400,"Error, please regenerate a key");
         }
         if(code.trim().length() != 6){
             return false;
         }
-        if(code.equalsIgnoreCase(getTOTPCode(customer.getKey()))){
+        if(code.equalsIgnoreCase(getTOTPCode(customer.getsKey()))){
             return true;
         }else{
             return false;
         }
     }
 
-    private String getRandomSecretKey() {
+    public boolean verifyUUID(UUID uuid, Long customerId) throws AuthenticationException{
+        Customer customer = this.getCustomer(customerId);
+        if(customer.getUuid() == null || customer.getUuid().toString().trim()==""){
+            throw new AuthenticationException(400,"Error, WRONG TOKEN");
+        }
+        if(uuid.toString().equalsIgnoreCase(customer.getUuid().toString())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean verifyTime(Date time, Long customerId) throws AuthenticationException{
+        Customer customer = this.getCustomer(customerId);
+        if(customer.getTime() == null || customer.getTime().toString().trim()==""){
+            throw new AuthenticationException(400,"Error, WRONG DATE");
+        }
+        if((time.getTime()-customer.getTime().getTime()) < 300000){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public String getRandomSecretKey() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[20];
         random.nextBytes(bytes);

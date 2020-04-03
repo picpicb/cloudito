@@ -1,65 +1,103 @@
 package esipe.fr.authentication.controllers;
 
-import esipe.fr.authentication.entities.TOTP;
+import esipe.fr.model.AuthStatus;
+import esipe.fr.authentication.exceptions.AuthenticationException;
 import esipe.fr.authentication.services.AuthenticationService;
+import esipe.fr.model.Credentials;
 import io.swagger.annotations.*;
-import org.apache.commons.codec.binary.Base32;
-import org.apache.commons.codec.binary.Hex;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.SecureRandom;
+import java.util.Calendar;
+import java.util.UUID;
 
 @RestController
 @Api(tags = "Authentication")
 public class AuthenticationController {
+    private Logger logger = LogManager.getLogger("AuthenticationController");
+
     @Autowired
     AuthenticationService authenticationService;
 
     @RequestMapping(value = "/authentGoogle", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "launch second Auth", nickname = "authentGoogle", response =String.class, tags={"Auth"})
+    @ApiOperation(value = "GET A RANDOM KEY", nickname = "GET KEY", response =String.class, tags={"Auth"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK - String ", response = String.class) })
     @ResponseBody
     public ResponseEntity<String> authentGoogle()  {
-        String response = getRandomSecretKey();
+        String response = authenticationService.getRandomSecretKey();
         return ResponseEntity
                 .ok()
                 .body(response);
     }
 
     @RequestMapping(value = "/authentGoogle/{key}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "launch second Auth", nickname = "authentGoogle", response =String.class, tags={"Auth"})
+    @ApiOperation(value = "GET CODE OF KEY", nickname = "GET CODE", response =String.class, tags={"Auth"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK - String ", response = String.class) })
     @ResponseBody
     public ResponseEntity<String> authentGoogleKey(@ApiParam(value = "Key",required = true) @PathVariable("key") String id)  {
-        String response = getTOTPCode(id);
+        String response = authenticationService.getTOTPCode(id);
         return ResponseEntity
                 .ok()
                 .body(response);
     }
 
-    private String getRandomSecretKey() {
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[20];
-        random.nextBytes(bytes);
-        Base32 base32 = new Base32();
-        String secretKey = base32.encodeToString(bytes);
-        // make the secret key more human-readable by lower-casing and
-        // inserting spaces between each group of 4 characters
-        return secretKey.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
+    @RequestMapping(value = "/authenticate/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "LOG IN", nickname = "LOG IN", response =String.class, tags={"Auth"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK - String ", response = String.class),
+            @ApiResponse(code = 503, message = "Forbidden Access", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<String> firstAuthent(@RequestBody Credentials credential)  {
+        String response = "OK";
+        return ResponseEntity
+                .ok()
+                .body(response);
     }
 
-    public String getTOTPCode(String secretKey) {
-        String normalizedBase32Key = secretKey.replace(" ", "").toUpperCase();
-        Base32 base32 = new Base32();
-        byte[] bytes = base32.decode(normalizedBase32Key);
-        String hexKey = Hex.encodeHexString(bytes);
-        long time = (System.currentTimeMillis() / 1000) / 30;
-        String hexTime = Long.toHexString(time);
-        return TOTP.generateTOTP(hexKey, hexTime, "6");
+    @RequestMapping(value = "/authenticate/code", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "LOG IN WITH CODE", nickname = "LOG IN WITH CODE", response =String.class, tags={"Auth"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK - AuthStatus ", response = AuthStatus.class),
+            @ApiResponse(code = 503, message = "Forbidden Access", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<Object> secondAuthent(@RequestBody Credentials credential)  {
+        boolean authCorrect = false;
+        try {
+            authCorrect = authenticationService.verifyCode(credential.getCode(),credential.getUsrId());
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(503)
+                    .body("Forbidden Access");
+        }
+        if(authCorrect){
+            return ResponseEntity
+                    .ok()
+                    .body(new AuthStatus(2,Calendar.getInstance().getTime(),UUID.randomUUID()));
+        }else{
+            return ResponseEntity
+                    .status(503)
+                    .body("Forbidden Access");
+        }
+
+    }
+
+    @RequestMapping(value = "/authenticate/inscription", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "REGISTER", nickname = "REGISTER", response =String.class, tags={"Auth"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK - String ", response = String.class),
+            @ApiResponse(code = 204, message = "User Mail already used", response = String.class) })
+    @ResponseBody
+    public ResponseEntity<String> register(@RequestBody Credentials credential)  {
+        String response = "OK";
+        return ResponseEntity
+                .ok()
+                .body(response);
     }
 }

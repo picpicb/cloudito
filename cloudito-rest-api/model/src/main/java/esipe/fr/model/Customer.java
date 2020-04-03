@@ -3,7 +3,9 @@ package esipe.fr.model;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @ApiModel(description = "esipe.fr.model.Customer")
 @Entity
@@ -15,7 +17,9 @@ public class Customer {
     private String name;
     private String pwd;
     private String login;
-    private String key;
+    private String sKey;
+    private UUID uuid;
+    private Date time;
 
     @OneToMany(
             mappedBy = "customer",
@@ -64,11 +68,27 @@ public class Customer {
         this.login = login;
     }
 
-    public String getKey() {
-        return key;
+    public String getsKey() {
+        return sKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setsKey(String sKey) {
+        this.sKey = sKey;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }
