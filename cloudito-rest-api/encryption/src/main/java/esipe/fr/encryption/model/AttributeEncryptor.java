@@ -1,7 +1,15 @@
 package esipe.fr.encryption.model;
 
 import org.springframework.stereotype.Component;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.AttributeConverter;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.util.Base64;
 
 @Component
 public class AttributeEncryptor implements AttributeConverter<String, String> {
@@ -13,6 +21,7 @@ public class AttributeEncryptor implements AttributeConverter<String, String> {
     private final Cipher cipher;
 
     public AttributeEncryptor() throws Exception {
+        //ici récuperation de la clé
         key = new SecretKeySpec(SECRET.getBytes(), AES);
         cipher = Cipher.getInstance(AES);
     }
