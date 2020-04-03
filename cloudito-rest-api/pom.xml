@@ -11,12 +11,13 @@
     <description>API pour l'application Android Cloudito</description>
 
     <modules>
-        <module>course</module>
+        <module>encryption</module>
         <module>geolocation</module>
         <module>notification</module>
         <module>authentication</module>
         <module>persistence</module>
         <module>model</module>
+        <module>recognition</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
