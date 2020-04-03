@@ -1,5 +1,6 @@
 package esipe.fr.encryption.model;
 
+import esipe.fr.encryption.EncryptionClass;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.BadPaddingException;
@@ -18,20 +19,17 @@ public class AttributeEncryptor implements AttributeConverter<String, String> {
     private static final String AES = "AES";
     private static final String SECRET = "secret-key-12345";
 
-    private final Key key;
-    private final Cipher cipher;
+    private EncryptionClass ec;
 
     public AttributeEncryptor() throws Exception {
         //ici récuperation de la clé
-        key = new SecretKeySpec(SECRET.getBytes(), AES);
-        cipher = Cipher.getInstance(AES);
+        this.ec = new EncryptionClass();
     }
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
         try {
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            return Base64.getEncoder().encodeToString(cipher.doFinal(attribute.getBytes()));
+            return ec.encrypt(attribute,)
         } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
             throw new IllegalStateException(e);
         }
@@ -40,8 +38,7 @@ public class AttributeEncryptor implements AttributeConverter<String, String> {
     @Override
     public String convertToEntityAttribute(String dbData) {
         try {
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            return new String(cipher.doFinal(Base64.getDecoder().decode(dbData)));
+            return
         } catch (InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
             throw new IllegalStateException(e);
         }
