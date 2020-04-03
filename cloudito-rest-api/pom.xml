@@ -11,7 +11,7 @@
     <description>API pour l'application Android Cloudito</description>
 
     <modules>
-        <module>course</module>
+        <module>encryption</module>
         <module>geolocation</module>
         <module>notification</module>
         <module>authentication</module>
