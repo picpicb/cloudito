@@ -2376,12 +2376,12 @@
 												"$ref": "AAAAAAFxOvAuL+Q3Orc="
 											},
 											"font": "Arial;13;0",
-											"left": 126,
-											"top": 784,
+											"left": 124,
+											"top": 776,
 											"width": 104.7744140625,
 											"height": 13,
-											"alpha": 1.3961231529544387,
-											"distance": 69.05070600652827,
+											"alpha": 1.510263316161919,
+											"distance": 66.12110101926616,
 											"hostEdge": {
 												"$ref": "AAAAAAFxOvAuMOQ46Jw="
 											},
@@ -4690,7 +4690,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFw+GnOmjy0uPY="
 					},
-					"name": "Role1"
+					"name": "Role1",
+					"type": ""
 				},
 				{
 					"_type": "UMLAttribute",
@@ -4698,7 +4699,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFw+GnOmjy0uPY="
 					},
-					"name": "Role2"
+					"name": "Role2",
+					"type": ""
 				},
 				{
 					"_type": "UMLAttribute",
@@ -4706,7 +4708,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFw+GnOmjy0uPY="
 					},
-					"name": "Role3"
+					"name": "Role3",
+					"type": ""
 				}
 			]
 		}
