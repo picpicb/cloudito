@@ -11,7 +11,10 @@ public class Scope2ViewModel extends ViewModel {
     public Scope2ViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is dashboard fragment");
+
     }
+
+
 
     public LiveData<String> getText() {
         return mText;

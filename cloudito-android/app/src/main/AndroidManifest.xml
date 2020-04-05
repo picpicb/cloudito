@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ackincolor.cloudito">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" > </uses-permission>
-
-    <!--PERMISSION TO USE RTT WIFI LOCATION -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-    <!--FEATURE TO USE RTT WIFI LOCATION -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- PERMISSION TO USE RTT WIFI LOCATION -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- FEATURE TO USE RTT WIFI LOCATION -->
     <uses-feature android:name="android.hardware.wifi.rtt" />
 
     <application
@@ -22,7 +19,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.ackincolor.cloudito.MainActivity"
+            android:name=".ui.authentification.AuthentificationFragment"
+            android:label="@string/title_activity_authentification"></activity>
+        <activity android:name=".ui.authentification.SecondActivity" />
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
