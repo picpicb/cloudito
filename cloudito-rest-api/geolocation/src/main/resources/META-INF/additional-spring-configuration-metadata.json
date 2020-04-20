@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "app.vault.hostVault",
+      "type": "java.lang.String",
+      "description": "Description for app.vault.hostVault."
+    },
+    {
+      "name": "app.vault.tokenVault",
+      "type": "java.lang.String",
+      "description": "Description for app.vault.tokenVault."
+    }
+  ] }

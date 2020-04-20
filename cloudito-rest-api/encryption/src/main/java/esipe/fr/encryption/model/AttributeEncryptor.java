@@ -29,8 +29,8 @@ public class AttributeEncryptor implements AttributeConverter<String, String> {
     @Override
     public String convertToDatabaseColumn(String attribute) {
         try {
-            return ec.encrypt(attribute,)
-        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
+            return ec.encrypt(attribute,SECRET);
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
@@ -38,8 +38,8 @@ public class AttributeEncryptor implements AttributeConverter<String, String> {
     @Override
     public String convertToEntityAttribute(String dbData) {
         try {
-            return
-        } catch (InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            return ec.decrypt(dbData,SECRET);
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }

@@ -7,9 +7,12 @@ import esipe.fr.model.CustomerLocation;
 import esipe.fr.repositories.CustomerRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import esipe.fr.repositories.CustomerLocationRepository;
+import esipe.fr.encryption.service.Encryption;
 
 import java.util.Date;
 import java.util.Optional;
@@ -22,10 +25,15 @@ public class GeolocationService {
     CustomerLocationRepository customerLocationRepository;
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    Environment env;
 
     private Logger logger = LogManager.getLogger("GeolocationService");
 
     public CustomerLocation getCustomerLocation(Long customerId) throws ApiException {
+
+        Encryption test = Encryption.getInstance(env);
+        test.testSpringIntegration();
         Optional<Customer> customer = customerRepository.findById(customerId);
         if(customer.isPresent()){
             CustomerLocation customerLocation = customerLocationRepository.findFirstByCustomerIdOrderByLastUpdateDesc(customerId);
