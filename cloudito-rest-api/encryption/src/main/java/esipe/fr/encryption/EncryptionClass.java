@@ -11,7 +11,6 @@ import java.util.Base64;
 
 public class EncryptionClass {
 
-    String secretKey = "";
     String salt = "ssshhhhhhhhhhh!!!!";
 
     public String encrypt(String strToEncrypt, String secret) {
@@ -20,11 +19,11 @@ public class EncryptionClass {
             IvParameterSpec ivspec = new IvParameterSpec(iv);
 
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), 65536, 128);
+            KeySpec spec = new PBEKeySpec(secret.toCharArray(), salt.getBytes(), 65536, 128);
             SecretKey tmp = factory.generateSecret(spec);
             SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
             return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
         } catch (Exception e) {
@@ -39,7 +38,7 @@ public class EncryptionClass {
             IvParameterSpec ivspec = new IvParameterSpec(iv);
 
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), 65536, 128);
+            KeySpec spec = new PBEKeySpec(secret.toCharArray(), salt.getBytes(), 65536, 128);
             SecretKey tmp = factory.generateSecret(spec);
             SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
