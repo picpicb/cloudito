@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Credentials {
     private Long usrId;
-    private String login,pwd;
+    private String login,pwd,name;
     private boolean authenticated;
     private String code;
     private UUID uuid;
@@ -54,5 +54,13 @@ public class Credentials {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
