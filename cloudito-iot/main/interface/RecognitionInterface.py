@@ -5,9 +5,10 @@ from requests import exceptions
 class RecognitionInterface:
 
     def send(encodedNumpyData):
+        print("Sending...")
         try:
             r = requests.post('http://localhost:8087/recognize', data=encodedNumpyData)
-            r.raise_for_status()
+            print("Sending done")
         except requests.exceptions.HTTPError:
             return requests.exceptions.ConnectionError
         except requests.exceptions.ConnectionError:

@@ -7,17 +7,20 @@ from main.util.NumpyArrayEncoder import np
 
 
 class FaceDetectionService:
-    def __init__(self):
+
+    def run(self):
+        print("get image")
         gray_img = self.getImage()
+        print("start detection")
         self.faceDetection(gray_img)
 
     # Detect face
     @classmethod
-    def faceDetection(self, gray_img):
+    def faceDetection(cls, gray_img):
         faces_detected = []
         scaleFactor = 1.25
         neightborsSensibility = 5
-        face_haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+        face_haar_cascade = cv2.CascadeClassifier('resources/haarcascade_frontalface_default.xml')
         while len(faces_detected) == 0:
             faces_detected = face_haar_cascade.detectMultiScale(gray_img, scaleFactor=scaleFactor,
                                                                 minNeighbors=neightborsSensibility)
@@ -36,9 +39,9 @@ class FaceDetectionService:
             (x, y, w, h) = face
             face_grey = gray_img[y:y + h, x:x + h]
             encodedNumpyData = json.dumps(face_grey, cls=np.NumpyArrayEncoder)
-            self.send(encodedNumpyData)
+            cls.send(encodedNumpyData)
 
-    # Catch an image an return his gray_scale
+    # Catch an image an return his gray_scale [Mocked]
     @classmethod
     def getImage(cls):
         try:
@@ -49,6 +52,6 @@ class FaceDetectionService:
         gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         return gray_img
 
-    # Send result
+    # Send result to the interface
     def send(self, encodedNumpyData):
         recoInterface.RecognitionInterface.send(encodedNumpyData)
