@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AuthenticationRetrofitController {
     private Context context;
     private AuthenticationAndroidService androidService;
-    static final String BASE_URL = "http://ackincolor.ddns.net:3086/"; //port 3083 ???
+    static final String BASE_URL = "http://ackincolor.ddns.net:3082/"; //port 3082 replace notif
     private Gson gson;
     public AuthenticationRetrofitController(Context context, AuthenticationAndroidService androidService) {
         this.context = context;
