@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.authentification.AuthentificationFragment"
-            android:label="@string/title_activity_authentification"></activity>
+            android:label="Sign in"></activity>
         <activity android:name=".ui.authentification.SecondActivity" />
         <activity
             android:name=".MainActivity"
