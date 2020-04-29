@@ -56,7 +56,7 @@ public class Cloudito_encryption {
             e.printStackTrace();
         }
     }
-    public String getAesKey(){
+    public String getAESKey(){
         return this.aesKey;
     }
 }
