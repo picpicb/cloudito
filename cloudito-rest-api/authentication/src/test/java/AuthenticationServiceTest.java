@@ -52,6 +52,8 @@ public class AuthenticationServiceTest {
         jm.setsKey("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
         jm.setTime(Calendar.getInstance().getTime());
         jm.setUuid(this.uuid);
+        jm.setLogin("jm@gmail.com");
+        jm.setPwd("motDePasseDeTest");
         Mockito.when(customerRepository.findById(jm.getId())).thenReturn(java.util.Optional.of(jm));
 
         Customer customerWithoutKey = new Customer();
@@ -96,7 +98,11 @@ public class AuthenticationServiceTest {
         Customer loc = authenticationService.getCustomer("login");
     }
 
-    // TEST PWD AND CUSTOMER OK A FAIRE ENCORE
+    @Test
+    public void whenLoginAndPasswordAreCorrect_ReturnTrue() throws AuthenticationException {
+        Long idCustomer = 1L;
+        assertTrue(authenticationService.verifyLoginPassword("jm@gmail.com","motDePasseDeTest",idCustomer));
+    }
 
     @Test
     public void whenCustomerExistAndKeyDont_ThrowException()  throws AuthenticationException{

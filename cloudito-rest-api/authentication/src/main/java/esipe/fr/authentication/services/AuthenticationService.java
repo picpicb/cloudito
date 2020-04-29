@@ -57,6 +57,17 @@ public class AuthenticationService {
         customerRepository.save(customer);
     }
 
+    public String newCustomer(Customer customer){
+        try{
+            this.getCustomer(customer.getLogin());
+            return "Already Exist";
+        }catch (AuthenticationException e){
+            // Customer don't exist yet
+            this.save(customer);
+            return "Created";
+        }
+    }
+
     public boolean verifyCode(String code,Long customerId) throws AuthenticationException {
         Customer customer = this.getCustomer(customerId);
         if(customer.getsKey() == null || customer.getsKey().trim()==""){
@@ -104,7 +115,7 @@ public class AuthenticationService {
         String secretKey = base32.encodeToString(bytes);
         // make the secret key more human-readable by lower-casing and
         // inserting spaces between each group of 4 characters
-        return secretKey.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
+        return secretKey;//.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
     }
 
     public String getTOTPCode(String secretKey) {

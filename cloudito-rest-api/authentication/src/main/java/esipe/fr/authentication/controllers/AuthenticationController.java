@@ -61,7 +61,6 @@ public class AuthenticationController {
                 UUID uuid = UUID.randomUUID();
                 customer.setUuid(uuid);
                 customer.setTime(Calendar.getInstance().getTime());
-                System.out.println("ID:"+ customer.getId());
                 authenticationService.save(customer);
                 return ResponseEntity
                         .ok()
@@ -116,13 +115,20 @@ public class AuthenticationController {
     @RequestMapping(value = "/authenticate/inscription", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "REGISTER", nickname = "REGISTER", response =String.class, tags={"Auth"})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK - String ", response = String.class),
+            @ApiResponse(code = 201, message = "OK - String ", response = String.class),
             @ApiResponse(code = 204, message = "User Mail already used", response = String.class) })
     @ResponseBody
     public ResponseEntity<String> register(@RequestBody Credentials credential)  {
-        String response = "OK";
+        String key = authenticationService.getRandomSecretKey();
+        Customer newCustomer = credential.mapCustomer(key);
+        String response = authenticationService.newCustomer(newCustomer);
+        if(response.equalsIgnoreCase("Already Exist")){
+            return ResponseEntity
+                    .status(204)
+                    .body("Forbidden Access");
+        }
         return ResponseEntity
-                .ok()
-                .body(response);
+                .status(201)
+                .body(key);
     }
 }
