@@ -42,7 +42,7 @@ public class AuthentificationFragment extends AppCompatActivity {
 
     private void validate(String userName, String userPassword) {
         if((userName.equals("Admin")) && (userPassword.equals("Admin"))) {
-            Intent intent = new Intent(AuthentificationFragment.this, SecondActivity.class);
+            Intent intent = new Intent(AuthentificationFragment.this, GoogleAuthFragment.class);
             startActivity(intent);
         }else{
             counter --;
