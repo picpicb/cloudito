@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Optional;
 
 @Service
 public class RecognitionService {
@@ -57,15 +58,16 @@ public class RecognitionService {
      * @return socket created
      */
     public Socket openConnection(){
-        Socket soc = new Socket();
         try{
-            soc = new Socket("localhost",2021);
+            Socket soc = new Socket("localhost",2021);
+            logger.info(soc.getLocalAddress().toString());
+            return soc;
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return soc;
+        return new Socket();
     }
 
 
