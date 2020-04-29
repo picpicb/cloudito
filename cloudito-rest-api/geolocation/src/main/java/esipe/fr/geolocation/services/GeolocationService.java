@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import esipe.fr.repositories.CustomerLocationRepository;
-import esipe.fr.encryption.service.Encryption;
 
 import java.util.Date;
 import java.util.Optional;
