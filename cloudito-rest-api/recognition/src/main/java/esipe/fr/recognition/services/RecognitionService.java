@@ -5,7 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Optional;
 
 @Service
 public class RecognitionService {
@@ -16,9 +19,10 @@ public class RecognitionService {
         logger.info("New face detected");
         logger.info("Start recognition");
         String personName = "";
+        Socket soc = openConnection();
         try{
             //open streams
-            Socket soc = new Socket("localhost",2021);
+           // Socket soc = new Socket("localhost",2021);
             OutputStream out = soc.getOutputStream();
             InputStream in = soc.getInputStream();
 
@@ -48,4 +52,23 @@ public class RecognitionService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Open a new connection
+     * @return socket created
+     */
+    public Socket openConnection(){
+        try{
+            Socket soc = new Socket("localhost",2021);
+            logger.info(soc.getLocalAddress().toString());
+            return soc;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Socket();
+    }
+
+
 }
