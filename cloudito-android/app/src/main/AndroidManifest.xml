@@ -23,9 +23,9 @@
         <activity
             android:name=".ui.authentification.AuthentificationFragment"
             android:label="Sign in" />
-        <activity android:name=".ui.authentification.GoogleAuthFragment" />
+        <activity android:name=".MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.authentification.GoogleAuthFragment"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
