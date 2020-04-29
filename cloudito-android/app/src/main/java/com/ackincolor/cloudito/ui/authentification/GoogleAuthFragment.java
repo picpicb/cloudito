@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ackincolor.cloudito.MainActivity;
 import com.ackincolor.cloudito.R;
 
 import java.util.concurrent.Executor;
@@ -59,9 +62,11 @@ public class GoogleAuthFragment extends AppCompatActivity {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-                //implement the redirection here
-                Log.d(TAG, "Authentification OK");
 
+                Log.d(TAG, "Authentification OK");
+                //implement the redirection here
+
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
             }
 
@@ -82,18 +87,19 @@ public class GoogleAuthFragment extends AppCompatActivity {
                 .setNegativeButtonText("Annuler")
                 .build();
 
-/*
+
         Login2.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validate(AuthPswd2.getText().toString()) = true) {
+                //if (validate(AuthPswd2.getText().toString()) = true) {
+                if (true == true){
                     myBiometricPrompt.authenticate(promptInfo);
                 }
 
             }
         }
         ));
-*/
+
 
     }
 
