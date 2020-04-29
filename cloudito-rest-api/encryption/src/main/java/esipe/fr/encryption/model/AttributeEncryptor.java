@@ -1,6 +1,9 @@
 package esipe.fr.encryption.model;
 
 import esipe.fr.encryption.EncryptionClass;
+import esipe.fr.encryption.service.Encryption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.BadPaddingException;
@@ -17,12 +20,17 @@ import java.util.Base64;
 public class AttributeEncryptor implements AttributeConverter<String, String> {
 
     private static final String AES = "AES";
-    private static final String SECRET = "secret-key-12345";
+    private final String SECRET;
+
+    @Autowired
+    private Environment env;
 
     private EncryptionClass ec;
 
-    public AttributeEncryptor() throws Exception {
+    public AttributeEncryptor(Environment env) throws Exception {
         //ici récuperation de la clé
+        this.SECRET = Encryption.getInstance(env).getAESKey();
+        Encryption.getInstance(env).testSpringIntegration();
         this.ec = new EncryptionClass();
     }
 

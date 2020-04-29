@@ -14,12 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Encryption {
+
     private static Encryption instance;
     private VaultConfig vaultConfig;
     //@Value("${app.vault.hostVault}")
     private String hostVault;
     //@Value("${app.vault.tokenVault}")
     private String tokenVault;
+    private String AESKey;
     private Vault vault;
     public static Encryption getInstance(Environment env) {
         if(instance==null)
@@ -37,13 +39,9 @@ public class Encryption {
                     .token(tokenVault)
                     .build();
             this.vault = new Vault(this.vaultConfig);
-            final Map<String, Object> secrets = new HashMap<>();
-            secrets.put("value", "world");
-            secrets.put("other_value", "You can store multiple name/value pairs under a single key");
-
-// Write operation
-            final LogicalResponse writeResponse = vault.logical()
-                    .write("secret/hello", secrets);
+            this.AESKey = this.vault.logical()
+                    .read("secret/AES_Key_1")
+                    .getData().get("value");
         }catch(VaultException e){
             e.printStackTrace();
         }
@@ -60,5 +58,8 @@ public class Encryption {
         } catch (VaultException e) {
             e.printStackTrace();
         }
+    }
+    public String getAESKey(){
+        return this.AESKey;
     }
 }

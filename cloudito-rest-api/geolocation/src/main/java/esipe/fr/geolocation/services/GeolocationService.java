@@ -32,8 +32,8 @@ public class GeolocationService {
 
     public CustomerLocation getCustomerLocation(Long customerId) throws ApiException {
 
-        Encryption test = Encryption.getInstance(env);
-        test.testSpringIntegration();
+        //Encryption test = Encryption.getInstance(null);
+        //test.testSpringIntegration();
         Optional<Customer> customer = customerRepository.findById(customerId);
         if(customer.isPresent()){
             CustomerLocation customerLocation = customerLocationRepository.findFirstByCustomerIdOrderByLastUpdateDesc(customerId);
