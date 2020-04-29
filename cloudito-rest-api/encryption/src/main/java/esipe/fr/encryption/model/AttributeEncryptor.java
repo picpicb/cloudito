@@ -1,5 +1,9 @@
 package esipe.fr.encryption.model;
 
+import esipe.fr.encryption.EncryptionClass;
+import esipe.fr.encryption.service.Encryption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.BadPaddingException;
@@ -16,23 +20,25 @@ import java.util.Base64;
 public class AttributeEncryptor implements AttributeConverter<String, String> {
 
     private static final String AES = "AES";
-    private static final String SECRET = "secret-key-12345";
+    private final String SECRET;
 
-    private final Key key;
-    private final Cipher cipher;
+    @Autowired
+    private Environment env;
 
-    public AttributeEncryptor() throws Exception {
+    private EncryptionClass ec;
+
+    public AttributeEncryptor(Environment env) throws Exception {
         //ici récuperation de la clé
-        key = new SecretKeySpec(SECRET.getBytes(), AES);
-        cipher = Cipher.getInstance(AES);
+        this.SECRET = Encryption.getInstance(env).getAESKey();
+        Encryption.getInstance(env).testSpringIntegration();
+        this.ec = new EncryptionClass();
     }
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
         try {
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            return Base64.getEncoder().encodeToString(cipher.doFinal(attribute.getBytes()));
-        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
+            return ec.encrypt(attribute,SECRET);
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
@@ -40,9 +46,8 @@ public class AttributeEncryptor implements AttributeConverter<String, String> {
     @Override
     public String convertToEntityAttribute(String dbData) {
         try {
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            return new String(cipher.doFinal(Base64.getDecoder().decode(dbData)));
-        } catch (InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            return ec.decrypt(dbData,SECRET);
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
