@@ -96,6 +96,8 @@ public class AuthenticationServiceTest {
         Customer loc = authenticationService.getCustomer("login");
     }
 
+    // TEST PWD AND CUSTOMER OK A FAIRE ENCORE
+
     @Test
     public void whenCustomerExistAndKeyDont_ThrowException()  throws AuthenticationException{
         exceptionRule.expect(AuthenticationException.class);

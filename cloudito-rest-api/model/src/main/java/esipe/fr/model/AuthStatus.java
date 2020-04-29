@@ -29,6 +29,14 @@ public class AuthStatus {
         this.uuid = uuid;
     }
 
+    public Long getUsrId() {
+        return usrId;
+    }
+
+    public void setUsrId(Long usrId) {
+        this.usrId = usrId;
+    }
+
     public AuthStatus(int stateAuthent, Long usrId, UUID uuid) {
         this.stateAuthent = stateAuthent;
         this.usrId = usrId;

@@ -61,6 +61,7 @@ public class AuthenticationController {
                 UUID uuid = UUID.randomUUID();
                 customer.setUuid(uuid);
                 customer.setTime(Calendar.getInstance().getTime());
+                System.out.println("ID:"+ customer.getId());
                 authenticationService.save(customer);
                 return ResponseEntity
                         .ok()
