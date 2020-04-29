@@ -1,4 +1,4 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@ApiModel(description = "esipe.fr.model.Location")
+@ApiModel(description = "esipe.fr.cloudito_model.Location")
 @Entity
 public class Location {
     @Id

@@ -2,8 +2,8 @@ package esipe.fr.recognition.controllers;
 
 
 import esipe.fr.recognition.exceptions.ApiException;
-import esipe.fr.model.ErrorDefinition;
-import esipe.fr.model.ErrorDefinitionErrors;
+import esipe.fr.cloudito_model.ErrorDefinition;
+import esipe.fr.cloudito_model.ErrorDefinitionErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

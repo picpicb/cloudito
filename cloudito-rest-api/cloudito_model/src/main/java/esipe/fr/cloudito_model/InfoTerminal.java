@@ -1,10 +1,10 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
 
-@ApiModel(description = "esipe.fr.model.InfoTerminal")
+@ApiModel(description = "esipe.fr.cloudito_model.InfoTerminal")
 @Entity
 public class InfoTerminal {
     @Id

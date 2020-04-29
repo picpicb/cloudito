@@ -1,7 +1,7 @@
 package esipe.fr.repositories;
 
 
-import esipe.fr.model.CustomerLocation;
+import esipe.fr.cloudito_model.CustomerLocation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

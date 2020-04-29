@@ -1,4 +1,4 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 import io.swagger.annotations.ApiModel;
 
@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.ArrayList;
 
-@ApiModel(description = "esipe.fr.model.MapView")
+@ApiModel(description = "esipe.fr.cloudito_model.MapView")
 @Entity
 public class MapView {
     @Id

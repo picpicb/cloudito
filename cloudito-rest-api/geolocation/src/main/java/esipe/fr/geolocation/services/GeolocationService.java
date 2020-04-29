@@ -2,8 +2,8 @@ package esipe.fr.geolocation.services;
 
 
 import esipe.fr.geolocation.exceptions.ApiException;
-import esipe.fr.model.Customer;
-import esipe.fr.model.CustomerLocation;
+import esipe.fr.cloudito_model.Customer;
+import esipe.fr.cloudito_model.CustomerLocation;
 import esipe.fr.repositories.CustomerRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

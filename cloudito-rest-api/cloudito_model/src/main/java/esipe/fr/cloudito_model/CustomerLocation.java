@@ -1,24 +1,25 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
+import java.util.Date;
 
-@ApiModel(description = "Access Point")
+@ApiModel(description = "UserLocation")
 @Entity
-public class AccessPoint {
+public class CustomerLocation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
-
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="LOCATION_ID")
     private Location location;
-
-    private String ssid;
-    private String mac;
+    private Date lastUpdate;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customerId")
+    @JsonIgnore
+    private Customer customer;
 
     public Long getId() {
         return id;
@@ -36,20 +37,19 @@ public class AccessPoint {
         this.location = location;
     }
 
-    public String getSsid() {
-        return ssid;
+    public Date getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
-    public String getMac() {
-        return mac;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setMac(String mac) {
-        this.mac = mac;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
-
 }

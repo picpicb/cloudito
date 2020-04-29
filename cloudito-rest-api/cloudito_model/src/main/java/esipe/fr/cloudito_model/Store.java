@@ -1,4 +1,4 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 import io.swagger.annotations.ApiModel;
 import org.springframework.data.geo.Point;
@@ -6,7 +6,7 @@ import org.springframework.data.geo.Point;
 import javax.persistence.*;
 import java.util.ArrayList;
 
-@ApiModel(description = "esipe.fr.model.Store")
+@ApiModel(description = "esipe.fr.cloudito_model.Store")
 @Entity
 public class Store {
     @Id

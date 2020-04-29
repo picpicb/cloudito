@@ -1,4 +1,4 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 
 import io.swagger.annotations.ApiModel;

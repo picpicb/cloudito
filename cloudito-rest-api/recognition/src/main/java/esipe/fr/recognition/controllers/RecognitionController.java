@@ -1,6 +1,5 @@
 package esipe.fr.recognition.controllers;
 
-import esipe.fr.model.CustomerLocation;
 import esipe.fr.recognition.services.RecognitionService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Api(tags = "Reco")

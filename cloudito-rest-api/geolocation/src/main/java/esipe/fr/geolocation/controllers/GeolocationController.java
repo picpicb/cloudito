@@ -3,7 +3,7 @@ package esipe.fr.geolocation.controllers;
 
 import esipe.fr.geolocation.exceptions.ApiException;
 import esipe.fr.geolocation.services.GeolocationService;
-import esipe.fr.model.CustomerLocation;
+import esipe.fr.cloudito_model.CustomerLocation;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

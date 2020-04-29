@@ -1,7 +1,7 @@
 package esipe.fr.repositories;
 
 
-import esipe.fr.model.AccessPoint;
+import esipe.fr.cloudito_model.AccessPoint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

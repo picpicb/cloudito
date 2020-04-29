@@ -3,7 +3,7 @@ package esipe.fr.geolocation.services;
 
 
 import esipe.fr.geolocation.exceptions.ApiException;
-import esipe.fr.model.AccessPoint;
+import esipe.fr.cloudito_model.AccessPoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

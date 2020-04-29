@@ -1,11 +1,11 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
 import java.util.List;
 
-@ApiModel(description = "esipe.fr.model.Customer")
+@ApiModel(description = "esipe.fr.cloudito_model.Customer")
 @Entity
 public class Customer {
     @Id

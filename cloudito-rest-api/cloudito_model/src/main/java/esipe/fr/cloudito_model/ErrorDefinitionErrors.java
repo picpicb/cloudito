@@ -1,4 +1,4 @@
-package esipe.fr.model;
+package esipe.fr.cloudito_model;
 
 
 public class ErrorDefinitionErrors   {
