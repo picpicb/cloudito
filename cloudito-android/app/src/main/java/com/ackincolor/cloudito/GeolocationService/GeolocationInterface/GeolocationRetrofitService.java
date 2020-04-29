@@ -2,7 +2,6 @@ package com.ackincolor.cloudito.GeolocationService.GeolocationInterface;
 
 import com.ackincolor.cloudito.entities.AccessPoint;
 import com.ackincolor.cloudito.entities.CourseNode;
-import com.ackincolor.cloudito.entities.Location;
 
 import java.util.ArrayList;
 
