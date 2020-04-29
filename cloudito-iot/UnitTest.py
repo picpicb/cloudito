@@ -1,7 +1,7 @@
 import unittest
 
 
-class OpenCVTest(unittest.TestCase):
+class UnitTest(unittest.TestCase):
     """ Test unitaire standard """
 
     def test_import(self):
