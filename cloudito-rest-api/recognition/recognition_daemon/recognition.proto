@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+message Array {
+	string face = 1;
+}
+
+service Recognition {
+	rpc StartRecognition(Array) returns (Array) {}
+}
