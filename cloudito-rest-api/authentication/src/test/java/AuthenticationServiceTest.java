@@ -43,6 +43,11 @@ public class AuthenticationServiceTest {
 
     private UUID uuid = UUID.randomUUID();
 
+    private static final String NO_CUSTOMER_FOUND = "No Customer found";
+    private static final String WRONG_TOKEN = "Error, WRONG TOKEN";
+    private static final String WRONG_DATE = "Error, WRONG DATE";
+    private static final String REGENERATE_KEY = "Error, please regenerate a key";
+
     @Before
     public void setUp() {
         //whenExistingCustomer_KeyMustBeFound
@@ -85,7 +90,7 @@ public class AuthenticationServiceTest {
     @Test
     public void whenCustomerNotExist_ThrowException()  throws AuthenticationException{
         exceptionRule.expect(AuthenticationException.class);
-        exceptionRule.expectMessage("No Customer found");
+        exceptionRule.expectMessage(NO_CUSTOMER_FOUND);
         Long idCustomer = 2L;
         Customer loc = authenticationService.getCustomer(idCustomer);
     }
@@ -93,7 +98,7 @@ public class AuthenticationServiceTest {
     @Test
     public void whenCustomerLoginAndPasswordNotExist_ThrowException()  throws AuthenticationException{
         exceptionRule.expect(AuthenticationException.class);
-        exceptionRule.expectMessage("No Customer found");
+        exceptionRule.expectMessage(NO_CUSTOMER_FOUND);
         Long idCustomer = 2L;
         Customer loc = authenticationService.getCustomer("login");
     }
@@ -107,7 +112,7 @@ public class AuthenticationServiceTest {
     @Test
     public void whenCustomerExistAndKeyDont_ThrowException()  throws AuthenticationException{
         exceptionRule.expect(AuthenticationException.class);
-        exceptionRule.expectMessage("Error, please regenerate a key");
+        exceptionRule.expectMessage(REGENERATE_KEY);
         Long idCustomer = 3L;
         boolean auth  = authenticationService.verifyCode("352685",idCustomer);
     }
@@ -142,7 +147,7 @@ public class AuthenticationServiceTest {
     @Test
     public void whenTokenIsNull_ThrowException()throws AuthenticationException{
         exceptionRule.expect(AuthenticationException.class);
-        exceptionRule.expectMessage("Error, WRONG TOKEN");
+        exceptionRule.expectMessage(WRONG_TOKEN);
         Long idCustomer = 3L;
         boolean auth  = authenticationService.verifyUUID(UUID.randomUUID(),idCustomer);
     }
@@ -150,7 +155,7 @@ public class AuthenticationServiceTest {
     @Test
     public void whenDateIsNull_ThrowException()throws AuthenticationException{
         exceptionRule.expect(AuthenticationException.class);
-        exceptionRule.expectMessage("Error, WRONG DATE");
+        exceptionRule.expectMessage(WRONG_DATE);
         Long idCustomer = 3L;
         boolean auth  = authenticationService.verifyTime(Calendar.getInstance().getTime(),idCustomer);
     }
