@@ -69,7 +69,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.geolocation.ClouditoGeolocationService</mainClass>
+                    <mainClass>esipe.fr.recognition.ClouditoRecognitionService</mainClass>
                 </configuration>
             </plugin>
         </plugins>

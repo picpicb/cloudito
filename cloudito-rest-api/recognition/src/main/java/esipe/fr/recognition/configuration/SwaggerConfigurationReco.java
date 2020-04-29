@@ -21,6 +21,7 @@ public class SwaggerConfigurationReco {
                 .apis(RequestHandlerSelectors.basePackage("esipe.fr.recognition.controllers"))
                 .paths(PathSelectors.any())
                 .build()
+                .useDefaultResponseMessages(false)
                 .tags(new Tag("Reco","Recognition Resources"));
     }
 }

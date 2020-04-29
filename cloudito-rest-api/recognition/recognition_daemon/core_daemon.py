@@ -1,15 +1,16 @@
 import socket
 import cv2
 import os
+import sys
+import logging
+import logging.config
 import numpy as np
 from recognition import RecognizerThread
 import json
 from json import JSONEncoder
 from numpy import asarray
 
-
-subjects = ["", "Macron", "Chirac"]
-
+# fonction qui rogne l'image autour du visage
 def detect_face(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     face_cascade = cv2.CascadeClassifier('opencv-files/lbpcascade_frontalface.xml')
@@ -19,7 +20,7 @@ def detect_face(img):
     (x, y, w, h) = faces[0]
     return gray[y:y+w, x:x+h], faces[0]
 
-#fonction qui analyse les images de la BDD
+# fonction qui analyse les images de la BDD
 def prepare_training_data(data_folder_path):
     dirs = os.listdir(data_folder_path)
     faces = []
@@ -42,46 +43,39 @@ def prepare_training_data(data_folder_path):
     return faces, labels
 
 
-#Préparation de la base de donnée des visages
-print("Preparing data...")
+# Base de données des noms des visages reconaissables
+subjects = ["", "Macron", "Chirac"]
+
+# Création du logger
+logging.config.fileConfig('logging.conf')
+logger = logging.getLogger('RecognizerDaemon')
+
+# Préparation de la base de donnée des visages
+logger.info("Recognizer daemon start")
+logger.info("Scanning faces from database...")
 faces, labels = prepare_training_data("training-data")
-print("Data prepared")
-print("Total faces: ", len(faces))
-print("Total labels: ", len(labels))
+logger.info("Scan completed : %s faces scanned",len(faces))
 
-#Démarrage de l'écoute du socket
-soc = socket.socket()
-host = "localhost"
-port = 2021
-soc.bind((host, port))
-soc.listen(5)
-print("Waiting local client connexion on port ",port)
-while True:
-    conn, addr = soc.accept()
-    newthread = RecognizerThread(addr, conn, faces, labels)
-    newthread.start()
-
-
-
-
-###### DEV : Face detection encoder to JSON #####
-# class NumpyArrayEncoder(JSONEncoder):
-#     def default(self, obj):
-#         if isinstance(obj, np.ndarray):
-#             return obj.tolist()
-#         return JSONEncoder.default(self, obj)
-
-# face, rect = detect_face(cv2.imread("test-data/test1.jpg"))
-# numpyData = {"array": asarray(face)}
-# encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
-# with open('sample.json', 'w') as outfile:
-#     json.dump(encodedNumpyData, outfile)
+# Démarrage de l'écoute du socket
+try:
+    soc = socket.socket()
+    soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    host = "localhost"
+    port = 2021
+    soc.bind((host, port))
+    soc.listen(5)
+    logger.info("Waiting client connexion on port %s",port)
+    while True:
+        conn, addr = soc.accept()
+        newthread = RecognizerThread(addr, conn, faces, labels)
+        newthread.start()
+except socket.error as msg:
+    logger.error("Couldnt connect with the socket : %s",msg)
+    logger.warning("Terminating Program")
+    sys.exit(1)
 
 
-# with open("sample.json") as json_file:
-#     decodedArrays = json.loads(json_file.read())
-   
-#     finalNumpyArray = np.asarray(decodedArrays['array'])
-#     print("NumPy Array")
-#     print(finalNumpyArray)
+
+
+
 
