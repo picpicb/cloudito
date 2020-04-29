@@ -18,6 +18,7 @@ public class Cloudito_encryption {
     //@Value("${app.vault.tokenVault}")
     private String tokenVault;
     private Vault vault;
+    private String aesKey;
 
     public static Cloudito_encryption getInstance(Environment env) {
         if(instance==null)
@@ -35,13 +36,9 @@ public class Cloudito_encryption {
                     .token(tokenVault)
                     .build();
             this.vault = new Vault(this.vaultConfig);
-            final Map<String, Object> secrets = new HashMap<>();
-            secrets.put("value", "world");
-            secrets.put("other_value", "You can store multiple name/value pairs under a single key");
-
-// Write operation
-            final LogicalResponse writeResponse = vault.logical()
-                    .write("secret/hello", secrets);
+            this.aesKey = this.vault.logical()
+                    .read("secret/AES_Key_1")
+                    .getData().get("value");
         }catch(VaultException e){
             e.printStackTrace();
         }
@@ -58,5 +55,8 @@ public class Cloudito_encryption {
         } catch (VaultException e) {
             e.printStackTrace();
         }
+    }
+    public String getAesKey(){
+        return this.aesKey;
     }
 }
