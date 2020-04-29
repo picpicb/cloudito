@@ -1,10 +1,12 @@
 package esipe.fr.geolocation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -15,7 +17,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EntityScan(basePackages = {"esipe.fr"})
 @ComponentScan(basePackages = {"esipe.fr"})
 public class ClouditoGeolocationService {
-
     public static void main(String[] args) {
         SpringApplication.run(ClouditoGeolocationService.class, args);
     }
