@@ -1,16 +1,16 @@
-import esipe.fr.encryption.EncryptionClass;
+import esipe.fr.encryption.EncryptionSupport;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class EncryptionTest {
+public class EncryptionSupportTest {
 
 
 
     @Test
     public final void testEncryption() {
-        EncryptionClass AES = new EncryptionClass();
+        EncryptionSupport AES = new EncryptionSupport();
 
         String secretKey = "test";
         String clearString = "stringenclair";
@@ -23,7 +23,7 @@ public class EncryptionTest {
 
     @Test
     public final void testDecryption() {
-        EncryptionClass AES = new EncryptionClass();
+        EncryptionSupport AES = new EncryptionSupport();
 
         String secretKey = "test";
         String encryptedString = "5GKqlX/fUrOjE6TGxIJn/Q==";

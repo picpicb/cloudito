@@ -1,20 +1,13 @@
 package esipe.fr.encryption.model;
 
-import esipe.fr.encryption.EncryptionClass;
-import esipe.fr.encryption.service.Encryption;
+import esipe.fr.encryption.EncryptionSupport;
+import esipe.fr.encryption.service.Cloudito_encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.AttributeConverter;
-import java.security.InvalidKeyException;
 import java.lang.IllegalStateException;
-import java.security.Key;
-import java.util.Base64;
 
 @Component
 public class AttributeEncryptor implements AttributeConverter<String, String> {
@@ -25,13 +18,13 @@ public class AttributeEncryptor implements AttributeConverter<String, String> {
     @Autowired
     private Environment env;
 
-    private EncryptionClass ec;
+    private EncryptionSupport ec;
 
     public AttributeEncryptor(Environment env) throws Exception {
         //ici récuperation de la clé
-        this.SECRET = Encryption.getInstance(env).getAESKey();
-        Encryption.getInstance(env).testSpringIntegration();
-        this.ec = new EncryptionClass();
+        this.SECRET = Cloudito_encryption.getInstance(env).getAESKey();
+        Cloudito_encryption.getInstance(env).testSpringIntegration();
+        this.ec = new EncryptionSupport();
     }
 
     @Override
