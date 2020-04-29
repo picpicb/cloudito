@@ -1,6 +1,5 @@
 package esipe.fr.geolocation;
 
-import esipe.fr.encryption.service.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
