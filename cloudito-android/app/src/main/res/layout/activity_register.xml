@@ -19,10 +19,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
         <EditText
             android:id="@+id/et_pseudo"
             android:inputType="text"
@@ -32,11 +28,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/pseudo" />
 
-    </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+
 
         <EditText
             android:id="@+id/et_email"
@@ -47,11 +40,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/email" />
 
-    </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_password"
@@ -62,11 +51,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/password" />
 
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_password2"
@@ -76,8 +60,6 @@
             android:imeOptions="actionDone"
             android:layout_height="wrap_content"
             android:hint="@string/password2" />
-
-    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/btn_send"
@@ -93,6 +75,12 @@
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvUserLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already Signed in ? Login" />
 
 
 </LinearLayout>
