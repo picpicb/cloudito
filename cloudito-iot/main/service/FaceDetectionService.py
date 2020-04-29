@@ -1,7 +1,9 @@
 import cv2
 import json
-import requests
-from util.NumpyArrayEncoder import np
+import main.util.NumpyArrayEncoder as np
+import main.interface.RecognitionInterface as recoInterface
+
+from main.util.NumpyArrayEncoder import np
 
 
 class FaceDetectionService:
@@ -36,13 +38,17 @@ class FaceDetectionService:
             encodedNumpyData = json.dumps(face_grey, cls=np.NumpyArrayEncoder)
             self.send(encodedNumpyData)
 
-    # Catch an image an retur his gray_scale
+    # Catch an image an return his gray_scale
     @classmethod
     def getImage(cls):
-        img = cv2.imread('images.jpg')
+        try:
+            img = cv2.imread('resources/images.jpg')
+        except FileNotFoundError:
+            print("Image not found")
+            raise
         gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         return gray_img
 
     # Send result
-    def send(encodedNumpyData):
-        requests.post('http://localhost:8087/recognize', data=encodedNumpyData)
+    def send(self, encodedNumpyData):
+        recoInterface.RecognitionInterface.send(encodedNumpyData)
