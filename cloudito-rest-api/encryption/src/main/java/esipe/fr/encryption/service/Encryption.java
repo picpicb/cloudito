@@ -23,11 +23,13 @@ public class Encryption {
     private String tokenVault;
     private String AESKey;
     private Vault vault;
+
     public static Encryption getInstance(Environment env) {
         if(instance==null)
             instance = new Encryption(env);
         return instance;
     }
+
     private Encryption(Environment env){
         this.hostVault = env.getProperty("app.vault.hostVault");
         //app.vault.tokenVault
