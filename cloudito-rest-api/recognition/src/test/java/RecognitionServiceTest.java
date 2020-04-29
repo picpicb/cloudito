@@ -14,10 +14,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.ByteArrayOutputStream;
+import java.net.Socket;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.closeTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -38,18 +40,22 @@ public class RecognitionServiceTest {
     @MockBean
     private CustomerRepository customerRepository;
 
-
-
     @Before
-    public void setUp() {
-        
+    public void setUp() { }
 
-
+    @Test
+    public void whenConnectionIsUp() {
+        assertEquals("Socket must be opened",new Socket(),recognitionService.openConnection());
     }
 
     @Test
     public void whenIsNotAJSONarray_recognitionShloudNotWork() throws ApiException {
-
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("content error");
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        output.write(3);
+        byte[] input = output.toByteArray();
+        recognitionService.startRecognition(input);
     }
 
     @Rule
