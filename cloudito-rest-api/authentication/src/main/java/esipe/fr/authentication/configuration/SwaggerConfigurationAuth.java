@@ -1,4 +1,4 @@
-package esipe.fr.encryption.configuration;
+package esipe.fr.authentication.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,17 +9,18 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+
 @Configuration
 @EnableSwagger2
-public class SwaggerConfigurationCourse {
+public class SwaggerConfigurationAuth {
     @Bean
-    public Docket api3() {
+    public Docket api2() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Course")
+                .groupName("Authentication")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("esipe.fr.course.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("esipe.fr.authentication.controllers"))
                 .paths(PathSelectors.any())
                 .build()
-                .tags(new Tag("Course","All for sending notifications to customers"));
+                .tags(new Tag("Auth","Authentication Resources"));
     }
 }
