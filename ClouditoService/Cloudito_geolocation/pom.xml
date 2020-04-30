@@ -6,12 +6,13 @@
         <artifactId>ClouditoService</artifactId>
         <groupId>esipe.fr</groupId>
         <version>1.0.0-RELEASE</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>esipe.fr</groupId>
-    <artifactId>Cloudito_encryption</artifactId>
+    <artifactId>Cloudito_geolocation</artifactId>
     <version>1.0.0-RELEASE</version>
+    <packaging>jar</packaging>
 
     <profiles>
 
@@ -27,13 +28,14 @@
                 </property>
             </activation>
             <properties>
-                <server.port>8081</server.port>
+                <server.port>8085</server.port>
                 <spring.datasource.url>jdbc:mysql://172.31.254.54:8006/cloudito?useSSL=false</spring.datasource.url>
                 <spring.datasource.username>cloudito</spring.datasource.username>
                 <spring.datasource.password>1234</spring.datasource.password>
                 <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
                 <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
-                <vault.token>testToken</vault.token>
+                <app.vault.hostVault>http://172.31.254.54:8200</app.vault.hostVault>
+                <app.vault.tokenVault>s.w9vvsdOTBFXgA47dGg7M9Z02</app.vault.tokenVault>
             </properties>
         </profile>
 
@@ -48,7 +50,7 @@
             </activation>
             <properties>
                 <!--suppress UnresolvedMavenProperty -->
-                <server.port>${env.SERVER_PORT_COURSE_SERVICE}</server.port>
+                <server.port>${env.SERVER_PORT_GEOLOCATION_SERVICE}</server.port>
                 <!--suppress UnresolvedMavenProperty -->
                 <spring.datasource.url>${env.DATA_SOURCE_URL}</spring.datasource.url>
                 <!--suppress UnresolvedMavenProperty -->
@@ -58,7 +60,9 @@
                 <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
                 <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
                 <!--suppress UnresolvedMavenProperty -->
-                <vault.token>${env.VAULT_TOKEN}</vault.token>
+                <app.vault.hostVault>${env.HOSTVAULT}</app.vault.hostVault>
+                <!--suppress UnresolvedMavenProperty -->
+                <app.vault.tokenVault>${env.TOKENVAULT}</app.vault.tokenVault>
             </properties>
         </profile>
 
@@ -70,10 +74,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.cloudito_encryption.ClouditoEncryptionService</mainClass>
-                    <addResources>true</addResources>
+                    <mainClass>esipe.fr.cloudito_geolocation.ClouditoGeolocationService</mainClass>
                 </configuration>
-
             </plugin>
         </plugins>
         <resources>
@@ -83,4 +85,32 @@
             </resource>
         </resources>
     </build>
+
+    <dependencies>
+        <dependency>
+            <artifactId>Cloudito_model</artifactId>
+            <groupId>esipe.fr</groupId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <artifactId>Cloudito_persistence</artifactId>
+            <groupId>esipe.fr</groupId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <parentBasedir>../</parentBasedir>
+    </properties>
+
 </project>

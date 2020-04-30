@@ -1,4 +1,4 @@
-import esipe.fr.Cloudito_notification.controllers.NotificationController;
+import esipe.fr.cloudito_notification.controllers.NotificationController;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;

@@ -75,7 +75,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.Cloudito_recognition.ClouditoRecognitionService</mainClass>
+                    <mainClass>esipe.fr.cloudito_recognition.ClouditoRecognitionService</mainClass>
                 </configuration>
             </plugin>
         </plugins>
