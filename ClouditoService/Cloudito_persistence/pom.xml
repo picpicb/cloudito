@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>persistence</artifactId>
+    <artifactId>Cloudito_persistence</artifactId>
 
     <dependencies>
         <dependency>
-            <artifactId>model</artifactId>
+            <artifactId>Cloudito_model</artifactId>
             <groupId>esipe.fr</groupId>
             <version>1.0.0-RELEASE</version>
         </dependency>

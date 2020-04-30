@@ -11,7 +11,7 @@
     </parent>
 
 
-    <artifactId>recognition</artifactId>
+    <artifactId>Cloudito_recognition</artifactId>
     <version>1.0.0-RELEASE</version>
     <packaging>jar</packaging>
 
@@ -89,12 +89,12 @@
 
     <dependencies>
         <dependency>
-            <artifactId>model</artifactId>
+            <artifactId>Cloudito_model</artifactId>
             <groupId>esipe.fr</groupId>
             <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
-            <artifactId>persistence</artifactId>
+            <artifactId>Cloudito_persistence</artifactId>
             <groupId>esipe.fr</groupId>
             <version>1.0.0-RELEASE</version>
         </dependency>
