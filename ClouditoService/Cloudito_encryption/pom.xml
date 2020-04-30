@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ClouditoService</artifactId>
+        <groupId>esipe.fr</groupId>
+        <version>1.0.0-RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>esipe.fr</groupId>
+    <artifactId>Cloudito_encryption</artifactId>
+    <version>1.0.0-RELEASE</version>
+
+    <profiles>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <!-- this profile is active by default -->
+                <activeByDefault>true</activeByDefault>
+                <!-- activate if system properties 'env=dev' -->
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <server.port>8081</server.port>
+                <spring.datasource.url>jdbc:mysql://172.31.254.54:8006/cloudito?useSSL=false</spring.datasource.url>
+                <spring.datasource.username>cloudito</spring.datasource.username>
+                <spring.datasource.password>1234</spring.datasource.password>
+                <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
+                <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
+                <vault.token>testToken</vault.token>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <activation>
+                <!-- activate if system properties 'env=prod' -->
+                <property>
+                    <name>env</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <!--suppress UnresolvedMavenProperty -->
+                <server.port>${env.SERVER_PORT_COURSE_SERVICE}</server.port>
+                <!--suppress UnresolvedMavenProperty -->
+                <spring.datasource.url>${env.DATA_SOURCE_URL}</spring.datasource.url>
+                <!--suppress UnresolvedMavenProperty -->
+                <spring.datasource.username>${env.DATA_SOURCE_USERNAME}</spring.datasource.username>
+                <!--suppress UnresolvedMavenProperty -->
+                <spring.datasource.password>${env.DATA_SOURCE_PASSWORD}</spring.datasource.password>
+                <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
+                <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
+                <!--suppress UnresolvedMavenProperty -->
+                <vault.token>${env.VAULT_TOKEN}</vault.token>
+            </properties>
+        </profile>
+
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>esipe.fr.Cloudito_encryption.ClouditoEncryptionService</mainClass>
+                    <addResources>true</addResources>
+                </configuration>
+
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>
