@@ -1,4 +1,4 @@
-import esipe.fr.encryption.EncryptionSupport;
+import esipe.fr.cloudito_encryption.EncryptionSupport;
 
 import static org.junit.Assert.*;
 
