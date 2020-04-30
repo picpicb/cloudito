@@ -11,13 +11,13 @@
     <description>API pour l'application Android Cloudito</description>
 
     <modules>
-        <module>encryption</module>
-        <module>geolocation</module>
-        <module>notification</module>
-        <module>authentication</module>
-        <module>persistence</module>
-        <module>model</module>
-        <module>recognition</module>
+        <module>Cloudito_encryption</module>
+        <module>Cloudito_geolocation</module>
+        <module>Cloudito_notification</module>
+        <module>Cloudito_authentication</module>
+        <module>Cloudito_persistence</module>
+        <module>Cloudito_model</module>
+        <module>Cloudito_recognition</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
