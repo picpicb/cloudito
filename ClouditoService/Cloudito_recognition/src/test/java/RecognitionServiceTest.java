@@ -1,9 +1,9 @@
 
 
-import esipe.fr.Cloudito_model.Customer;
-import esipe.fr.Cloudito_recognition.exceptions.ApiException;
-import esipe.fr.Cloudito_recognition.services.RecognitionService;
-import esipe.fr.Cloudito_repositories.CustomerRepository;
+import esipe.fr.cloudito_model.Customer;
+import esipe.fr.cloudito_recognition.exceptions.ApiException;
+import esipe.fr.cloudito_recognition.services.RecognitionService;
+import esipe.fr.cloudito_repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

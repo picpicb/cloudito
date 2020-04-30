@@ -1,7 +1,7 @@
-import esipe.fr.Cloudito_authentication.exceptions.AuthenticationException;
-import esipe.fr.Cloudito_authentication.services.AuthenticationService;
-import esipe.fr.Cloudito_model.Customer;
-import esipe.fr.Cloudito_repositories.CustomerRepository;
+import esipe.fr.cloudito_authentication.exceptions.AuthenticationException;
+import esipe.fr.cloudito_authentication.services.AuthenticationService;
+import esipe.fr.cloudito_model.Customer;
+import esipe.fr.cloudito_repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

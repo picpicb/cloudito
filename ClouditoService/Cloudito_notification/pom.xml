@@ -19,7 +19,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.Cloudito_notification.ClouditoNotificationService</mainClass>
+                    <mainClass>esipe.fr.cloudito_notification.ClouditoNotificationService</mainClass>
                 </configuration>
             </plugin>
         </plugins>
