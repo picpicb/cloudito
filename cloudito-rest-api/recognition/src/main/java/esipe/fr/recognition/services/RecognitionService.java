@@ -1,11 +1,16 @@
 package esipe.fr.recognition.services;
 
+import esipe.fr.model.Customer;
+import esipe.fr.model.CustomerDetection;
+import esipe.fr.recognition.exceptions.ApiException;
+import esipe.fr.repositories.CustomerDetectionRepository;
+import esipe.fr.repositories.CustomerRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Optional;
@@ -14,6 +19,32 @@ import java.util.Optional;
 public class RecognitionService {
 
     private Logger logger = LogManager.getLogger("RecognitionService");
+
+    @Autowired
+    CustomerDetectionRepository customerDetectionRepository;
+    @Autowired
+    CustomerRepository customerRepository;
+
+    /**
+     * Get last detection of the customer
+     * @param customerID Identifier of the customer
+     */
+    public CustomerDetection getLastCustomerDetection(Long customerID) throws ApiException {
+        Optional<Customer> customer = customerRepository.findById(customerID);
+        if(customer.isPresent()){
+            CustomerDetection customerDetection = customerDetectionRepository.findFirstByCustomerIdOrderByLastUpdateDesc(customerID);
+            if (customerDetection.equals(null)){
+                logger.info("No detection found for the customer id ("+customerID.toString()+")");
+                throw new ApiException(404,"No detection found for the customer id ("+customerID.toString()+")");
+            }else{
+                logger.info("Reading results for customer detection: " + customerDetection.getId());
+                return customerDetection;
+            }
+        }else{
+            logger.warn("No customer found with that id ("+customerID.toString()+") was founded");
+            throw new ApiException(404,"No customer found with that id ("+customerID.toString()+") was founded");
+        }
+    }
 
     public void startRecognition(byte[] face){
         logger.info("New face detected");
