@@ -1,12 +1,10 @@
-import esipe.fr.notification.ClouditoNotificationService;
-import esipe.fr.notification.controllers.NotificationController;
+import esipe.fr.Cloudito_notification.controllers.NotificationController;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.web.servlet.server.Session;
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

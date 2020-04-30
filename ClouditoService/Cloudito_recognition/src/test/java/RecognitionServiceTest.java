@@ -1,30 +1,23 @@
 
 
-import esipe.fr.model.Customer;
-import esipe.fr.model.CustomerDetection;
-import esipe.fr.model.CustomerLocation;
-import esipe.fr.recognition.exceptions.ApiException;
-import esipe.fr.recognition.services.RecognitionService;
-import esipe.fr.repositories.CustomerRepository;
+import esipe.fr.Cloudito_model.Customer;
+import esipe.fr.Cloudito_recognition.exceptions.ApiException;
+import esipe.fr.Cloudito_recognition.services.RecognitionService;
+import esipe.fr.Cloudito_repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.ByteArrayOutputStream;
-import java.net.Socket;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.closeTo;
-import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)

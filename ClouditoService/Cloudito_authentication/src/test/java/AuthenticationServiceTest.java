@@ -1,7 +1,7 @@
-import esipe.fr.authentication.exceptions.AuthenticationException;
-import esipe.fr.authentication.services.AuthenticationService;
-import esipe.fr.model.Customer;
-import esipe.fr.repositories.CustomerRepository;
+import esipe.fr.Cloudito_authentication.exceptions.AuthenticationException;
+import esipe.fr.Cloudito_authentication.services.AuthenticationService;
+import esipe.fr.Cloudito_model.Customer;
+import esipe.fr.Cloudito_repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,16 +12,12 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)

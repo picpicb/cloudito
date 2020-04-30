@@ -70,7 +70,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>esipe.fr.encryption.ClouditoEncryptionService</mainClass>
+                    <mainClass>esipe.fr.Cloudito_encryption.ClouditoEncryptionService</mainClass>
                     <addResources>true</addResources>
                 </configuration>
 
