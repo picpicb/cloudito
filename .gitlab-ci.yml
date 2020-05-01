@@ -23,19 +23,19 @@ maven-build:
   stage: build-back
   only:
     changes:
-      - cloudito-rest-api/**/*
+      - ClouditoService/**/*
   except:
     - Scope3
     - geolocation
     - Scope2
     - Scope4
     - recognition
-  script: "mvn package $MAVEN_CLI_OPTS -B -f ./cloudito-rest-api/pom.xml -P prod"
+  script: "mvn package $MAVEN_CLI_OPTS -B -f ./ClouditoService/pom.xml -P prod"
   artifacts:
     paths:
-      - cloudito-rest-api/geolocation/target/*.jar
+      - ClouditoService/geolocation/target/*.jar
       #- cloudito-rest-api/course/target/*.jar
-      - cloudito-rest-api/notification/target/*.jar
+      - ClouditoService/notification/target/*.jar
 
 
 deploy_back:
@@ -43,7 +43,7 @@ deploy_back:
   stage: deploy-back
   only:
     changes:
-      - cloudito-rest-api/**/*
+      - ClouditoService/**/*
   except:
     - Scope3
     - geolocation
@@ -80,7 +80,7 @@ test-node:
     - recognition
     - Encryption
   script:
-    - cd ./cloudito-rest-api/mappingService
+    - cd ./ClouditoService/mappingService
     - npm i
     - npm test
 
@@ -101,7 +101,7 @@ deploy-node:
   before_script:
     - apk --update add nodejs
   script:
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHORT_SHA ./cloudito-rest-api/mappingService
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHORT_SHA ./ClouditoService/mappingService
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHORT_SHA
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHORT_SHA NewStack_cloudito-mapping
