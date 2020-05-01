@@ -14,13 +14,13 @@ Application d'un centre commercial hyper connecté
 
 ## Contributeurs
 
-Clément Aldobrandi - Sécurité
-Jean-Michel Frau - NCC
-Loïs Guillet - Sécurité
-Matthieu Anguillaume - Sécurité
-Michel Cai - NCC
-Pierre Toker - NCC
-Térence Wodling - Sécurité
-Wanis Hannachi - Sécurité
+- Clément Aldobrandi (Sécurité)
+- Jean-Michel Frau (NCC)
+- Loïs Guillet (Sécurité)
+- Matthieu Anguillaume (Sécurité)
+- Michel Cai (NCC)
+- Pierre Toker (NCC)
+- Térence Wodling (Sécurité)
+- Wanis Hannachi (Sécurité)
 
 
