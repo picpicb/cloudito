@@ -1,0 +1,7 @@
+data :
+  mysqldb :
+    host : "172.31.254.54"
+    port : 8006
+    database : cloudito
+    user : cloudito
+    pwd : "1234"
