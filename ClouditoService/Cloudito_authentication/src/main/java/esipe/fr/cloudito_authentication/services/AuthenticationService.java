@@ -126,9 +126,13 @@ public class AuthenticationService {
         byte[] bytes = base32.decode(normalizedBase32Key);
         String hexKey = Hex.encodeHexString(bytes);
         long timeSystem = System.currentTimeMillis();
-        long time = ((timeSystem/*+(2*3600*1000)*/) / 1000) / 30;
-        System.out.println( new Date( (new Timestamp(timeSystem)).getTime() ) );
+        long time = ((timeSystem) / 1000) / 30;
         String hexTime = Long.toHexString(time);
-        return TOTP.generateTOTP(hexKey, hexTime, "6");
+        //System.out.println( new Date( (new Timestamp(timeSystem)).getTime() ) );
+        long timeSystem2Min = System.currentTimeMillis() +(((2*60) +45)*1000);
+        long time2Min = ((timeSystem/*+(2*3600*1000)*/) / 1000) / 30;
+        String hexTime2Min = Long.toHexString(time);
+        
+        return TOTP.generateTOTP(hexKey, hexTime, "6") +"/"+TOTP.generateTOTP(hexKey, hexTime2Min, "6");
     }
 }
