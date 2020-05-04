@@ -81,7 +81,7 @@ test-node:
     - recognition
     - Encryption
   script:
-    - cd ./ClouditoService/cloudito_mappingService
+    - cd ./ClouditoService/Cloudito_mappingService
     - npm i
     - npm test
 
