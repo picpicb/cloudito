@@ -15,7 +15,7 @@ public class AuthentificationFragment extends AppCompatActivity {
 
     private EditText Name;
     private EditText Password;
-    private TextView Info;
+    private TextView Info, Register;
     private Button Login;
     private int counter = 5;
 
@@ -28,6 +28,7 @@ public class AuthentificationFragment extends AppCompatActivity {
         Password = (EditText)findViewById(R.id.etPassword);
         Info = (TextView)findViewById(R.id.tvInfotextView);
         Login = (Button)findViewById(R.id.btnLogin);
+        Register = (TextView)findViewById(R.id.tvRegister);
 
         Info.setText("Number of attempts remaining: 5");
 
@@ -37,6 +38,16 @@ public class AuthentificationFragment extends AppCompatActivity {
                 validate(Name.getText().toString(), Password.getText().toString());
             }
         }));
+
+        Register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //startActivity(new Intent(AuthentificationFragment.this, RegisterActivity.class));
+                Intent intent = new Intent(AuthentificationFragment.this, RegisterActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
     }
 

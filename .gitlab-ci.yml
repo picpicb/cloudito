@@ -10,7 +10,7 @@ cache:
     - .m2/repository
 variables:
   USER_GITLAB: jm.frau
-  REPO: cloudito-rest-api
+  REPO: ClouditoService
   DOCKER_TLS_CERTDIR: ""
   DEPLOY_TOKEN : "fzEjs_J4C335Nq1eLSBh"
   ANDROID_COMPILE_SDK: "28"
@@ -33,9 +33,9 @@ maven-build:
   script: "mvn package $MAVEN_CLI_OPTS -B -f ./ClouditoService/pom.xml -P prod"
   artifacts:
     paths:
-      - ClouditoService/geolocation/target/*.jar
-      #- cloudito-rest-api/course/target/*.jar
-      - ClouditoService/notification/target/*.jar
+      - ClouditoService/Cloudito_geolocation/target/*.jar
+      - ClouditoService/Cloudito_recognition/target/*.jar
+      - ClouditoService/Cloudito_authentication/target/*.jar
 
 
 deploy_back:
@@ -55,16 +55,16 @@ deploy_back:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   script:
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_SHORT_SHA ./cloudito-rest-api/geolocation
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_SHORT_SHA ./cloudito-rest-api/notification
-    #- docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-encryption:$CI_COMMIT_SHORT_SHA ./cloudito-rest-api/encryption
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-geolocation:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_geolocation
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_recognition
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_authentication
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_SHORT_SHA
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_SHORT_SHA
-    #- docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-encryption:$CI_COMMIT_SHORT_SHA
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-notification:$CI_COMMIT_SHORT_SHA NewStack_cloudito-notification
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-geolocation:$CI_COMMIT_SHORT_SHA NewStack_cloudito-geolocation
-    #- docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-encryption:$CI_COMMIT_SHORT_SHA NewStack_cloudito-encryption
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-geolocation:$CI_COMMIT_SHORT_SHA
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:$CI_COMMIT_SHORT_SHA
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:$CI_COMMIT_SHORT_SHA NewStack_cloudito-recognition
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-geolocation:$CI_COMMIT_SHORT_SHA NewStack_cloudito-geolocation
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA NewStack_cloudito-authentication
 
 
 test-node:
@@ -101,10 +101,10 @@ deploy-node:
   before_script:
     - apk --update add nodejs
   script:
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHORT_SHA ./ClouditoService/mappingService
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-mapping:$CI_COMMIT_SHORT_SHA ./ClouditoService/mappingService
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
-    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHORT_SHA
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/cloudito-rest-api-mapping:$CI_COMMIT_SHORT_SHA NewStack_cloudito-mapping
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-mapping:$CI_COMMIT_SHORT_SHA
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-mapping:$CI_COMMIT_SHORT_SHA NewStack_cloudito-mapping
 
 
 
