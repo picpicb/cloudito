@@ -1,4 +1,4 @@
-package com.ackincolor.cloudito.ui.authentification;
+package com.ackincolor.cloudito.ui.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,12 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ackincolor.cloudito.AuthenticationService.AuthenticationLoginAndroidService;
 import com.ackincolor.cloudito.R;
+import com.ackincolor.cloudito.entities.AuthStatus;
+import com.ackincolor.cloudito.entities.Credentials;
+
+import java.util.UUID;
 
 public class AuthentificationFragment extends AppCompatActivity {
 
@@ -42,7 +47,6 @@ public class AuthentificationFragment extends AppCompatActivity {
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(AuthentificationFragment.this, RegisterActivity.class));
                 Intent intent = new Intent(AuthentificationFragment.this, RegisterActivity.class);
                 startActivity(intent);
 
@@ -52,18 +56,24 @@ public class AuthentificationFragment extends AppCompatActivity {
     }
 
     private void validate(String userName, String userPassword) {
-        if((userName.equals("Admin")) && (userPassword.equals("Admin"))) {
-            Intent intent = new Intent(AuthentificationFragment.this, GoogleAuthFragment.class);
-            startActivity(intent);
-        }else{
-            counter --;
+        AuthenticationLoginAndroidService authenticationLoginAndroidService = new AuthenticationLoginAndroidService(this);
+        Credentials credentials = new Credentials();
+        credentials.setLogin(userName);
+        credentials.setPwd(userPassword);
+        authenticationLoginAndroidService.authenticateLogin(credentials);
+    }
 
-            Info.setText("Number of attempts remaining : " + String.valueOf(counter));
-
-            if(counter == 0){
-                Login.setEnabled(false);
-            }
+    public void failAuthent(){
+        counter --;
+        Info.setText("Number of attempts remaining : " + String.valueOf(counter));
+        if(counter == 0){
+            Login.setEnabled(false);
         }
+    }
+
+    public void successAuthent(AuthStatus authStatus){
+        Intent intent = new Intent(AuthentificationFragment.this, GoogleAuthFragment.class);
+        startActivity(intent);
     }
 
 

@@ -1,8 +1,8 @@
-package com.ackincolor.cloudito.ui.authentification;
+package com.ackincolor.cloudito.ui.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
-import android.content.Intent;
+
 import android.os.Bundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -10,9 +10,8 @@ import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
-import android.os.Bundle;
+
 import com.ackincolor.cloudito.R;
-import java.util.concurrent.Executors;
 
 public class BiometricActivity extends AppCompatActivity {
 

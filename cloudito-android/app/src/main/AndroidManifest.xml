@@ -18,11 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.authentification.RegisterActivity"></activity>
+        <activity android:name=".ui.authentication.RegisterActivity"></activity>
         <activity
-            android:name=".ui.authentification.AuthentificationFragment"
+            android:name=".ui.authentication.AuthentificationFragment"
             android:label="Sign in" />
-        <activity android:name=".ui.authentification.GoogleAuthFragment" />
+        <activity android:name=".ui.authentication.GoogleAuthFragment" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

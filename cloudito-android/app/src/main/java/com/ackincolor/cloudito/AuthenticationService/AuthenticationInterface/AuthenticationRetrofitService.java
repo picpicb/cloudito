@@ -1,5 +1,6 @@
 package com.ackincolor.cloudito.AuthenticationService.AuthenticationInterface;
 
+import com.ackincolor.cloudito.entities.AuthStatus;
 import com.ackincolor.cloudito.entities.Credentials;
 
 import retrofit2.Call;
@@ -11,11 +12,11 @@ import retrofit2.http.Path;
 public interface AuthenticationRetrofitService {
 
     @POST("authenticate/login")
-    Call<Credentials> authenticateLogin(@Body Credentials credentials);
+    Call<AuthStatus> authenticateLogin(@Body Credentials credentials);
 
     @POST("authenticate/code")
-    Call<Credentials> authenticateOtpCode(@Body Credentials credentials);
+    Call<AuthStatus> authenticateOtpCode(@Body Credentials credentials);
 
     @POST("authenticate/inscription")
-    Call<Credentials> authenticateInscription(@Body Credentials credentials);
+    Call<String> authenticateInscription(@Body Credentials credentials);
 }

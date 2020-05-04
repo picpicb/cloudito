@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.ackincolor.cloudito.R;
-import com.ackincolor.cloudito.ui.authentification.AuthentificationFragment;
+import com.ackincolor.cloudito.ui.authentication.AuthentificationFragment;
 
 public class Scope2Fragment extends Fragment {
 

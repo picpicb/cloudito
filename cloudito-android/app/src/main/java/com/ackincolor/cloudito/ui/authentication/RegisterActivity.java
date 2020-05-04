@@ -1,4 +1,4 @@
-package com.ackincolor.cloudito.ui.authentification;
+package com.ackincolor.cloudito.ui.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
