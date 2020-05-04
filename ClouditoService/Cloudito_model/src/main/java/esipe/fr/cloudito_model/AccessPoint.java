@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
 
-// model for access point
+// model for access points
 
 @ApiModel(description = "Access Point")
 @Entity
