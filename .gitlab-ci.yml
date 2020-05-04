@@ -33,9 +33,9 @@ maven-build:
   script: "mvn package $MAVEN_CLI_OPTS -B -f ./ClouditoService/pom.xml -P prod"
   artifacts:
     paths:
-      - ClouditoService/cloudito_geolocation/target/*.jar
-      - ClouditoService/cloudito_recognition/target/*.jar
-      - ClouditoService/cloudito_authentication/target/*.jar
+      - ClouditoService/Cloudito_geolocation/target/*.jar
+      - ClouditoService/Cloudito_recognition/target/*.jar
+      - ClouditoService/Cloudito_authentication/target/*.jar
 
 
 deploy_back:
@@ -55,9 +55,9 @@ deploy_back:
     - name: docker:18-dind
       command: ["--insecure-registry=http://cloudito.gitlab.com:4567"]
   script:
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-geolocation:$CI_COMMIT_SHORT_SHA ./ClouditoService/cloudito_geolocation
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-recognition:$CI_COMMIT_SHORT_SHA ./ClouditoService/cloudito_recognition
-    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-authentication:$CI_COMMIT_SHORT_SHA ./ClouditoService/cloudito_authentication
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-geolocation:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_geolocation
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-recognition:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_recognition
+    - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-authentication:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_authentication
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-geolocation:$CI_COMMIT_SHORT_SHA
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/ClouditoService-recognition:$CI_COMMIT_SHORT_SHA
