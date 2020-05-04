@@ -14,9 +14,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN date
 
 #TEST 3
-RUN apt-get install timedatectl
-RUN timedatectl set-ntp true
-RUN timedatectl set-timezone Europe/Paris
+RUN hwclock -s
 RUN date
 
 CMD [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
