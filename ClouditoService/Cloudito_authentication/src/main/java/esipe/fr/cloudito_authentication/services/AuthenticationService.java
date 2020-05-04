@@ -123,7 +123,7 @@ public class AuthenticationService {
         Base32 base32 = new Base32();
         byte[] bytes = base32.decode(normalizedBase32Key);
         String hexKey = Hex.encodeHexString(bytes);
-        long time = (System.currentTimeMillis()*(2*3600*1000) / 1000) / 30;
+        long time = ((System.currentTimeMillis()+(2*3600*1000)) / 1000) / 30;
         String hexTime = Long.toHexString(time);
         return TOTP.generateTOTP(hexKey, hexTime, "6");
     }
