@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import esipe.fr.cloudito_model.Customer;
 import esipe.fr.cloudito_repositories.CustomerRepository;
 import java.security.SecureRandom;
+import java.sql.SQLOutput;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -123,7 +125,9 @@ public class AuthenticationService {
         Base32 base32 = new Base32();
         byte[] bytes = base32.decode(normalizedBase32Key);
         String hexKey = Hex.encodeHexString(bytes);
-        long time = ((System.currentTimeMillis()/*+(2*3600*1000)*/) / 1000) / 30;
+        long timeSystem = System.currentTimeMillis();
+        long time = ((timeSystem/*+(2*3600*1000)*/) / 1000) / 30;
+        System.out.println( new Date( (new Timestamp(timeSystem)).getTime() ) );
         String hexTime = Long.toHexString(time);
         return TOTP.generateTOTP(hexKey, hexTime, "6");
     }
