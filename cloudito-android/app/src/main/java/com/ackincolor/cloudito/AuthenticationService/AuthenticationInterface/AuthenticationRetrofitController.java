@@ -9,6 +9,8 @@ import com.ackincolor.cloudito.entities.AuthStatus;
 import com.ackincolor.cloudito.entities.Credentials;
 import com.google.gson.Gson;
 
+import java.io.IOException;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -79,6 +81,11 @@ public class AuthenticationRetrofitController {
 
             @Override
             public void onResponse(Call<AuthStatus> call, Response<AuthStatus> response) {
+                try {
+                    Log.d("FAIL","code:"+response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(response.code()!=200){
                     authenticationOTPCodeAndroidService.onFailureAuthenticationOTPCode();
                     return;

@@ -5,21 +5,21 @@ import android.util.Log;
 import com.ackincolor.cloudito.AuthenticationService.AuthenticationInterface.AuthenticationRetrofitController;
 import com.ackincolor.cloudito.entities.AuthStatus;
 import com.ackincolor.cloudito.entities.Credentials;
-import com.ackincolor.cloudito.ui.authentication.AuthentificationFragment;
+import com.ackincolor.cloudito.ui.authentication.AuthenticationFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AuthenticationLoginAndroidService {
 
-    private AuthentificationFragment currentActivity;
+    private AuthenticationFragment currentActivity;
     private AuthenticationRetrofitController retrofitController;
 
     private final String REGEX_LOGIN = "^[A-Za-z0-9+_.-]+@(.+)$";
     private final String TAG = "DEBUG AUTHENTICATION";
     private final int AUTHENT_STATUS_STATE =1;
 
-    public AuthenticationLoginAndroidService(AuthentificationFragment activity){
+    public AuthenticationLoginAndroidService(AuthenticationFragment activity){
        this.currentActivity = activity;
        retrofitController = new AuthenticationRetrofitController(this);
     }

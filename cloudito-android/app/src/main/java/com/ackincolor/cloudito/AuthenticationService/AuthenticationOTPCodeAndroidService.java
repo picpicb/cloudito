@@ -1,5 +1,7 @@
 package com.ackincolor.cloudito.AuthenticationService;
 
+import android.util.Log;
+
 import com.ackincolor.cloudito.AuthenticationService.AuthenticationInterface.AuthenticationRetrofitController;
 import com.ackincolor.cloudito.entities.AuthStatus;
 import com.ackincolor.cloudito.entities.Credentials;
@@ -13,7 +15,9 @@ public class AuthenticationOTPCodeAndroidService {
     private GoogleAuthFragment currentActivity;
     private AuthenticationRetrofitController retrofitController;
 
-    private final String REGEX_CODE = "^[A-Za-z0-9+_.-]+@(.+)$";
+    private final String REGEX_CODE = "(\\d{6})";
+    private final String TAG = "DEBUG AUTHENTICATION";
+    private final int AUTHENT_STATUS_STATE =2;
 
     public AuthenticationOTPCodeAndroidService(GoogleAuthFragment activity){
         this.currentActivity = activity;
@@ -34,10 +38,16 @@ public class AuthenticationOTPCodeAndroidService {
 
     // Response from first authent request
     public void onResponseAuthenticateOTPCode(AuthStatus authStatus){
-
+        Log.d(TAG, "Passage dans le on response");
+        if(AUTHENT_STATUS_STATE != authStatus.getStateAuthent()) {
+            onFailureAuthenticationOTPCode();
+            return;
+        }
+        currentActivity.successAuthent(authStatus);
     }
 
     public void onFailureAuthenticationOTPCode(){
-
+        Log.d(TAG, "Passage dans le on Failure");
+        currentActivity.failAuthent();
     }
 }

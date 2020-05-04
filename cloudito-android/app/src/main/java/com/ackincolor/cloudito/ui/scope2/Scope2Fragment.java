@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.ackincolor.cloudito.R;
-import com.ackincolor.cloudito.ui.authentication.AuthentificationFragment;
+import com.ackincolor.cloudito.ui.authentication.AuthenticationFragment;
 
 public class Scope2Fragment extends Fragment {
 
@@ -46,7 +46,7 @@ public class Scope2Fragment extends Fragment {
     }
     public void updateDetail()
     {
-        Intent intent = new Intent(getActivity(), AuthentificationFragment.class);
+        Intent intent = new Intent(getActivity(), AuthenticationFragment.class);
         startActivity(intent);
     }
 }

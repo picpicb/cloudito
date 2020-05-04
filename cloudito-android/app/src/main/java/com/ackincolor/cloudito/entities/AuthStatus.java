@@ -1,8 +1,9 @@
 package com.ackincolor.cloudito.entities;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class AuthStatus {
+public class AuthStatus implements Serializable {
     private int stateAuthent;
     private Long usrId;
     private UUID uuid;

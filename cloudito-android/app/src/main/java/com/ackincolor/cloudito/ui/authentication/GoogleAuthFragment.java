@@ -12,42 +12,42 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ackincolor.cloudito.AuthenticationService.AuthenticationOTPCodeAndroidService;
 import com.ackincolor.cloudito.MainActivity;
 import com.ackincolor.cloudito.R;
+import com.ackincolor.cloudito.entities.AuthStatus;
+import com.ackincolor.cloudito.entities.Credentials;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class GoogleAuthFragment extends AppCompatActivity {
 
-    private EditText AuthPswd2;
-    private TextView Welcome;
-    private Button Login2;
+    private EditText authPswd2;
+    private TextView welcome;
+    private Button login2;
     private static final String TAG = BiometricActivity.class.getName();
+    private BiometricPrompt myBiometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+
+    private AuthStatus authStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_auth);
-
-        AuthPswd2 = (EditText)findViewById(R.id.editTextAct2);
-        Welcome = (TextView)findViewById(R.id.textViewAct2);
-        Login2 = (Button)findViewById(R.id.buttonAct2);
-
+        authStatus = (AuthStatus) getIntent().getSerializableExtra("AuthStatus");
+        authPswd2 = (EditText)findViewById(R.id.editTextAct2);
+        welcome = (TextView)findViewById(R.id.textViewAct2);
+        login2 = (Button)findViewById(R.id.buttonAct2);
 
         //Start of Biometric part
-
         Executor newExecutor = Executors.newSingleThreadExecutor();
-
         FragmentActivity activity = this;
-
-        final BiometricPrompt myBiometricPrompt = new BiometricPrompt(activity, newExecutor, new BiometricPrompt.AuthenticationCallback() {
+        myBiometricPrompt = new BiometricPrompt(activity, newExecutor, new BiometricPrompt.AuthenticationCallback() {
             @Override
-
-//Callback when fatal error//
-
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
@@ -56,21 +56,13 @@ public class GoogleAuthFragment extends AppCompatActivity {
                 }
             }
 
-//onAuthenticationSucceeded is called when a fingerprint is matched successfully//
-
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-
-
                 Log.d(TAG, "Authentification OK");
                 //implement the redirection here
-
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
             }
-
-//Callback when no match between id and what the user identify//
 
             @Override
             public void onAuthenticationFailed() {
@@ -79,41 +71,37 @@ public class GoogleAuthFragment extends AppCompatActivity {
             }
         });
 
-//Create the BiometricPrompt instance//
-
-        final BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Choissisez un moyen de vous authentifier")
                 .setNegativeButtonText("Annuler")
                 .build();
 
-
-        Login2.setOnClickListener((new View.OnClickListener() {
+        login2.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (validate(AuthPswd2.getText().toString()) = true) {
-                if (true == true){
-                    myBiometricPrompt.authenticate(promptInfo);
-                }
-
+                validate(authPswd2.getText().toString());
             }
-        }
-        ));
-
-
+        }));
     }
 
-    /*
-    private boolean validate(String googleAuthPassword) {
-        if((googleAuthPassword.equals("Admin"))) {
-           return true;
-        }else{
-            return false;
-            }
-        }
+    private void validate(String googleAuthPassword) {
+        Log.d("DEBUG CODE",googleAuthPassword);
+        Log.d("DEBUG CODE",""+authStatus.getUuid());
+        AuthenticationOTPCodeAndroidService authenticationOTPCodeAndroidService = new AuthenticationOTPCodeAndroidService(this);
+        Credentials credentials = new Credentials();
+        credentials.setUsrId(authStatus.getUsrId());
+        credentials.setCode(googleAuthPassword);
+        credentials.setUuid(authStatus.getUuid());
+        authenticationOTPCodeAndroidService.authenticateOTPCode(credentials);
     }
 
-     */
+    public void failAuthent(){
+        Toast toast = Toast.makeText(getApplicationContext(), "Echec de l'authentification", Toast.LENGTH_SHORT);
+        toast.show();
+        //startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
 
-
+    public void successAuthent(AuthStatus authStatus){
+        myBiometricPrompt.authenticate(promptInfo);
+    }
 }

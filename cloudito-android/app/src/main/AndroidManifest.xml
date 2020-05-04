@@ -19,9 +19,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.authentication.RegisterActivity"></activity>
-        <activity
-            android:name=".ui.authentication.AuthentificationFragment"
-            android:label="Sign in" />
         <activity android:name=".ui.authentication.GoogleAuthFragment" />
         <activity
             android:name=".MainActivity"

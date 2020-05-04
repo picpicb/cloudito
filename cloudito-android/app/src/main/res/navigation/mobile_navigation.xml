@@ -13,11 +13,11 @@
         tools:layout="@layout/fragment_scope_1" />
 
     <fragment
-        android:id="@+id/navigation_scope_2"
-        android:name="com.ackincolor.cloudito.ui.scope2.Scope2Fragment"
+        android:id="@+id/authentication"
+        android:name="com.ackincolor.cloudito.ui.authentication.AuthenticationFragment"
         android:label="@string/title_scope_2"
         android:title="@string/title_scope_2"
-        tools:layout="@layout/fragment_scope_2" />
+        tools:layout="@layout/fragment_authentification" />
 
     <fragment
         android:id="@+id/navigation_scope_3"
