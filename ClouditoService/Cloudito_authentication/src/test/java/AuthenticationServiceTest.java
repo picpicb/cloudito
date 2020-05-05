@@ -114,10 +114,6 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    /*
-    * Can't be tested cause of bad date on serv
-    * SEE TEST whenSameKeys_SameCodeShouldBeGenerated to see how works this test basically the same
-    * */
     public void whenSameCodeThanCodeCalculatedByKey_ReturnBooleanTrue()  throws AuthenticationException{
         Long idCustomer = 1L;
         assertTrue(authenticationService.verifyCode(authenticationService.getTOTPCode("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww"),idCustomer));

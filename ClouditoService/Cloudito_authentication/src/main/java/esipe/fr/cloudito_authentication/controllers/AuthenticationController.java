@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 @RestController
@@ -119,17 +120,23 @@ public class AuthenticationController {
             @ApiResponse(code = 201, message = "OK - String ", response = String.class),
             @ApiResponse(code = 204, message = "User Mail already used", response = String.class) })
     @ResponseBody
-    public ResponseEntity<String> register(@RequestBody Credentials credential)  {
+    public ResponseEntity<HashMap<String,String>> register(@RequestBody Credentials credential)  {
         String key = authenticationService.getRandomSecretKey();
         Customer newCustomer = credential.mapCustomer(key);
         String response = authenticationService.newCustomer(newCustomer);
+
         if(response.equalsIgnoreCase("Already Exist")){
+            HashMap<String,String> map = new HashMap<>();
+            map.put("ERROR","Forbidden Access");
             return ResponseEntity
                     .status(204)
-                    .body("Forbidden Access");
+                    .body(map);
+        }else{
+            HashMap<String,String> map = new HashMap<>();
+            map.put("key",key);
+            return ResponseEntity
+                    .status(201)
+                    .body(map);
         }
-        return ResponseEntity
-                .status(201)
-                .body(key);
     }
 }
