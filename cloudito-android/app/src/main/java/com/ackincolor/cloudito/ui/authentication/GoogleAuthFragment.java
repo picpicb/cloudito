@@ -61,6 +61,8 @@ public class GoogleAuthFragment extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 Log.d(TAG, "Authentification OK");
                 //implement the redirection here
+                Toast toast = Toast.makeText(getApplicationContext(), "Authentification réussie", Toast.LENGTH_SHORT);
+                toast.show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
 
@@ -85,8 +87,6 @@ public class GoogleAuthFragment extends AppCompatActivity {
     }
 
     private void validate(String googleAuthPassword) {
-        Log.d("DEBUG CODE",googleAuthPassword);
-        Log.d("DEBUG CODE",""+authStatus.getUuid());
         AuthenticationOTPCodeAndroidService authenticationOTPCodeAndroidService = new AuthenticationOTPCodeAndroidService(this);
         Credentials credentials = new Credentials();
         credentials.setUsrId(authStatus.getUsrId());
