@@ -81,11 +81,6 @@ public class AuthenticationRetrofitController {
 
             @Override
             public void onResponse(Call<AuthStatus> call, Response<AuthStatus> response) {
-                try {
-                    Log.d("FAIL","code:"+response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 if(response.code()!=200){
                     authenticationOTPCodeAndroidService.onFailureAuthenticationOTPCode();
                     return;
