@@ -25,17 +25,6 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
-    @RequestMapping(value = "/time", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "GET A RANDOM KEY", nickname = "GET KEY", response =String.class, tags={"Auth"})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK - String ", response = String.class) })
-    @ResponseBody
-    public ResponseEntity<String> time()  {
-        return ResponseEntity
-                .ok()
-                .body(new Date( System.currentTimeMillis()).toString() );
-    }
-
     @RequestMapping(value = "/authentGoogle", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "GET A RANDOM KEY", nickname = "GET KEY", response =String.class, tags={"Auth"})
     @ApiResponses(value = {

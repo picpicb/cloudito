@@ -77,11 +77,10 @@ public class AuthenticationServiceTest {
 
     @Test
     public void whenSameKeys_SameCodeShouldBeGenerated() {
-        /*Long idCustomer = 1L;
+        Long idCustomer = 1L;
         Optional<Customer> jm = customerRepository.findById(idCustomer);
         assertEquals(jm.get().getsKey(),"ujsqzpvwwy4x4d76l2aec5cdf6edt5ww");
-        assertEquals(authenticationService.getTOTPCode(jm.get().getsKey()),authenticationService.getTOTPCode("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww"));*/
-        assertTrue(true);
+        assertEquals(authenticationService.getTOTPCode(jm.get().getsKey()),authenticationService.getTOTPCode("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww"));
     }
 
     @Test
@@ -115,6 +114,10 @@ public class AuthenticationServiceTest {
     }
 
     @Test
+    /*
+    * Can't be tested cause of bad date on serv
+    * SEE TEST whenSameKeys_SameCodeShouldBeGenerated to see how works this test basically the same
+    * */
     public void whenSameCodeThanCodeCalculatedByKey_ReturnBooleanTrue()  throws AuthenticationException{
         /*Long idCustomer = 1L;
         assertTrue(authenticationService.verifyCode(authenticationService.getTOTPCode("ujsqzpvwwy4x4d76l2aec5cdf6edt5ww"),idCustomer));*/
