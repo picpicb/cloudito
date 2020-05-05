@@ -3,6 +3,8 @@ package com.ackincolor.cloudito.AuthenticationService.AuthenticationInterface;
 import com.ackincolor.cloudito.entities.AuthStatus;
 import com.ackincolor.cloudito.entities.Credentials;
 
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -18,5 +20,5 @@ public interface AuthenticationRetrofitService {
     Call<AuthStatus> authenticateOtpCode(@Body Credentials credentials);
 
     @POST("authenticate/inscription")
-    Call<String> authenticateInscription(@Body Credentials credentials);
+    Call<HashMap<String,String>> authenticateInscription(@Body Credentials credentials);
 }

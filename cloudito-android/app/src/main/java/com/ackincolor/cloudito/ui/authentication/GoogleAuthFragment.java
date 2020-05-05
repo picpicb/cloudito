@@ -61,8 +61,8 @@ public class GoogleAuthFragment extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 Log.d(TAG, "Authentification OK");
                 //implement the redirection here
-                Toast toast = Toast.makeText(getApplicationContext(), "Authentification réussie", Toast.LENGTH_SHORT);
-                toast.show();
+               // Toast.makeText(getApplicationContext(), "Authentification réussie", Toast.LENGTH_SHORT).show();
+
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
 
@@ -96,8 +96,8 @@ public class GoogleAuthFragment extends AppCompatActivity {
     }
 
     public void failAuthent(){
-        Toast toast = Toast.makeText(getApplicationContext(), "Echec de l'authentification", Toast.LENGTH_SHORT);
-        toast.show();
+        //Toast.makeText(getApplicationContext(), "Echec de l'authentification", Toast.LENGTH_SHORT).show();
+
         //startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 

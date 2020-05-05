@@ -51,4 +51,5 @@ public class AuthenticationLoginAndroidService {
         Log.d(TAG, "Passage dans le on failure");
         currentActivity.failAuthent();
     }
+
 }
