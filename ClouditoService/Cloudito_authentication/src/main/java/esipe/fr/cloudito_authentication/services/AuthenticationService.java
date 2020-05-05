@@ -79,7 +79,7 @@ public class AuthenticationService {
             return false;
         }
         // MODIFY HERE FAST PLS
-        if(code.equalsIgnoreCase(getTOTPCodeDecale(customer.getsKey()))){
+        if(code.equalsIgnoreCase(getTOTPCode(customer.getsKey()))){
             return true;
         }else{
             return false;
@@ -134,18 +134,5 @@ public class AuthenticationService {
         return TOTP.generateTOTP(hexKey, hexTime, "6");
     }
 
-    public String getTOTPCodeDecale(String secretKey) {
-        String normalizedBase32Key = secretKey.replace(" ", "").toUpperCase();
-        Base32 base32 = new Base32();
-        byte[] bytes = base32.decode(normalizedBase32Key);
-        String hexKey = Hex.encodeHexString(bytes);
 
-        // CHANGE THIS WHEN DATE IS GOOD ON SERVEUR PLEASE IT IS DISGUSTING => GONNA PUKE
-        // MODIFY VEIFCODE ASAP
-        long timeSystem2Min = System.currentTimeMillis() +((160)*1000);
-        long time2Min = ((timeSystem2Min/*+(2*3600*1000)*/) / 1000) / 30;
-        String hexTime2Min = Long.toHexString(time2Min);
-
-        return TOTP.generateTOTP(hexKey, hexTime2Min, "6");
-    }
 }
