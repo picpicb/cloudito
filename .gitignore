@@ -54,3 +54,4 @@ build/
 
 grpc/
 __pycache__
+*.pyc
