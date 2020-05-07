@@ -2,12 +2,15 @@ package esipe.fr.cloudito_recognition.services;
 
 import esipe.fr.cloudito_model.Customer;
 import esipe.fr.cloudito_model.CustomerDetection;
+import esipe.fr.cloudito_model.DetectionList;
 import esipe.fr.cloudito_recognition.exceptions.ApiException;
 import esipe.fr.cloudito_repositories.CustomerDetectionRepository;
 import esipe.fr.cloudito_repositories.CustomerRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -46,15 +49,15 @@ public class RecognitionService {
         }
     }
 
-    public DocumentsList findAll(int page, int pageSize){
-        DocumentsList documentsList = new DocumentsList();
-        documentsList.setPage(page);
-        documentsList.setNbElements(pageSize);
+    public DetectionList findAll(int page, int pageSize){
+        DetectionList detectionList = new DetectionList();
+        detectionList.setPage(page);
+        detectionList.setNbElements(pageSize);
         Pageable pageable = PageRequest.of(page,pageSize);
-        for (Document d : documentRepository.findAll(pageable)) {
-            documentsList.addDataItem(new DocumentSummary(d.getDocumentId(),d.getCreated(),d.getUpdated(),d.getTitle()));
+        for (CustomerDetection d : customerDetectionRepository.findAll(pageable)) {
+            detectionList.addDataItem(d);
         }
-        return documentsList;
+        return detectionList;
     }
 
 
