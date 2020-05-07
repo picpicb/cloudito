@@ -9,6 +9,7 @@ class RecognitionInterface(object):
 		self.host= _config_.get_grpc_host()
 		self.port= _config_.get_grpc_port()
 		url = self.host + ":" + str(self.port)
+		print(url)
 		self.channel = grpc.insecure_channel(url)
 		self.stub = recognize_pb2_grpc.RecognizeStub(self.channel)
 		logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)

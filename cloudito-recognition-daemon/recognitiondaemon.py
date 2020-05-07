@@ -14,6 +14,7 @@ class RecognizeServicer(recognize_pb2_grpc.RecognizeServicer):
     def Recognize(self, request, context):
         response = recognize_pb2.Empty()
         print(request.value)
+        logging.debug(request.value)
         return response
     
 
