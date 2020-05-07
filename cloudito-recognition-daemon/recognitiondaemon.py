@@ -1,23 +1,12 @@
-import socket
-import cv2
-import os
-import sys
 import logging
-import numpy as np
-from recognition import RecognizerThread
-import json
-from json import JSONEncoder
-from numpy import asarray
-import mysql.connector
-from daemonconf.configuration import Configuration
-from database.database import Database
 import grpc
-from concurrent import futures
 import recognize_pb2
 import recognize_pb2_grpc
 import time
+from concurrent import futures
+from daemonconf.configuration import Configuration
+from database.database import Database
 from recognizer.recognizer import Recognizer
-
 
 
 class RecognizeServicer(recognize_pb2_grpc.RecognizeServicer):
@@ -38,7 +27,6 @@ if __name__ == '__main__':
     database = Database(configuration)
     recognizer = Recognizer(database)
     port = str(configuration.get_grpcserver_port())
-
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=50))
     recognize_pb2_grpc.add_RecognizeServicer_to_server(RecognizeServicer(),server)

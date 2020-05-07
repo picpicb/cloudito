@@ -15,7 +15,7 @@ class Database(object):
 	def getCachedCustomers(self):
 		customerList = [""]
 		cursor = self.db.cursor()
-		cursor.execute("SELECT distinct id_customer FROM recognition_history")
+		cursor.execute("SELECT distinct customer_id FROM customer_detection")
 		result = cursor.fetchall()
 		for x in result:
 			customerList.append(str(x[0]))
