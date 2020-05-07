@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerDetectionRepository extends JpaRepository<CustomerDetection, Long> {
-    //CustomerDetection findFirstByCustomerIdOrderByLastUpdateDesc(Long customerId);
 }

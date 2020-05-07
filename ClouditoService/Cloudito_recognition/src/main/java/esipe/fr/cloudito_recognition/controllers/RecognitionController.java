@@ -32,4 +32,11 @@ public class RecognitionController {
     }
 
 
+    @ApiOperation(value = "get all face detections", nickname = "getDetections", notes = "", response = DocumentsList.class, tags={ "documents", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "la liste des documents", response = DocumentsList.class) })
+    @GetMapping(value = "/documents",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DocumentsList> getDetections(@ApiParam(value = "numéro de la page à retourner") @Valid @RequestParam(value = "page", required = false) Integer page, @ApiParam(value = "nombre de documents par page") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        return new ResponseEntity<DocumentsList>(documentService.findAll(page,pageSize), HttpStatus.OK);
+    }
 }

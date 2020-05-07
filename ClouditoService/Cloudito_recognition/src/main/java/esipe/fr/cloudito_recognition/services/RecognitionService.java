@@ -46,6 +46,17 @@ public class RecognitionService {
         }
     }
 
+    public DocumentsList findAll(int page, int pageSize){
+        DocumentsList documentsList = new DocumentsList();
+        documentsList.setPage(page);
+        documentsList.setNbElements(pageSize);
+        Pageable pageable = PageRequest.of(page,pageSize);
+        for (Document d : documentRepository.findAll(pageable)) {
+            documentsList.addDataItem(new DocumentSummary(d.getDocumentId(),d.getCreated(),d.getUpdated(),d.getTitle()));
+        }
+        return documentsList;
+    }
+
 
 
 
