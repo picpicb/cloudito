@@ -9,7 +9,7 @@ class Configuration(object):
         self.configuration_data = yaml.load(f.read(), Loader=yaml.FullLoader)
         f.close()
 
-
+    # Database configuration
     def get_database_host(self):
         return self.configuration_data['data']['mysqldb']['host']
     def get_database_name(self):
@@ -20,3 +20,14 @@ class Configuration(object):
         return self.configuration_data['data']['mysqldb']['user']
     def get_database_pwd(self):
         return self.configuration_data['data']['mysqldb']['pwd']
+
+    # gRPC server configuration
+    def get_grpcserver_port(self):
+        return self.configuration_data['grpc']['server']['port']
+
+
+    # grpc client test config before implement (TODO : delete after implementation on client)
+    def get_grpc_host(self):
+        return self.configuration_data['grpc']['client']['host']
+    def get_grpc_port(self):
+        return self.configuration_data['grpc']['client']['port']

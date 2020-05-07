@@ -5,3 +5,9 @@ data :
     database : cloudito
     user : cloudito
     pwd : "1234"
+grpc :
+  client :
+    host : "172.31.254.54"
+    port : 3085
+  server :
+    port : 50051

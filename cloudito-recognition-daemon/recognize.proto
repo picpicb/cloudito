@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message Face {
+	string value = 1;
+}
+
+message Empty {
+	
+}
+
+service Recognize {
+	rpc Recognize(Face) returns (Empty) {}
+}
