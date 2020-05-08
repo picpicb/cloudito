@@ -3,7 +3,7 @@ import unittest
 import requests
 from requests import exceptions
 
-from main.interface import RecognitionInterface as recoInterface
+from main.interface import RecoInterface as recoInterface
 
 
 class RecognitionInterfaceTest(unittest.TestCase):

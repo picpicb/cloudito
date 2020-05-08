@@ -1,14 +1,16 @@
 import cv2
 import json
 import main.util.NumpyArrayEncoder as np
-import main.interface.RecognitionInterface as recoInterface
-
+import main.interface.RecoInterface as recoInterface
+from main.configuration.configuration import configuration
 from main.util.NumpyArrayEncoder import np
-
+from main.interface.recognitioninterface import RecognitionInterface
 
 class FaceDetectionService:
 
     def run(self):
+        config = configuration()
+        self.recognitionInterface = RecognitionInterface(config)
         print("get image")
         gray_img = self.getImage()
         print("start detection")
@@ -16,7 +18,7 @@ class FaceDetectionService:
 
     # Detect face
     @classmethod
-    def faceDetection(cls, gray_img):
+    def faceDetection(self, gray_img):
         faces_detected = []
         scaleFactor = 1.25
         neightborsSensibility = 5
@@ -39,13 +41,13 @@ class FaceDetectionService:
             (x, y, w, h) = face
             face_grey = gray_img[y:y + h, x:x + h]
             encodedNumpyData = json.dumps(face_grey, cls=np.NumpyArrayEncoder)
-            cls.send(encodedNumpyData)
+            self.recognitionInterface.pushFace(encodedNumpyData)
 
     # Catch an image an return his gray_scale [Mocked]
     @classmethod
     def getImage(cls):
         try:
-            img = cv2.imread('resources/images.jpg')
+            img = cv2.imread('resources/merkel.jpg')
         except FileNotFoundError:
             print("Image not found")
             raise

@@ -1,8 +1,9 @@
 import requests
 from requests import exceptions
 
-
 class RecognitionInterface:
+
+
 
     def send(encodedNumpyData):
         print("Sending...")
