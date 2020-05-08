@@ -31,6 +31,9 @@ public class RecognitionService {
 
 
     public CustomerDetection addRecognition(CustomerDetection recognition) throws ApiException {
+        logger.debug("New recognition");
+        logger.debug(recognition.getCustomerId().toString() + recognition.getRecognitionDate().toString());
+
         // Test if request is not empty
         if(recognition.getCustomerId() != null && recognition.getRecognitionDate() != null){
             // Test if the customer exist

@@ -28,7 +28,7 @@ class Recognizer():
 	# face detection function
 	def detect_face(self, img):
 	    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	    face_cascade = cv2.CascadeClassifier('daemonconf/opencv-files/haarcascade_frontalface_alt.xml')
+	    face_cascade = cv2.CascadeClassifier('daemonconf/opencv-files/haarcascade_frontalface_default.xml')
 	    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5);
 	    if (len(faces) == 0):
 	        return None, None
@@ -79,6 +79,7 @@ class Recognizer():
 		return [faces2,labels2]
 
 	def recognize(self, face):
+		logging.info("Starting new recognition..")
 		decodedArrays = json.loads(face)
 		finalNumpyArray = np.asarray(decodedArrays["array"])
 		confidence = 0
@@ -86,7 +87,7 @@ class Recognizer():
 
 		#recognize from cacheDB
 		if self.cachedDB[0] != [] :
-			logging.info("Predicting image from cahchedDB...")
+			#logging.info("Predicting image from cahchedDB...")
 			face_recognizer.train(self.cachedDB[0], np.array(self.cachedDB[1]))
 			label = face_recognizer.predict(finalNumpyArray)
 			confidence = int(100*(1-(label[1]/300)))
@@ -94,15 +95,15 @@ class Recognizer():
 
 		if confidence < 80:
 			#recognize from fullDB
-			logging.info("Confidence is < 80%, Predicting from fullDB...")
+			#logging.info("Confidence is < 80%, Predicting from fullDB...")
 			face_recognizer.train(self.fullDB[0], np.array(self.fullDB[1]))
 			label = face_recognizer.predict(finalNumpyArray)
 			confidence = int(100*(1-(label[1]/300)))
-			logging.info("Confidence is %d",confidence)
+			#logging.info("Confidence is %d",confidence)
 
 		if confidence >= 80:
-			logging.debug("Person found : %s", label[0])
-			#TODO SEND POST NEW RECOGNITION
+			logging.debug("Person found : %s Confidence %d ", label[0],confidence)
+			#self.database.saveRecognition(label[0])
 		else:
 			logging.info("Person not found, confidence is %d", confidence)
 

@@ -11,3 +11,5 @@ grpc :
     port : 50051
   server :
     port : 50051
+api:
+  url: "http://localhost:8087"
