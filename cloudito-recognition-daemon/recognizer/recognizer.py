@@ -23,6 +23,8 @@ class Recognizer():
 		# Prepare recognizer with all faces
 		self.fullDB = self.load_full_db()
 
+		# Count recognized faces to reload cachedDB
+		self.recognition_counter = 0
 
 
 	# face detection function
@@ -45,7 +47,6 @@ class Recognizer():
 			if not dir_name.startswith("s"):
 				continue;
 			if dir_name.replace("s", "") in subjects_list:
-				print("directory ", dir_name)
 				label = int(dir_name.replace("s", ""))
 				subject_dir_path = data_folder_path + "/" + dir_name
 				subject_images_names = os.listdir(subject_dir_path)
@@ -56,7 +57,6 @@ class Recognizer():
 					image = cv2.imread(image_path)
 					face, rect = self.detect_face(image)
 					if face is not None:
-						print("--image ", image_name)
 						faces.append(face)
 						labels.append(label)
 		return faces, labels
@@ -73,7 +73,6 @@ class Recognizer():
 	def load_full_db(self):
 		logging.info("Scanning faces from database...")
 		subjects2 = self.database.getAllCustomers()
-		print(subjects2)
 		faces2, labels2 = self.prepare_training_data("training-data", subjects2)
 		logging.info("Scan completed : %s faces scanned",len(faces2))
 		return [faces2,labels2]
@@ -87,7 +86,7 @@ class Recognizer():
 
 		#recognize from cacheDB
 		if self.cachedDB[0] != [] :
-			#logging.info("Predicting image from cahchedDB...")
+			logging.info("Predicting image from cahchedDB...")
 			face_recognizer.train(self.cachedDB[0], np.array(self.cachedDB[1]))
 			label = face_recognizer.predict(finalNumpyArray)
 			confidence = int(100*(1-(label[1]/300)))
@@ -95,15 +94,19 @@ class Recognizer():
 
 		if confidence < 80:
 			#recognize from fullDB
-			#logging.info("Confidence is < 80%, Predicting from fullDB...")
+			logging.info("Confidence is < 80%, Predicting from fullDB...")
 			face_recognizer.train(self.fullDB[0], np.array(self.fullDB[1]))
 			label = face_recognizer.predict(finalNumpyArray)
 			confidence = int(100*(1-(label[1]/300)))
-			#logging.info("Confidence is %d",confidence)
 
 		if confidence >= 80:
 			logging.debug("Person found : %s Confidence %d ", label[0],confidence)
-			#self.database.saveRecognition(label[0])
+			self.database.saveRecognition(label[0])
+			self.recognition_counter += 1
+			if self.recognition_counter > 5:
+				self.cachedDB = self.load_cached_db()
+				self.recognition_counter = 0
+
 		else:
 			logging.info("Person not found, confidence is %d", confidence)
 

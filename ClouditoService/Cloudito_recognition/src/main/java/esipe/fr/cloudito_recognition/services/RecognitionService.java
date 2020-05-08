@@ -31,8 +31,6 @@ public class RecognitionService {
 
 
     public CustomerDetection addRecognition(CustomerDetection recognition) throws ApiException {
-        logger.debug("New recognition");
-        logger.debug(recognition.getCustomerId().toString() + recognition.getRecognitionDate().toString());
 
         // Test if request is not empty
         if(recognition.getCustomerId() != null && recognition.getRecognitionDate() != null){
@@ -40,14 +38,14 @@ public class RecognitionService {
             Optional<Customer> customer = customerRepository.findById(recognition.getCustomerId());
             if(customer.isPresent()) {
                 customerDetectionRepository.save(recognition);
-                logger.info("New customer detected : " + recognition.getId());
+                logger.info("New customer detected : " + recognition.getCustomerId() + " - " + customer.get().getName());
                 return recognition;
             }else {
                 logger.warn("Customer not found");
                 throw new ApiException(404,"No Customer found");
             }
         }else{
-            logger.warn("Customer detection not saved : "+recognition.getId());
+            logger.warn("Customer detection not saved : "+recognition.getCustomerId());
             throw new ApiException(400,"content error");
         }
     }
