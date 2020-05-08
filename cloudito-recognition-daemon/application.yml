@@ -7,7 +7,7 @@ data :
     pwd : "1234"
 grpc :
   client :
-    host : "172.31.254.54"
-    port : 3085
+    host : "localhost"
+    port : 50051
   server :
     port : 50051

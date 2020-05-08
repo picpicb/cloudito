@@ -10,11 +10,12 @@ from recognizer.recognizer import Recognizer
 
 
 class RecognizeServicer(recognize_pb2_grpc.RecognizeServicer):
+    def __init__(self, recognizer):
+        self.recognizer = recognizer
 
     def Recognize(self, request, context):
         response = recognize_pb2.Empty()
-        print(request.value)
-        logging.debug(request.value)
+        self.recognizer.recognize(request.value)
         return response
     
 
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     port = str(configuration.get_grpcserver_port())
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=50))
-    recognize_pb2_grpc.add_RecognizeServicer_to_server(RecognizeServicer(),server)
+    recognize_pb2_grpc.add_RecognizeServicer_to_server(RecognizeServicer(recognizer),server)
 
     logging.info('Daemon started. Listening on port %s.',port)
     server.add_insecure_port('[::]:'+port )
