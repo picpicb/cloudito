@@ -28,7 +28,7 @@ public class GoogleAuthFragment extends AppCompatActivity {
     private EditText authPswd2;
     private TextView welcome;
     private Button login2;
-    private static final String TAG = BiometricActivity.class.getName();
+    private static final String TAG = "Authentication log :";
     private BiometricPrompt myBiometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
 
