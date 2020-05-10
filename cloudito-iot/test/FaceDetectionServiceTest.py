@@ -11,7 +11,7 @@ class FaceDetectionServiceTest(unittest.TestCase):
 
     def test_video_capture(self):
         import cv2
-        cap = cv2.VideoCapture("../resources/g20.mp4")
+        cap = cv2.VideoCapture("../main/resources/g20.mp4")
         self.assertTrue(cap.isOpened())
 
     def test_format(self):
