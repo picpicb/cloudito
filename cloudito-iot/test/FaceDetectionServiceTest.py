@@ -17,8 +17,14 @@ class FaceDetectionServiceTest(unittest.TestCase):
     def test_format(self):
         pass
 
+    def test_get_image(self):
+        import cv2
+        img = cv2.imread('../main/resources/merkel.jpg')
+        gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        self.assertTrue(gray_img.any())
+
     def test_is_file_failure(self):
-        self.assertFalse(vc.isVideoSrcValid("../test.mp4"))
+        self.assertFalse(vc.isVideoSrcValid(""))
 
     def test_valid_File(self):
         self.assertTrue(vc.isVideoSrcValid("../test.mp4"))
