@@ -11,27 +11,23 @@ class FaceDetectionServiceTest(unittest.TestCase):
 
     def test_video_capture(self):
         import cv2
-        cap = cv2.VideoCapture("../test.mp4")
+        cap = cv2.VideoCapture("../resources/g20.mp4")
         self.assertTrue(cap.isOpened())
 
     def test_format(self):
         pass
 
-    def test_get_image(self):
-        import cv2
-        img = cv2.imread('../main/resources/merkel.jpg')
-        gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        self.assertTrue(gray_img.any())
-
     def test_is_file_failure(self):
-        self.assertFalse(vc.isVideoSrcValid(""))
+        self.assertFalse(vc.isVideoSrcValid("../main/resources/haarcascade_frontalface_default.xml"))
 
-    def test_valid_File(self):
-        self.assertTrue(vc.isVideoSrcValid("../test.mp4"))
+    def test_valid_format_File(self):
+        self.assertTrue(vc.isVideoSrcValid("../main/resources/g20.mp4"))
 
     def test_no_File_Exists(self):
-        self.assertFalse(vc.isVideoSrcValid("../testtest.mp4"))
+        self.assertFalse(vc.isVideoSrcValid("../main/resources/gz20.mp4"))
 
+    def test_valid_file(self):
+        self.assertTrue(vc.isVideoCanBeOpened("../main/resources/g20.mp4"))
 
 
 

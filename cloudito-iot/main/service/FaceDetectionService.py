@@ -1,59 +1,63 @@
 import cv2
+import logging
 import json
-import main.util.NumpyArrayEncoder as np
-import main.interface.RecoInterface as recoInterface
 from main.configuration.configuration import configuration
-from main.util.NumpyArrayEncoder import np
 from main.interface.recognitioninterface import RecognitionInterface
+from main.util.ValidateVideoFormat import VideoCapture as vc
+
 
 class FaceDetectionService:
+    def __init__(self):
+        logging.info("Starting iot")
+        self.config = configuration()
+        self.recognitionInterface = RecognitionInterface(self.config)
+        logging.info("Begin traitment")
+        inputPath = '../resources/g20.mp4'
+        self.getInput(inputPath)
+        self.beginTreatment(inputPath)
+        logging.info("Traitment finished")
+        exit()
 
-    def run(self):
-        config = configuration()
-        self.recognitionInterface = RecognitionInterface(config)
-        print("get image")
-        gray_img = self.getImage()
-        print("start detection")
-        self.faceDetection(gray_img)
-
-    # Detect face
-    @classmethod
     def faceDetection(self, gray_img):
-        faces_detected = []
+        logging.info("[NEW] New instance of face detection")
         scaleFactor = 1.25
         neightborsSensibility = 5
-        face_haar_cascade = cv2.CascadeClassifier('resources/haarcascade_frontalface_default.xml')
-        while len(faces_detected) == 0:
-            faces_detected = face_haar_cascade.detectMultiScale(gray_img, scaleFactor=scaleFactor,
-                                                                minNeighbors=neightborsSensibility)
-            if scaleFactor == 1.01:
-                break
-            scaleFactor = scaleFactor - 0.01
-            if neightborsSensibility == 0:
-                neightborsSensibility = 5
-            else:
-                neightborsSensibility = neightborsSensibility - 1
+        face_haar_cascade = cv2.CascadeClassifier('../resources/haarcascade_frontalface_default.xml')
 
+        faces_detected = face_haar_cascade.detectMultiScale(gray_img, scaleFactor=scaleFactor,
+                                                            minNeighbors=neightborsSensibility)
         if len(faces_detected) == 0:
-            print("Nothing detected.")
-
+            logging.info("Nothing detected.")
         for face in faces_detected:
             (x, y, w, h) = face
             face_grey = gray_img[y:y + h, x:x + h]
-            encodedNumpyData = json.dumps(face_grey, cls=np.NumpyArrayEncoder)
+            encodedNumpyData = json.dumps(face_grey.tolist())
             self.recognitionInterface.pushFace(encodedNumpyData)
+        logging.info("[END] Face detection")
 
-    # Catch an image an return his gray_scale [Mocked]
-    @classmethod
-    def getImage(cls):
-        try:
-            img = cv2.imread('resources/merkel.jpg')
-        except FileNotFoundError:
-            print("Image not found")
-            raise
-        gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        return gray_img
+    def getInput(self, filePath):
+        if not vc.isVideoSrcValid(filePath):
+            logging.error("Invalid format.")
+            exit()
+        if not vc.isVideoCanBeOpened(filePath):
+            logging.error("File corrupted.")
+            exit()
+        else:
+            return True
 
-    # Send result to the interface
-    def send(self, encodedNumpyData):
-        recoInterface.RecognitionInterface.send(encodedNumpyData)
+    def beginTreatment(self, inputFile):
+        capture = cv2.VideoCapture(inputFile)
+        success, image = capture.read()
+        fps = capture.get(cv2.CAP_PROP_FPS)
+        multiplier = fps * self.config.get_roundedCapture()
+
+        while success:
+            frameId = int(round(capture.get(1)))
+            success, image = capture.read()
+            if frameId % multiplier == 0:
+                gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                self.faceDetection(gray_img)
+
+
+if __name__ == '__main__':
+    FaceDetectionService()
