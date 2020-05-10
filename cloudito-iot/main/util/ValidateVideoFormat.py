@@ -8,8 +8,15 @@ class VideoCapture(object):
         if (not path.isfile(src)):
             return False
 
-        root, ext = path.splitext(src)
-        return ext.lower() in VALID_EXTENTIONS
+        filenameTokens = path.splitext(src)
+
+        if (len(filenameTokens) < 1):
+            return False
+
+        if (not filenameTokens[1][1:].lower() in VALID_EXTENTIONS):
+            return False
+
+        return True
 
     def __init__(self, videoSrc):
         if (not self.isVideoSrcValid(videoSrc)):
