@@ -14,6 +14,7 @@ Application d'un centre commercial hyper connecté
 
 ## Contributeurs
 
+
 - Clément Aldobrandi (Sécurité)
 - Jean-Michel Frau (NCC)
 - Loïs Guillet (Sécurité)

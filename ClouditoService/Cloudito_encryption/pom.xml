@@ -59,7 +59,9 @@
                 <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
                 <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
                 <!--suppress UnresolvedMavenProperty -->
-                <vault.token>${env.VAULT_TOKEN}</vault.token>
+                <app.vault.hostVault>${env.HOSTVAULT}</app.vault.hostVault>
+                <!--suppress UnresolvedMavenProperty -->
+                <app.vault.tokenVault>${env.TOKENVAULT}</app.vault.tokenVault>
             </properties>
         </profile>
 
@@ -78,23 +80,4 @@
     </dependencies>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>esipe.fr.cloudito_encryption.ClouditoEncryptionService</mainClass>
-                    <addResources>true</addResources>
-                </configuration>
-
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
 </project>

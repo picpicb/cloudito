@@ -7,6 +7,7 @@ WORKDIR /source
 
 RUN pip3 install -r requirements.txt
 RUN ls -la
+RUN pip3 install opencv-contrib-python
 RUN pip3 list
 
 EXPOSE 50051
