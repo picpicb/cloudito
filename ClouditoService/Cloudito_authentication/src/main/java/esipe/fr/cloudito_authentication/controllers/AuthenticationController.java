@@ -64,6 +64,11 @@ public class AuthenticationController {
                 customer.setUuid(uuid);
                 customer.setTime(Calendar.getInstance().getTime());
                 authenticationService.save(customer);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
                 return ResponseEntity
                         .ok()
                         .body(new AuthStatus(1, customer.getId(), uuid));
