@@ -6,9 +6,6 @@ data :
     user : cloudito
     pwd : "1234"
 grpc :
-  client :
-    host : "localhost"
-    port : 50051
   server :
     port : 50051
 api:
