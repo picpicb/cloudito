@@ -59,7 +59,9 @@
                 <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
                 <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
                 <!--suppress UnresolvedMavenProperty -->
-                <vault.token>${env.VAULT_TOKEN}</vault.token>
+                <app.vault.hostVault>${env.HOSTVAULT}</app.vault.hostVault>
+                <!--suppress UnresolvedMavenProperty -->
+                <app.vault.tokenVault>${env.TOKENVAULT}</app.vault.tokenVault>
             </properties>
         </profile>
 
