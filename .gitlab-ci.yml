@@ -65,8 +65,11 @@ deploy_back:
     - docker tag cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:latest
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-geolocation:$CI_COMMIT_SHORT_SHA
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-geolocation:latest
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:$CI_COMMIT_SHORT_SHA
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:latest
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:latest
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:latest NewStack_cloudito-recognition
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-geolocation:latest NewStack_cloudito-geolocation
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:latest NewStack_cloudito-authentication
@@ -127,9 +130,11 @@ deploy-daemon:
     - Encryption
   script:
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition-daemon:$CI_COMMIT_SHORT_SHA ./cloudito-recognition-daemon
+    - docker tag cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition-daemon:$CI_COMMIT_SHORT_SHA cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition-daemon:latest
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition-daemon:$CI_COMMIT_SHORT_SHA
-    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition-daemon:$CI_COMMIT_SHORT_SHA NewStack_cloudito-recognition-daemon
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition-daemon:latest
+    - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition-daemon:latest NewStack_cloudito-recognition-daemon
 
 
 ######################################################################
