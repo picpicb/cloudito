@@ -25,7 +25,7 @@ public class EncryptionSupportTest {
 
     @Autowired
     private AttributeEncryptor attributeEncryptor;
-    private static String stringTest = "Bonjour2";
+    private static String stringTest = "Bonjour";
 
 
 
