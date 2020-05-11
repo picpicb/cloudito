@@ -13,12 +13,17 @@ public class Customer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
+    @Convert(converter = AttributeConverter.class)
     private String name;
+    @Convert(converter = AttributeConverter.class)
     private String pwd;
+    @Convert(converter = AttributeConverter.class)
     private String login;
+    @Convert(converter = AttributeConverter.class)
     private String sKey;
+    @Convert(converter = AttributeConverter.class)
     private UUID uuid;
+    @Convert(converter = AttributeConverter.class)
     private Date time;
 
     @OneToMany(
