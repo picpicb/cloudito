@@ -28,6 +28,7 @@ public class RecognitionController {
             @ApiResponse(code = 400, message = "ERROR - Content error")})
     @ResponseBody
     public ResponseEntity<CustomerDetection> addRecognition(@ApiParam(value = "Customer Recognition",required=true) @RequestBody CustomerDetection recognition) throws ApiException {
+
         CustomerDetection cd = this.recognitionService.addRecognition(recognition);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
