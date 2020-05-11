@@ -34,7 +34,7 @@
                 <spring.jpa.properties.hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</spring.jpa.properties.hibernate.dialect>
                 <spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
                 <app.vault.hostVault>http://172.31.254.54:8200</app.vault.hostVault>
-                <app.vault.tokenVault>s.w9vvsdOTBFXgA47dGg7M9Z02</app.vault.tokenVault>
+                <app.vault.tokenVault>s.QIMXQCIG9MV78qXggkyMdMfe</app.vault.tokenVault>
             </properties>
         </profile>
 
