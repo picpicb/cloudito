@@ -62,7 +62,7 @@ deploy_back:
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_recognition
     - docker tag cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:$CI_COMMIT_SHORT_SHA cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:latest
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_authentication
-    - docekr tag cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:latest
+    - docker tag cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:$CI_COMMIT_SHORT_SHA cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-authentication:latest
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-geolocation:$CI_COMMIT_SHORT_SHA
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-recognition:$CI_COMMIT_SHORT_SHA
