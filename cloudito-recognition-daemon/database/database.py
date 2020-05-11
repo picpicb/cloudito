@@ -30,7 +30,7 @@ class Database(object):
 			customerList.append(str(x[0]))
 		cursor.close()
 		db.close()
-		logging.info("Refresh cachedDB... %d new faces",len(x))
+		logging.info("Refresh cachedDB... %d new faces",len(customerList))
 		return customerList
 
 	def getAllCustomers(self):
