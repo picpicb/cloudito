@@ -103,13 +103,11 @@ class Recognizer():
 			logging.debug("Person found : %s Confidence %d ", label[0],confidence)
 			self.database.saveRecognition(label[0])
 			self.recognition_counter += 1
-			return label[0]
 			if self.recognition_counter > 5:
 				self.cachedDB = self.load_cached_db()
 				self.recognition_counter = 0
 
 		else:
 			logging.info("Person not found, confidence is %d", confidence)
-			return label[0]
 
 
