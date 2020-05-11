@@ -28,6 +28,8 @@ public class EncryptionSupportTest {
         }else {
            String converted = attributeEncryptor.convertToDatabaseColumn(stringTest);
            assertNotEquals(stringTest,converted);
+           String clearString = attributeEncryptor.convertToEntityAttribute(converted);
+           assertEquals(stringTest,clearString);
         }
     }
 
