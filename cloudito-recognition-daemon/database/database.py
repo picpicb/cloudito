@@ -3,6 +3,7 @@ import requests
 from requests import exceptions
 import datetime
 import json
+import logging
 
 
 class Database(object):
@@ -29,6 +30,7 @@ class Database(object):
 			customerList.append(str(x[0]))
 		cursor.close()
 		db.close()
+		logging.info("Refresh cachedDB... %d new faces",len(x))
 		return customerList
 
 	def getAllCustomers(self):
