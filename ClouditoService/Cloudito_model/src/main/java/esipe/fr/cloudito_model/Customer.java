@@ -1,5 +1,6 @@
 package esipe.fr.cloudito_model;
 
+import esipe.fr.cloudito_encryption.model.AttributeEncryptor;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -13,12 +14,17 @@ public class Customer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
+    @Convert(converter = AttributeEncryptor.class)
     private String name;
+    @Convert(converter = AttributeEncryptor.class)
     private String pwd;
+    @Convert(converter = AttributeEncryptor.class)
     private String login;
+    @Convert(converter = AttributeEncryptor.class)
     private String sKey;
+    //@Convert(converter = AttributeEncryptor.class)
     private UUID uuid;
+    //@Convert(converter = AttributeEncryptor.class)
     private Date time;
 
     @OneToMany(

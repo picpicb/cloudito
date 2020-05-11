@@ -18,10 +18,10 @@ public class SwaggerConfigurationReco {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Recognition")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("esipe.fr.recognition.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("esipe.fr.cloudito_recognition.controllers"))
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false)
-                .tags(new Tag("Reco","Recognition Resources"));
+                .tags(new Tag("Recognition","Recognition Resources"));
     }
 }

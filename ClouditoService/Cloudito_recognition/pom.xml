@@ -51,7 +51,7 @@
             </activation>
             <properties>
                 <!--suppress UnresolvedMavenProperty -->
-                <server.port>${env.SERVER_PORT_GEOLOCATION_SERVICE}</server.port>
+                <server.port>${env.PORT_RECOGNITION_SERVICE}</server.port>
                 <!--suppress UnresolvedMavenProperty -->
                 <spring.datasource.url>${env.DATA_SOURCE_URL}</spring.datasource.url>
                 <!--suppress UnresolvedMavenProperty -->

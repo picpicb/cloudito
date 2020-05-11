@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import esipe.fr.cloudito_model.Customer;
 import esipe.fr.cloudito_repositories.CustomerRepository;
 import java.security.SecureRandom;
+import java.sql.SQLOutput;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -76,6 +78,7 @@ public class AuthenticationService {
         if(code.trim().length() != 6){
             return false;
         }
+        // MODIFY HERE FAST PLS
         if(code.equalsIgnoreCase(getTOTPCode(customer.getsKey()))){
             return true;
         }else{
@@ -115,7 +118,7 @@ public class AuthenticationService {
         String secretKey = base32.encodeToString(bytes);
         // make the secret key more human-readable by lower-casing and
         // inserting spaces between each group of 4 characters
-        return secretKey;//.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
+        return secretKey.toLowerCase();//.replaceAll("(.{4})(?=.{4})", "$1 ");
     }
 
     public String getTOTPCode(String secretKey) {
@@ -123,8 +126,13 @@ public class AuthenticationService {
         Base32 base32 = new Base32();
         byte[] bytes = base32.decode(normalizedBase32Key);
         String hexKey = Hex.encodeHexString(bytes);
-        long time = (System.currentTimeMillis() / 1000) / 30;
+
+        long timeSystem = System.currentTimeMillis();
+        long time = ((timeSystem) / 1000) / 30;
         String hexTime = Long.toHexString(time);
+
         return TOTP.generateTOTP(hexKey, hexTime, "6");
     }
+
+
 }

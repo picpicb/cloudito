@@ -4,4 +4,16 @@
     <string name="title_scope_2">Scope 2</string>
     <string name="title_scope_4">Scope 4</string>
     <string name="title_scope_3">Scope 3</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="login">Se connecter</string>
+    <string name="register">S\'inscrire</string>
+    <string name="title_activity_register">RegisterActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="register_title">Inscription</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="password2">Retaper votre mot de passe</string>
 </resources>

@@ -2,24 +2,20 @@ package esipe.fr.cloudito_model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
-
 import javax.persistence.*;
 import java.util.Date;
 
-@ApiModel(description = "UserDetection")
+@ApiModel(description = "CustomerDetection")
 @Entity
 public class CustomerDetection {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name="DETECTION_ID")
-    private Detection detection;
-    private Date lastUpdate;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customerId")
     @JsonIgnore
-    private Customer customer;
+    private Long id;
+
+    private Date recognitionDate;
+
+    private Long customerId;
 
     public Long getId() {
         return id;
@@ -29,27 +25,19 @@ public class CustomerDetection {
         this.id = id;
     }
 
-    public Detection getDetection() {
-        return detection;
+    public Date getRecognitionDate() {
+        return recognitionDate;
     }
 
-    public void setLocation(Location location) {
-        this.detection = detection;
+    public void setRecognitionDate(Date recognitionDate) {
+        this.recognitionDate = recognitionDate;
     }
 
-    public Date getLastUpdate() {
-        return lastUpdate;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 }

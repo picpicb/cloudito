@@ -1,0 +1,6 @@
+numpy==1.18.2
+PyYAML==5.1.2
+grpcio==1.28.1  
+grpcio-tools==1.28.1 
+mysql-connector==2.2.9
+requests==2.23.0

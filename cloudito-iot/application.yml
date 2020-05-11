@@ -1,0 +1,6 @@
+grpc:
+  client:
+    host: "localhost"
+    port: 50051
+input:
+  roundedCapture: 5

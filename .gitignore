@@ -51,3 +51,7 @@ build/
 **/captures
 **/.externalNativeBuild
 **/.cxx
+
+grpc/
+__pycache__
+*.pyc

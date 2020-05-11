@@ -40,7 +40,7 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public class Scope4Fragment extends Fragment implements CourseService<ArrayList<CourseNode>>, SensorEventListener {
 
-    private Scope4ViewModel scope4ViewModel;
+    private com.ackincolor.cloudito.ui.scope4.Scope4ViewModel scope4ViewModel;
     private CourseRetrofitController courseRetrofitController;
 
 
@@ -126,7 +126,7 @@ public class Scope4Fragment extends Fragment implements CourseService<ArrayList<
     }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        scope4ViewModel = ViewModelProviders.of(this).get(Scope4ViewModel.class);
+        scope4ViewModel = ViewModelProviders.of(this).get(com.ackincolor.cloudito.ui.scope4.Scope4ViewModel.class);
         View root = inflater.inflate(R.layout.fragment_scope_4, container, false);
         this.mapComponent = root.findViewById(R.id.custView);
         //example
