@@ -113,6 +113,11 @@
         <version>1.0.0-RELEASE</version>
 
     </dependency>
+        <dependency>
+            <groupId>esipe.fr</groupId>
+            <artifactId>Cloudito_encryption</artifactId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
     </dependencies>
 
     <properties>
