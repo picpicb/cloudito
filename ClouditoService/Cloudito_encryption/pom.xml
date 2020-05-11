@@ -64,6 +64,19 @@
         </profile>
 
     </profiles>
+    <dependencies>
+        <dependency>
+            <groupId>esipe.fr</groupId>
+            <artifactId>Cloudito_persistence</artifactId>
+            <version>1.0.0-RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+    </dependencies>
+
 
     <build>
         <plugins>
