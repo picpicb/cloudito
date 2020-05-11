@@ -112,7 +112,9 @@ deploy-node:
   script:
     - docker build -t cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-mapping:$CI_COMMIT_SHORT_SHA ./ClouditoService/Cloudito_mappingService
     - docker login -u lois.guillet -p $DEPLOY_TOKEN "cloudito.gitlab.com:4567"
+    - docker tag cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-mapping:$CI_COMMIT_SHORT_SHA cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-mapping:latest
     - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-mapping:$CI_COMMIT_SHORT_SHA
+    - docker push cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-mapping:latest
     - docker -H 192.168.1.100:2376 service update --force --image cloudito.gitlab.com:4567/cloudito/cloudito/clouditoservice-mapping:$CI_COMMIT_SHORT_SHA NewStack_cloudito-mapping
 
 
