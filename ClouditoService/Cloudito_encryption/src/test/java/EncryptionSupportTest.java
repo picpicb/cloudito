@@ -7,9 +7,6 @@ import esipe.fr.cloudito_encryption.model.AttributeEncryptor;
 import esipe.fr.cloudito_encryption.model.Coordinate;
 import esipe.fr.cloudito_encryption.persistence.CoordinateRepository;
 import esipe.fr.cloudito_encryption.persistence.CoordinateRowMapper;
-import esipe.fr.cloudito_model.Customer;
-import esipe.fr.cloudito_model.Location;
-import esipe.fr.cloudito_repositories.LocationRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,36 +27,6 @@ public class EncryptionSupportTest {
     private AttributeEncryptor attributeEncryptor;
     private static String stringTest = "Bonjour";
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
-
-    @Autowired
-    CoordinateRepository coordinateRepository;
-
-    @Test
-    public final void testDatabaseEncryptionIntegration(){
-        int x = 1;
-        int y = 2;
-        String name = "facticeName";
-        long id = 1l;
-        Coordinate newCoordinate = new Coordinate(id,x,y,name);
-        coordinateRepository.deleteAll();
-        coordinateRepository.save(newCoordinate);
-        System.out.println("Coordinate Saved");
-
-
-        Optional<Coordinate> coordinateFound = coordinateRepository.findById(id);
-        System.out.println("Coordinate Found with JPA");
-
-        //tester comme quoi  x chiffré et y en clair avec var x et var y
-
-        String sql = "SELECT * FROM coordinate WHERE id = ?";
-        Coordinate foundCoordinate = jdbcTemplate.queryForObject(sql, new Object[]{id}, new CoordinateRowMapper());
-        System.out.println("Coordinate Found with JBDC");
-
-        System.out.println(foundCoordinate);
-    }
 
 
     @Test
